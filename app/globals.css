@@ -1,0 +1,439 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SURGE LABS — PRESS ROOM DESIGN SYSTEM
+   ───────────────────────────────────────────────────────────────────────────
+   Two surfaces, one set of classes.
+
+   Every section declares data-surface="ink" | "stock". That attribute
+   re-declares the semantic --color-* tokens on itself, so `bg-surface`,
+   `text-fg`, `border-rule` etc. resolve correctly on either bed. There is
+   never a second set of classes and never a `dark:` variant.
+
+   SECTION PADDING LIVES IN TYPESCRIPT (components/ui/section-frame.tsx).
+   Do not add a global `.section`, `.cta` or `.block` padding rule to this
+   file — that is exactly how cancelling specificity chains start.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* `static` matters: without it Tailwind emits only the theme variables that a
+   generated utility happens to reference, and tokens reached from inline
+   styles or from JS — the registration plates, everything GSAP will read —
+   silently resolve to nothing. Since the stock theme is cleared below, this
+   emits exactly this system's tokens and no more. */
+@theme static {
+  /* ─── Discipline ────────────────────────────────────────────────────────
+     Wipe Tailwind's stock palette, type scale, font stack and radius scale.
+     If a colour, size or radius is not declared below, no utility exists for
+     it — you cannot reach for slate-700 or rounded-lg by accident, and the
+     palette stays exactly as tight as the brief says it is. */
+  --color-*: initial;
+  --text-*: initial;
+  --font-*: initial;
+  --radius-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-inherit: inherit;
+
+  /* ─── Fonts ─────────────────────────────────────────────────────────── */
+  --font-display: var(--font-bricolage), "Arial Black", ui-sans-serif, sans-serif;
+  --font-body: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-utility: var(--font-martian), ui-monospace, "SFMono-Regular", monospace;
+
+  /* ─── Press palette · literal inks. These NEVER flip. ───────────────── */
+  --color-ink: #0c0c0e;
+  --color-ink-2: #17171a;
+  --color-stock: #ededE8;
+  --color-stock-2: #dcdcd5;
+  --color-cyan: #009fe3;
+  --color-magenta: #e6007e;
+  --color-yellow: #ffed00;
+
+  /* Tints & shades of the same four inks. Legibility only — a process ink
+     laid down at less than 100% is still that ink. Contrast noted per token. */
+  --color-ink-3: #232328;         /* hairline on ink                        */
+  --color-ink-4: #08080a;         /* sunken well on ink                     */
+  --color-stock-0: #f5f5f1;       /* second sheet laid on top — raised card */
+  --color-cyan-deep: #0071a3;     /* cyan as text on stock      4.59:1 AA   */
+  --color-magenta-deep: #b80065;  /* magenta as text on stock   5.53:1 AA   */
+  --color-magenta-lift: #ff3d9e;  /* magenta as text on ink     5.98:1 AA   */
+  --color-knockout: #ffffff;      /* unprinted paper inside a solid ink fill */
+
+  /* ─── Semantic tokens · DEFAULT = STOCK. ────────────────────────────────
+     Re-declared wholesale by both [data-surface] blocks below, so nesting
+     works in either direction. Values here are literal, not var() aliases:
+     a var() indirection declared at :root is substituted at :root and would
+     not follow the flip. */
+  --color-surface: #ededE8;
+  --color-surface-raised: #f5f5f1;
+  --color-surface-sunken: #dcdcd5;
+
+  --color-fg: #0c0c0e;            /* 16.2:1 on stock  */
+  --color-fg-muted: #4a4a50;      /*  7.5:1 on stock  */
+  --color-fg-faint: #63636a;      /*  5.1:1 on stock  */
+
+  --color-rule: #dcdcd5;          /* decorative hairline        */
+  --color-rule-strong: #7a7a72;   /* interactive border  3.7:1  */
+
+  --color-accent: #e6007e;          /* magenta carries the brand — as a FILL */
+  --color-accent-fg: #ffffff;       /* knockout on magenta      4.50:1 AA   */
+  --color-accent-hover: #b80065;    /* on paper the ink gets denser         */
+  --color-accent-hover-fg: #ffffff; /* knockout on magenta-deep 6.53:1 AA   */
+  --color-accent-text: #b80065;     /* magenta as TEXT          5.53:1 AA   */
+
+  --color-link: #0071a3;          /* cyan supports  4.59:1 */
+  --color-link-hover: #0c0c0e;
+
+  --color-mark: #e6007e;          /* functional tick / underline           */
+  --color-focus: #e6007e;         /* focus ring          3.83:1 vs stock   */
+
+  --color-select-bg: #e6007e;
+  --color-select-fg: #ffffff;
+
+  /* Registration plates. C/M/Y are literal process inks on both beds;
+     K is whatever "printed" means on this surface, so it flips. */
+  --color-plate-c: #009fe3;
+  --color-plate-m: #e6007e;
+  --color-plate-y: #ffed00;
+  --color-plate-k: #0c0c0e;
+
+  /* ─── Type scale · 12 / 14 / 16 / 18 / 21 / 28 / 40 / 60 / 88 / 128 ──── */
+  --text-2xs: 0.75rem;
+  --text-2xs--line-height: 1.35;
+  --text-2xs--letter-spacing: 0em;
+
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.45;
+  --text-xs--letter-spacing: 0em;
+
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.55;
+  --text-sm--letter-spacing: -0.005em;
+
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.6;
+  --text-base--letter-spacing: -0.01em;
+
+  --text-md: clamp(1.125rem, 1.05rem + 0.32vw, 1.3125rem);
+  --text-md--line-height: 1.45;
+  --text-md--letter-spacing: -0.012em;
+
+  --text-lg: clamp(1.5rem, 1.32rem + 0.75vw, 1.75rem);
+  --text-lg--line-height: 1.25;
+  --text-lg--letter-spacing: -0.018em;
+
+  --text-xl: clamp(2rem, 1.6rem + 1.7vw, 2.5rem);
+  --text-xl--line-height: 1.1;
+  --text-xl--letter-spacing: -0.024em;
+
+  --text-2xl: clamp(2.5rem, 1.7rem + 3.4vw, 3.75rem);
+  --text-2xl--line-height: 1.02;
+  --text-2xl--letter-spacing: -0.03em;
+
+  --text-3xl: clamp(3rem, 1.4rem + 6.8vw, 5.5rem);
+  --text-3xl--line-height: 0.96;
+  --text-3xl--letter-spacing: -0.035em;
+
+  --text-4xl: clamp(3.5rem, 0.9rem + 11vw, 8rem);
+  --text-4xl--line-height: 0.9;
+  --text-4xl--letter-spacing: -0.042em;
+
+  /* ─── Tracking · the utility voice is defined by its letter-spacing ──── */
+  --tracking-utility: 0.16em;
+  --tracking-utility-tight: 0.1em;
+  --tracking-utility-wide: 0.24em;
+
+  /* ─── Grid ──────────────────────────────────────────────────────────── */
+  --container-page: 90rem;        /* 1440 */
+  --spacing-gutter: 1.5rem;       /* 24 mobile → 40 desktop, see :root below */
+  --breakpoint-rail: 75rem;       /* 1200 — the `rail:` variant             */
+
+  /* ─── Radius · zero everywhere. This is a print shop. ───────────────── */
+  --radius-btn: 2px;
+
+  /* ─── Motion ────────────────────────────────────────────────────────── */
+  --ease-press: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-plate: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-tick: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --animate-ticket-in: ticket-in 300ms var(--ease-press) both;
+}
+
+/* The rail readout stamps in when the reading line crosses a new sheet. */
+@keyframes ticket-in {
+  from {
+    opacity: 0;
+    translate: 0 -0.5rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NON-THEME VARIABLES
+   Durations, rail width and crop-mark geometry. Unlayered so they beat the
+   `theme` layer and can be overridden inside a media query.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --dur-tick: 120ms;
+  --dur-snap: 320ms;
+  --dur-run: 720ms;
+  --dur-register: 1100ms;
+
+  --rail-w: 0px;
+  --crop-inset: 1rem;
+  --crop-gap: 0.375rem;
+  --crop-len: 0.625rem;
+  --hairline: 1px;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --spacing-gutter: 2.5rem; /* 40 */
+    --crop-inset: 1.5rem;
+    --crop-len: 0.875rem;
+  }
+}
+
+@media (min-width: 75rem) {
+  :root {
+    --rail-w: 3.5rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE FLIP
+   Sheets running through a press: INK bed, STOCK sheet, INK bed, STOCK sheet.
+   Both blocks declare the complete semantic set so surfaces can nest.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-surface="ink"] {
+  color-scheme: dark;
+
+  --color-surface: var(--color-ink);
+  --color-surface-raised: var(--color-ink-2);
+  --color-surface-sunken: var(--color-ink-4);
+
+  --color-fg: var(--color-stock);          /* 16.2:1 */
+  --color-fg-muted: #a0a0a8;               /*  7.5:1 */
+  --color-fg-faint: #7c7c86;               /*  4.7:1 */
+
+  --color-rule: var(--color-ink-3);
+  --color-rule-strong: #606069;            /*  3.2:1 */
+
+  --color-accent: var(--color-magenta);
+  --color-accent-fg: var(--color-knockout);
+  /* On the press bed the plate lights up on hover, so the type has to knock
+     out to the bed. White on magenta-lift is only 3.27:1 — ink is 5.98:1. */
+  --color-accent-hover: var(--color-magenta-lift);
+  --color-accent-hover-fg: var(--color-ink);
+  --color-accent-text: var(--color-magenta-lift);   /* 5.98:1 */
+
+  --color-link: var(--color-cyan);                  /* 6.6:1 */
+  --color-link-hover: var(--color-stock);
+
+  /* Yellow only earns its keep on ink: 16.2:1 here, 1.03:1 on paper. */
+  --color-mark: var(--color-yellow);
+  --color-focus: var(--color-yellow);
+
+  --color-select-bg: var(--color-yellow);
+  --color-select-fg: var(--color-ink);
+
+  --color-plate-k: var(--color-stock);
+
+  /* Plates on a black bed are light adding to light. */
+  --reg-blend: screen;
+}
+
+[data-surface="stock"] {
+  color-scheme: light;
+
+  --color-surface: var(--color-stock);
+  --color-surface-raised: var(--color-stock-0);
+  --color-surface-sunken: var(--color-stock-2);
+
+  --color-fg: var(--color-ink);
+  --color-fg-muted: #4a4a50;
+  --color-fg-faint: #63636a;
+
+  --color-rule: var(--color-stock-2);
+  --color-rule-strong: #7a7a72;
+
+  --color-accent: var(--color-magenta);
+  --color-accent-fg: var(--color-knockout);
+  --color-accent-hover: var(--color-magenta-deep);
+  --color-accent-hover-fg: var(--color-knockout);   /* 6.53:1 */
+  --color-accent-text: var(--color-magenta-deep);
+
+  --color-link: var(--color-cyan-deep);
+  --color-link-hover: var(--color-ink);
+
+  /* Yellow is invisible on paper (1.03:1), so the functional mark role
+     hands off to magenta here. Yellow survives only in the decorative
+     registration/crop layer, where a faint Y plate is authentic. */
+  --color-mark: var(--color-magenta);
+  --color-focus: var(--color-magenta);
+
+  --color-select-bg: var(--color-magenta);
+  --color-select-fg: var(--color-knockout);
+
+  --color-plate-k: var(--color-ink);
+
+  /* Plates on white paper are ink absorbing light. */
+  --reg-blend: multiply;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background-color: var(--color-surface);
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-fg);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    letter-spacing: var(--text-base--letter-spacing);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+
+    /* The job-ticket rail is fixed at the viewport's left edge. Paying for it
+       here means every full-bleed section starts after it, so crop marks
+       align to the sheet and not to the rail. Collapses to 0 below 1200px. */
+    padding-left: var(--rail-w);
+  }
+
+  /* Optical sizing is the reason Bricolage is here — let it work. */
+  :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-select-bg);
+    color: var(--color-select-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Radius is zero everywhere. Buttons opt back in at 2px, nothing else does. */
+  :where(input, select, textarea, fieldset, img, video, canvas, table) {
+    border-radius: 0;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REGISTRATION
+   Four plates of the same word, off-register at rest, pulled into register
+   on scroll. Transform + opacity only — nothing here can trigger layout.
+
+   States, set on the root element via data-reg:
+     (absent)   registered. Solid text, plates hidden. THIS IS THE SSR OUTPUT,
+                so the page is correct with no JS and no motion.
+     "armed"    off-register, CSS-transitioned. Toggle it and it animates.
+     "scrub"    off-register, transitions OFF — GSAP owns the transforms.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-registration] {
+  --reg-offset: 0.4em;
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+
+[data-registration-solid] {
+  position: relative;
+  z-index: 1;
+  display: block;
+  opacity: 1;
+  transition: opacity var(--dur-register) var(--ease-plate);
+}
+
+[data-registration-plate] {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  mix-blend-mode: var(--reg-blend, normal);
+  pointer-events: none;
+  will-change: transform, opacity;
+  transition:
+    opacity var(--dur-register) var(--ease-plate),
+    transform var(--dur-register) var(--ease-plate);
+}
+
+[data-registration][data-reg="armed"] [data-registration-solid],
+[data-registration][data-reg="scrub"] [data-registration-solid] {
+  opacity: 0;
+}
+
+[data-registration][data-reg="armed"] [data-registration-plate],
+[data-registration][data-reg="scrub"] [data-registration-plate] {
+  opacity: 1;
+}
+
+[data-registration][data-reg="scrub"] [data-registration-solid],
+[data-registration][data-reg="scrub"] [data-registration-plate] {
+  transition: none;
+}
+
+/* Plate offsets follow the real screen-angle order: C top-left, M top-right,
+   Y low-right, K low-left. Multiples of --reg-offset so one number tunes it. */
+[data-registration][data-reg="armed"] [data-registration-plate="c"] {
+  transform: translate3d(calc(var(--reg-offset) * -1), calc(var(--reg-offset) * -0.55), 0);
+}
+[data-registration][data-reg="armed"] [data-registration-plate="m"] {
+  transform: translate3d(var(--reg-offset), calc(var(--reg-offset) * -0.3), 0);
+}
+[data-registration][data-reg="armed"] [data-registration-plate="y"] {
+  transform: translate3d(calc(var(--reg-offset) * 0.35), var(--reg-offset), 0);
+}
+[data-registration][data-reg="armed"] [data-registration-plate="k"] {
+  transform: translate3d(calc(var(--reg-offset) * -0.2), calc(var(--reg-offset) * 0.45), 0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   Not a degraded mode. The registered, resolved state IS the design; the
+   animation only ever delays arrival at it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Force full registration regardless of what any script has set. */
+  [data-registration] [data-registration-solid] {
+    opacity: 1 !important;
+  }
+  [data-registration] [data-registration-plate] {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+}
