@@ -12,7 +12,7 @@ export { JobTicketRail } from "./job-ticket-rail";
 export { CropMarks, RegistrationTarget } from "./press-marks";
 
 export { RegistrationText } from "./registration-text";
-export type { RegistrationTextProps } from "./registration-text";
+export type { RegistrationState, RegistrationTextProps } from "./registration-text";
 
 export { SectionFrame } from "./section-frame";
 export type { SectionFrameProps, SectionPadding, SectionTicket, Surface } from "./section-frame";

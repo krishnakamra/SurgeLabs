@@ -1,7 +1,14 @@
-import type { ElementType } from "react";
+import type { CSSProperties, ElementType, Ref } from "react";
 import { cn } from "@/lib/cn";
 
 const PLATES = ["c", "m", "y", "k"] as const;
+
+/**
+ * registered  Solid text, plates hidden. The default, and the SSR output.
+ * armed       Off-register, CSS-transitioned. Toggle it and it animates.
+ * scrub       Off-register, transitions off — GSAP owns --reg-p.
+ */
+export type RegistrationState = "registered" | "armed" | "scrub";
 
 export type RegistrationTextProps = {
   /** Plain text only — it gets rendered five times, once per plate plus the solid. */
@@ -9,13 +16,9 @@ export type RegistrationTextProps = {
   as?: ElementType;
   /** Spread of the plates at rest. Any CSS length; em keeps it tied to type size. */
   offset?: string;
-  /**
-   * Render off-register on the server. Leave false for real pages: the SSR
-   * output is then the registered, resolved state, which is what a reader
-   * with no JS or reduced motion should get.
-   */
-  armed?: boolean;
+  state?: RegistrationState;
   className?: string;
+  ref?: Ref<HTMLElement>;
 };
 
 /**
@@ -26,27 +29,29 @@ export type RegistrationTextProps = {
  * blend multiply on paper and screen on the press bed (see --reg-blend), so
  * the misregistration reads as real ink either way.
  *
- * The state machine is CSS, driven by data-reg on the root (see globals.css):
+ * Position is one inherited custom property, --reg-p: 1 is fully off
+ * register, 0 is registered. The stylesheet expands it into four plate
+ * offsets and two opacities; see app/globals.css. Both non-default states
+ * are gated on html[data-motion="ready"], so with no JS or under reduced
+ * motion this renders as solid, legible type no matter what state is passed.
  *
- *   (absent)  registered — solid text, plates hidden. Default and SSR output.
- *   "armed"   off-register, CSS-transitioned. Toggle to animate.
- *   "scrub"   off-register, transitions off — GSAP owns the plate transforms.
- *
- * Wiring in Prompt 3 targets [data-registration-plate] and sets one of those.
- * Only transform and opacity ever change; nothing here can trigger layout.
+ * For scroll-driven use, reach for <RegistrationReveal> instead — it wires
+ * the scrub and leaves the fallbacks intact.
  */
 export function RegistrationText({
   children,
   as: Tag = "span",
   offset = "0.4em",
-  armed = false,
+  state = "registered",
   className,
+  ref,
 }: RegistrationTextProps) {
   return (
     <Tag
+      ref={ref}
       data-registration=""
-      data-reg={armed ? "armed" : undefined}
-      style={{ "--reg-offset": offset } as React.CSSProperties}
+      data-reg={state === "registered" ? undefined : state}
+      style={{ "--reg-offset": offset } as CSSProperties}
       className={cn("relative block", className)}
     >
       <span data-registration-solid="">{children}</span>

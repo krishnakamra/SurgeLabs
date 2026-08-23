@@ -140,6 +140,11 @@ export default function StyleguidePage() {
           on the press bed and on paper, and there is no <code className={SPEC}>dark:</code> variant
           anywhere in the system.
         </p>
+        <div className="mt-10">
+          <Button href="/styleguide/motion" variant="outline" size="lg">
+            Motion primitives
+          </Button>
+        </div>
       </SectionFrame>
 
       {/* 01 — palette */}

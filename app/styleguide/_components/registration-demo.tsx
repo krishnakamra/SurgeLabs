@@ -14,7 +14,7 @@ export function RegistrationDemo({ text }: { text: string }) {
     <div>
       <RegistrationText
         as="h3"
-        armed={armed}
+        state={armed ? "armed" : "registered"}
         offset="0.14em"
         className="font-display text-3xl font-extrabold uppercase"
       >

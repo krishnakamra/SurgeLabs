@@ -290,7 +290,6 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
     background-color: var(--color-surface);
   }
 
@@ -349,64 +348,137 @@
                 so the page is correct with no JS and no motion.
      "armed"    off-register, CSS-transitioned. Toggle it and it animates.
      "scrub"    off-register, transitions OFF — GSAP owns the transforms.
+
+   Both off-register states are gated on html[data-motion="ready"], which the
+   boot script in app/layout.tsx sets synchronously in <head> — before first
+   paint, and only when motion is allowed. That ordering is what lets a hero
+   ship data-reg="scrub" in its SSR HTML without JS ever changing something
+   the user has already seen: either the attribute is on the root before the
+   first frame, or the off-register styles never apply at all. With JS off, or
+   under reduced motion, the gate never opens and the solid text stands.
    ═══════════════════════════════════════════════════════════════════════════ */
+/* One number drives the whole element: --reg-p, 0 = in register, 1 = fully
+   off. Plate offsets, plate opacity and solid opacity are all expressed as
+   functions of it, so the misregistration geometry is defined exactly once —
+   here — and GSAP scrubs a single property instead of four transforms it
+   would otherwise have to keep in sync with this file. */
+@property --reg-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 [data-registration] {
   --reg-offset: 0.4em;
+  --reg-p: 0;
   position: relative;
   display: block;
   isolation: isolate;
 }
 
+/* The plates hold until the last third, then hand over to solid ink. */
 [data-registration-solid] {
   position: relative;
   z-index: 1;
   display: block;
-  opacity: 1;
-  transition: opacity var(--dur-register) var(--ease-plate);
+  opacity: calc(1 - var(--reg-p) * 3);
 }
 
 [data-registration-plate] {
   position: absolute;
   inset: 0;
   display: block;
-  opacity: 0;
-  transform: translate3d(0, 0, 0);
+  opacity: calc(var(--reg-p) * 3);
   mix-blend-mode: var(--reg-blend, normal);
   pointer-events: none;
   will-change: transform, opacity;
-  transition:
-    opacity var(--dur-register) var(--ease-plate),
-    transform var(--dur-register) var(--ease-plate);
 }
 
-[data-registration][data-reg="armed"] [data-registration-solid],
-[data-registration][data-reg="scrub"] [data-registration-solid] {
-  opacity: 0;
+/* Offsets follow the real screen-angle order: C top-left, M top-right,
+   Y low-right, K low-left. */
+[data-registration-plate="c"] {
+  transform: translate3d(
+    calc(var(--reg-offset) * -1 * var(--reg-p)),
+    calc(var(--reg-offset) * -0.55 * var(--reg-p)),
+    0
+  );
+}
+[data-registration-plate="m"] {
+  transform: translate3d(
+    calc(var(--reg-offset) * 1 * var(--reg-p)),
+    calc(var(--reg-offset) * -0.3 * var(--reg-p)),
+    0
+  );
+}
+[data-registration-plate="y"] {
+  transform: translate3d(
+    calc(var(--reg-offset) * 0.35 * var(--reg-p)),
+    calc(var(--reg-offset) * 1 * var(--reg-p)),
+    0
+  );
+}
+[data-registration-plate="k"] {
+  transform: translate3d(
+    calc(var(--reg-offset) * -0.2 * var(--reg-p)),
+    calc(var(--reg-offset) * 0.45 * var(--reg-p)),
+    0
+  );
 }
 
-[data-registration][data-reg="armed"] [data-registration-plate],
-[data-registration][data-reg="scrub"] [data-registration-plate] {
-  opacity: 1;
+/* Both off-register states are gated on the boot script's flag. */
+:where(html[data-motion="ready"]) [data-registration]:is([data-reg="armed"], [data-reg="scrub"]) {
+  --reg-p: 1;
 }
 
-[data-registration][data-reg="scrub"] [data-registration-solid],
-[data-registration][data-reg="scrub"] [data-registration-plate] {
-  transition: none;
+/* armed animates in CSS; scrub hands --reg-p to GSAP and must not interpolate. */
+:where(html[data-motion="ready"]) [data-registration][data-reg="armed"] {
+  transition: --reg-p var(--dur-register) var(--ease-plate);
 }
 
-/* Plate offsets follow the real screen-angle order: C top-left, M top-right,
-   Y low-right, K low-left. Multiples of --reg-offset so one number tunes it. */
-[data-registration][data-reg="armed"] [data-registration-plate="c"] {
-  transform: translate3d(calc(var(--reg-offset) * -1), calc(var(--reg-offset) * -0.55), 0);
+/* ═══════════════════════════════════════════════════════════════════════════
+   LENIS
+   The rules the package ships in lenis.css, inlined so the app keeps one
+   stylesheet — plus the reset that matters most: native smooth scrolling and
+   Lenis both animating the same scroll position fight each other, visibly, on
+   every anchor jump. Lenis wins while it is mounted; without it (no JS,
+   reduced motion) the native behaviour above stands.
+   ═══════════════════════════════════════════════════════════════════════════ */
+html.lenis,
+html.lenis body {
+  height: auto;
 }
-[data-registration][data-reg="armed"] [data-registration-plate="m"] {
-  transform: translate3d(var(--reg-offset), calc(var(--reg-offset) * -0.3), 0);
+
+/* Belt and braces. Native smooth scrolling is deliberately never declared
+   anywhere in this stylesheet: Lenis *is* the smooth scroll while it is
+   mounted, and the two animating the same scroll position fight visibly on
+   every anchor jump. Worse, the scroll-restoration code that runs on
+   navigation reads the computed value and writes it back as an INLINE style
+   on <html>, which no rule here could then override. Keeping the declared
+   value `auto` is what stops that from ever happening. */
+html.lenis {
+  scroll-behavior: auto;
 }
-[data-registration][data-reg="armed"] [data-registration-plate="y"] {
-  transform: translate3d(calc(var(--reg-offset) * 0.35), var(--reg-offset), 0);
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
 }
-[data-registration][data-reg="armed"] [data-registration-plate="k"] {
-  transform: translate3d(calc(var(--reg-offset) * -0.2), calc(var(--reg-offset) * 0.45), 0);
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -428,12 +500,12 @@
     scroll-behavior: auto !important;
   }
 
-  /* Force full registration regardless of what any script has set. */
-  [data-registration] [data-registration-solid] {
-    opacity: 1 !important;
-  }
-  [data-registration] [data-registration-plate] {
-    opacity: 0 !important;
-    transform: none !important;
+  /* Force full registration regardless of what any script has set. One
+     variable pins the plate offsets, the plate opacity and the solid opacity
+     together, so there is no way for a stray inline style to leave the
+     headline half-resolved. */
+  [data-registration] {
+    --reg-p: 0 !important;
+    transition: none !important;
   }
 }

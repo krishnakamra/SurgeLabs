@@ -1,10 +1,8 @@
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
+import { SCREEN_ANGLE, dotGrid, turbulenceMask, type Plate } from "@/lib/halftone";
 
-export type Plate = "c" | "m" | "y" | "k";
-
-/** Real screen angles. Offsetting the plates like this is what stops moiré. */
-const SCREEN_ANGLE: Record<Plate, number> = { y: 0, c: 15, k: 45, m: 75 };
+export type { Plate };
 
 export type HalftoneFade = "none" | "top" | "bottom" | "y" | "radial";
 
@@ -15,26 +13,6 @@ const FADE: Record<HalftoneFade, string | undefined> = {
   y: "linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%)",
   radial: "radial-gradient(ellipse at center, #000 30%, transparent 76%)",
 };
-
-/**
- * feTurbulence, inlined as a data URI so it carries its own filter id and can
- * never collide with another instance's <defs> in the document.
- * luminanceToAlpha turns the noise into a soft alpha mask — dot gain, the
- * uneven density you get when ink meets an imperfect sheet.
- */
-function turbulenceMask(baseFrequency: number, seed: number, octaves: number, contrast: number) {
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">` +
-    `<filter id="n" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
-    `<feTurbulence type="fractalNoise" baseFrequency="${baseFrequency}" numOctaves="${octaves}" seed="${seed}" stitchTiles="stitch"/>` +
-    `<feColorMatrix type="luminanceToAlpha"/>` +
-    `<feComponentTransfer><feFuncA type="gamma" exponent="${contrast}" amplitude="1.35" offset="0"/></feComponentTransfer>` +
-    `</filter>` +
-    `<rect width="300" height="300" filter="url(#n)"/>` +
-    `</svg>`;
-
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
-}
 
 export type HalftoneFieldProps = {
   /** Sets the screen angle and, unless `color` says otherwise, the ink. */
@@ -86,7 +64,7 @@ export function HalftoneField({
   className,
 }: HalftoneFieldProps) {
   const ink = color ?? `var(--color-plate-${plate})`;
-  const mask = turbulenceMask(baseFrequency, seed, octaves, contrast);
+  const mask = turbulenceMask({ baseFrequency, seed, octaves, contrast });
   const fadeMask = FADE[fade];
 
   const wrapperStyle: CSSProperties = {
@@ -103,12 +81,18 @@ export function HalftoneField({
       : null),
   };
 
-  // Oversized so the rotation never exposes a corner, then clipped by the wrapper.
   const screenStyle: CSSProperties = {
     position: "absolute",
-    inset: "-50%",
-    transform: `rotate(${SCREEN_ANGLE[plate]}deg)`,
-    backgroundImage: `radial-gradient(circle at center, ${ink} 0 ${dot}px, transparent ${dot + 0.5}px)`,
+    top: "50%",
+    left: "50%",
+    // A rotated layer has to cover the container's rotated bounding box. The
+    // old `inset: -50%` only covers a square-ish box: at 75° a wide, short
+    // band shows cut corners. A square of side 2× the larger container
+    // dimension always covers it, at any angle and any aspect ratio.
+    width: "max(200cqw, 200cqh)",
+    height: "max(200cqw, 200cqh)",
+    transform: `translate(-50%, -50%) rotate(${SCREEN_ANGLE[plate]}deg)`,
+    backgroundImage: dotGrid(ink, `${dot}px`),
     backgroundSize: `${pitch}px ${pitch}px`,
     backgroundRepeat: "repeat",
     maskImage: mask,
@@ -122,7 +106,10 @@ export function HalftoneField({
   return (
     <div
       aria-hidden="true"
-      className={cn("pointer-events-none absolute inset-0 z-0 overflow-hidden", className)}
+      className={cn(
+        "pointer-events-none absolute inset-0 z-0 overflow-hidden [container-type:size]",
+        className,
+      )}
       style={wrapperStyle}
     >
       <div style={screenStyle} />

@@ -75,6 +75,69 @@ full-bleed sections start after it.
 Section ids must not start with a digit — `id="sec-03"`, not `id="03"` —
 or `querySelector('#03')` throws.
 
+## Motion
+
+GSAP ScrollTrigger + Lenis. Open **`/styleguide/motion`** for live primitives.
+
+`MotionProvider` (mounted once in the root layout) owns the scroll loop: Lenis
+is driven by GSAP's ticker with `lagSmoothing(0)`, so smooth scroll and every
+ScrollTrigger read the same clock. Two rAF loops fighting each other is what
+makes scrubbed animation jitter. It also refreshes ScrollTrigger on font load
+and on debounced resize, and sleeps the ticker, disables every trigger and
+pauses video when the tab is hidden.
+
+### The one place motion preference is checked
+
+`useMotion` — nothing else in the codebase calls `matchMedia` for it.
+Primitives supply `animate` and, only when the finished state isn't already
+what the server rendered, `settle`; the hook picks which runs. You cannot
+write a primitive that forgets to check, because checking isn't yours to do.
+Everything lands in a `gsap.context()`, so a route change, a dependency
+change, or the user flipping the OS setting mid-session reverts it cleanly.
+
+```tsx
+useMotion({
+  scope: ref,
+  animate({ gsap, ScrollTrigger, scope, cleanup }) { /* … */ },
+  settle({ gsap, scope }) { /* instant final state */ },
+});
+```
+
+### Primitives
+
+| Component             | What moves                                                  |
+| --------------------- | ----------------------------------------------------------- |
+| `RegistrationReveal`  | `--reg-p` 1→0 on scrub — CMYK plates converging into register |
+| `PlateWipe`           | `--plate-dot` 0→max→0 across a section boundary              |
+| `StockFlip`           | `clip-path` sheet entering from the bottom, 1px magenta edge  |
+| `CounterRoll`         | Digit wheels, `yPercent` per wheel                           |
+| `MagneticCTA`         | `quickTo` x/y, fine pointer only                             |
+| `MarqueeSpec`         | `xPercent` -50 on a doubled track, eases to 0 on hover        |
+
+### Rules these enforce
+
+1. **Nothing above the fold is hidden by JS on first paint.** A synchronous
+   script in `<body>` sets `html[data-motion="ready"]` before the first frame,
+   and every pre-reveal style is gated on it. So a hero can ship
+   `data-reg="scrub"` in its SSR HTML and be off-register from the very first
+   painted frame — or, with no JS or reduced motion, the gate never opens and
+   the solid headline the server sent simply stands. The real words are in the
+   markup either way. `StockFlip` and `CounterRoll` additionally measure their
+   own position and refuse to arm if they're already on screen.
+2. **No animation causes CLS.** Only `transform`, `opacity`, `clip-path` and
+   custom properties inside gradients are animated. `CounterRoll` reserves
+   `Nch` in the monospace face and zero-pads to the final width, so the box is
+   identical for every intermediate value. Measured 0 in both modes.
+3. **Never declare `scroll-behavior: smooth`.** Lenis *is* the smooth scroll
+   while mounted, and the two animating the same scroll position fight on
+   every anchor jump — worse, scroll-restoration code reads the computed value
+   and writes it back as an *inline* style on `<html>`, which no rule can then
+   override.
+4. **Rotated screen layers size by container-query units**, not `inset: -50%`.
+   A square of side `max(200cqw, 200cqh)` covers the container's rotated
+   bounding box at any angle and aspect ratio; a fixed inset shows cut corners
+   on a wide, short band at 75°.
+
 ## Scripts
 
 ```
