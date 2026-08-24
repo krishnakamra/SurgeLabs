@@ -503,6 +503,55 @@ html.lenis {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   PRINT
+   The quote spec sheet is meant to be printed and put in a folder, so the
+   press-bed palette has to become ink on paper: the ink surface costs a
+   cartridge and reads badly photocopied. Chrome hides the fixed rail and the
+   decorative screens, and forces every surface to stock.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  html,
+  body {
+    padding-left: 0;
+    background: #fff;
+  }
+
+  /* Every surface prints as paper, whichever bed it declared. */
+  [data-surface="ink"],
+  [data-surface="stock"] {
+    --color-surface: #fff;
+    --color-surface-raised: #fff;
+    --color-surface-sunken: #fff;
+    --color-fg: #000;
+    --color-fg-muted: #1a1a1a;
+    --color-fg-faint: #4a4a4a;
+    --color-rule: #bbb;
+    --color-rule-strong: #666;
+    --color-accent-text: #000;
+    --color-mark: #000;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Chrome that means nothing on paper. */
+  aside[aria-label="Job ticket"],
+  [data-hp-track],
+  nav[aria-label="Sections"] {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: "";
+  }
+
+  /* Never split a spec row across two sheets. */
+  dl > div,
+  li {
+    break-inside: avoid;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    REDUCED MOTION
    Not a degraded mode. The registered, resolved state IS the design; the
    animation only ever delays arrival at it.

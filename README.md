@@ -301,6 +301,67 @@ graphic. A real photo of real work in that city does a job no generated
 graphic can, and a reused stock image across a local cluster is one of the
 signals that gets it read as templated. Replace them as photos exist.
 
+## /quote — the conversion path
+
+Four steps, controlled state, no `<form>` submit. The job ticket beside the
+questions fills in live and is rendered from the *same* `ticketRows` used by
+the confirmation emails and the success page — so what someone watches being
+built is literally the sheet that reaches the shop floor, not a summary that
+can drift from it.
+
+### Storage runs before email, deliberately
+
+Email is the thing most likely to fail, and a lead that exists in a table can
+be recovered from it; one that only ever existed in a failed API call cannot.
+So `app/quote/actions.ts` writes first, sends second, and reports the two
+outcomes separately:
+
+| stored | emailed | what the visitor gets |
+| ------ | ------- | --------------------- |
+| ✓ | ✓ | Success, printable spec sheet, reference |
+| ✓ | ✗ | Success **plus a notice** that the confirmation didn't send, and the phone number |
+| ✗ | ✓ | Success — the shop has it |
+| ✗ | ✗ | **Failure.** Phone number and email, form state preserved. Never a fake "thanks!" |
+
+That last row is the point. Telling somebody their request is in when it is
+not costs a customer.
+
+### Setup
+
+```bash
+cp .env.example .env.local
+psql "$QUOTE_DATABASE_URL" -f db/schema.sql
+```
+
+Set **one** of `QUOTE_DATABASE_URL` / `POSTGRES_URL` / `DATABASE_URL`
+(Postgres — Vercel, Supabase, Neon), or `QUOTE_LOG_FILE` for local work.
+With neither set the action fails loudly rather than dropping leads.
+`RESEND_API_KEY` enables both emails; the sending domain must be verified in
+Resend first. Artwork rides along as an attachment on the internal email —
+no blob storage to configure.
+
+### Spam
+
+Honeypot first, then a minimum fill time of 4s, then a 5-per-10-minutes rate
+limit by IP. A tripped honeypot returns a plausible success and silently
+discards everything — verified: stored rows did not move.
+
+⚠️ The rate limit is in module memory, so it is **per serverless instance**.
+It is a speed bump for a stuck submit button or one bot. If real spam
+appears, move it to Upstash or Vercel KV so the counter is shared, and only
+then consider a captcha.
+
+### Verified end to end
+
+Drove the real form in a browser: `?service=` preselects the branch, the
+ticket builds as you answer, the submit gate holds until name and a valid
+email exist, the submission **persisted with its full spec**, the redirect
+carried the reference, and the success page showed the honest
+email-failed notice (no `RESEND_API_KEY` in that environment). Both-channels-
+down stays on `/quote` with the phone number. CLS 0 and no overflow on
+desktop and mobile. `/quote/sent` is `noindex, nofollow, nocache`; `/quote`
+is in the sitemap.
+
 ## Scripts
 
 ```

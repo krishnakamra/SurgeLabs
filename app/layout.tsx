@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "@/components/motion";
 import { JobTicketRail } from "@/components/ui";
+import { site } from "@/content";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  // Without this, relative OG and canonical URLs resolve against
+  // localhost:3000 in the built output.
+  metadataBase: new URL(site.url),
   title: "Surge Labs",
   description:
     "Full-service agency in Mississauga, Ontario. Web and digital, print and signage, custom apparel — all in-house.",
