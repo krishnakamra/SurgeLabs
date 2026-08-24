@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MagneticCTA } from "@/components/motion";
 import { Button, Eyebrow, HalftoneField, RegistrationTarget, SectionFrame } from "@/components/ui";
-import { cities, services, site } from "@/content";
+import { getCity, liveCities, services, site } from "@/content";
 
 const LINK =
   "text-sm text-fg-muted underline decoration-1 underline-offset-4 decoration-transparent transition-colors hover:text-fg hover:decoration-mark";
@@ -126,17 +126,32 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          {/* Cities */}
+          {/* Cities. Only those with live pages are linked — the rest of the
+              delivery area is listed on /service-areas, which says plainly
+              that we deliver there and have not written a page yet. */}
           <nav aria-label="Service area" className="lg:col-span-5">
             <h2 className={HEADING}>Serving {site.serviceArea}</h2>
             <ul className="mt-6 grid gap-x-gutter gap-y-3 sm:grid-cols-2">
-              {cities.map((city) => (
-                <li key={city.slug}>
-                  <Link href={`/${city.slug}`} className={LINK} title={`${city.name}, ${city.region}`}>
-                    {city.name}
-                  </Link>
-                </li>
-              ))}
+              {liveCities().map((slug) => {
+                const city = getCity(slug);
+                if (!city) return null;
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={`/service-areas#${slug}`}
+                      className={LINK}
+                      title={`${city.name}, ${city.region}`}
+                    >
+                      {city.name}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li>
+                <Link href="/service-areas" className={LINK}>
+                  All service areas
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

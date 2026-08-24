@@ -27,4 +27,18 @@ export {
 export { stats, type Stat } from "./stats";
 export { testimonials, type Testimonial } from "./testimonials";
 export { industries, type Industry } from "./industries";
-export { cities, type City } from "./cities";
+export { cities, getCity, type City } from "./cities";
+
+export {
+  localServices,
+  localPages,
+  livePages,
+  getLocalService,
+  getLocalPage,
+  siblingServicesIn,
+  sameServiceNearby,
+  liveCities,
+  validateLocalPages,
+  type LocalService,
+  type LocalPage,
+} from "./local-pages";

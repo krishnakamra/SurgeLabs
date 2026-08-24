@@ -295,13 +295,15 @@ export function ServicePage({ service }: { service: Service }) {
                 {cities.map((city) => (
                   <li key={city.slug} className="border-b border-rule">
                     <Link
-                      href={`/${city.slug}`}
-                      className="flex items-baseline justify-between gap-4 py-4 text-fg-muted transition-colors hover:text-fg"
+                      href={`/service-areas#${city.slug}`}
+                      className="block py-4 text-fg-muted transition-colors hover:text-fg sm:flex sm:items-baseline sm:justify-between sm:gap-4"
                     >
                       <span className="font-display text-base font-bold">
                         {service.name} in {city.name}
                       </span>
-                      <span className={`${SPEC} shrink-0 text-fg-faint`}>{city.region}</span>
+                      <span className={`${SPEC} mt-1 block text-fg-faint sm:mt-0 sm:shrink-0`}>
+                        {city.region}
+                      </span>
                     </Link>
                   </li>
                 ))}

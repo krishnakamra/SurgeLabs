@@ -253,6 +253,54 @@ on the shift and it is excluded, leaving CLS 0. Worth knowing before
 "fixing" a shift that was never counted: verify with `page.click()`, not
 `element.click()`.
 
+## Local landing pages — `/[service]/[city]`
+
+10 services × 16 cities is 160 URLs. **25 exist.** The other 135 return 404,
+and that is the feature.
+
+Generating all 160 from a template is textbook doorway spam, and Google
+penalises the domain rather than the thin pages. So the system is built so
+the shortcut is not available:
+
+1. **`content/local-pages.ts` is the only thing that creates a page.** It
+   validates at module scope, so `next build` fails the moment an entry is
+   missing 250 words of its own copy, its named neighbourhoods, a delivery
+   line, three FAQs or an image.
+2. **The strongest check is that a named neighbourhood must appear in the
+   prose.** Listing "Meadowvale" without writing about Meadowvale fails. That
+   is what stops the field being filled in to satisfy a count while the copy
+   stays generic.
+3. **`npm run check:local`** (wired to `prebuild`) adds two checks the module
+   cannot: image files exist on disk, and no two intros share more than 25% of
+   their 8-word phrasing. Current worst pair: **3%**.
+4. **`dynamicParams = false`** enforces the same rule at the routing layer —
+   a combination nobody wrote copy for 404s rather than rendering from a
+   template.
+
+Verified by injecting a plausible thin entry: the build stopped with all
+seven distinct failures named.
+
+```
+npm run check:local        # report every problem at once
+npm run gen:local-images   # regenerate the per-page plates
+```
+
+### Live coverage
+
+`mississauga` 10 · `brampton` 3 · `toronto` 3 · `vaughan` 3 · `oakville` 3 ·
+`markham` 3 — 7,168 words of city-specific copy, min 251 per page.
+
+`/service-areas` links every live page and lists the rest of the delivery
+area as plain text, saying plainly that we deliver there and have not written
+a page yet. `/sitemap.ts` carries only pages that passed the check.
+
+⚠️ **The images are designed placeholders, not photographs.** They are
+genuinely unique files — different plate, angle, pitch and composition per
+page — so the gate passes honestly rather than by pointing 25 pages at one
+graphic. A real photo of real work in that city does a job no generated
+graphic can, and a reused stock image across a local cluster is one of the
+signals that gets it read as templated. Replace them as photos exist.
+
 ## Scripts
 
 ```

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Flyer stock comparison for Mississauga, Surge Labs">
+  <defs>
+    <pattern id="screen" width="30" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(0) translate(4 4)">
+      <circle cx="15" cy="15" r="4.70" fill="#FFED00"/>
+    </pattern>
+    <radialGradient id="fade" cx="50%" cy="45%" r="62%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="vignette"><rect width="800" height="600" fill="url(#fade)"/></mask>
+  </defs>
+
+  <rect width="800" height="600" fill="#0C0C0E"/>
+  <rect width="800" height="600" fill="url(#screen)" mask="url(#vignette)" opacity="0.55"/>
+
+  <g stroke="#EDEDE8" stroke-opacity="0.5" stroke-width="1">
+    <path d="M24 44 h28 M44 24 v28"/>
+    <path d="M776 44 h-28 M756 24 v28"/>
+    <path d="M24 556 h28 M44 576 v-28"/>
+    <path d="M776 556 h-28 M756 576 v-28"/>
+  </g>
+
+  <g transform="translate(210 300)" fill="none" stroke="#FFED00" stroke-width="1.5">
+    <circle r="26"/><circle r="12"/>
+    <path d="M0 -42 V-14 M0 14 V42 M-42 0 H-14 M14 0 H42"/>
+  </g>
+
+  <g font-family="ui-monospace, monospace" fill="#EDEDE8">
+    <text x="44" y="96" font-size="13" letter-spacing="3.4" opacity="0.62">FLYER PRINTING</text>
+    <text x="44" y="128" font-size="30" letter-spacing="1.2">MISSISSAUGA</text>
+    <text x="44" y="538" font-size="12" letter-spacing="3" opacity="0.46">PLATE YELLOW · 0° · 30PT SCREEN</text>
+    <text x="756" y="96" font-size="12" letter-spacing="3" opacity="0.46" text-anchor="end">SURGE LABS</text>
+  </g>
+
+  <rect x="44" y="556" width="120" height="3" fill="#E6007E"/>
+</svg>
