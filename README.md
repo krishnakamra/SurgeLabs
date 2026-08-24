@@ -1,370 +1,164 @@
 # Surge Labs
 
-Next.js 15 · TypeScript · Tailwind v4 · GSAP + Lenis · Vercel
+The website for Surge Labs — web, print, signage and custom apparel, Mississauga and the GTA.
 
-## Press Room — the design system
-
-The visual language comes from the print shop floor: CMYK process inks, crop
-marks, registration targets, halftone screens, job tickets. Nothing here is
-"tech startup" furniture.
-
-Run `npm run dev` and open **`/styleguide`** — every token, the type scale,
-each component and a computed contrast audit.
-
-### Two surfaces, one set of classes
-
-Sections alternate between the press bed and the sheet:
-
-```tsx
-<SectionFrame surface="ink"   ticket={{ number: "03", label: "SERVICES", spec: "4C PROCESS" }}>
-<SectionFrame surface="stock" ticket={{ number: "04", label: "PACKAGES" }}>
-```
-
-`data-surface` re-declares the semantic `--color-*` tokens on that element, so
-`bg-surface`, `text-fg`, `border-rule`, `text-mark` and `--reg-blend` are all
-correct on either bed. Surfaces nest in both directions.
-
-**There is no `dark:` variant in this codebase, and there must never be one.**
-
-### Invariants
-
-Break these and the system stops holding together:
-
-1. **No second class set.** If something needs a `dark:` variant, the token is
-   missing — add it to both `[data-surface]` blocks instead.
-2. **No global section-padding rule.** Vertical rhythm is the `padding` prop on
-   `SectionFrame`, resolved to one utility class. Do not add `.section` /
-   `.cta` rules to `globals.css`; that is how cancelling specificity starts.
-3. **Tokens are declared in `@theme static`.** Without `static`, Tailwind emits
-   only the variables a generated utility references, and tokens read from
-   inline styles or JS resolve to nothing.
-4. **The palette is closed.** `--color-*: initial` clears Tailwind's stock
-   theme, so off-system colours have no utility class. Same for `--text-*`,
-   `--font-*` and `--radius-*`.
-5. **Radius is 0 everywhere except buttons (2px).**
-6. **Yellow never runs on paper.** It reads at 1.03:1 on `--stock`, so the
-   functional `--color-mark` role hands off to magenta there. Yellow survives
-   on stock only in the decorative registration layer, where a faint Y plate is
-   authentic.
-7. **Reduced motion is not a degraded mode.** The resolved state is the SSR
-   output. Animation only delays arrival at something the page already renders
-   correctly.
-
-### Registration — the signature element
-
-`RegistrationText` sets the same word five times: one solid layer that carries
-the real text, plus four `aria-hidden` plates in C, M, Y and K. State lives in
-CSS, driven by `data-reg` on the root:
-
-| `data-reg`  | Behaviour                                              |
-| ----------- | ------------------------------------------------------ |
-| *(absent)*  | Registered. Solid text, plates hidden. **SSR output.** |
-| `"armed"`   | Off-register, CSS-transitioned. Toggle to animate.     |
-| `"scrub"`   | Off-register, transitions off — GSAP owns transforms.  |
-
-Only `transform` and `opacity` ever change. Scroll wiring targets
-`[data-registration-plate]`.
-
-### Layout
-
-12-column grid, 1440 max (`max-w-page`), 24px gutter → 40px at ≥1024px
-(`px-gutter`). The job-ticket rail is fixed at the left edge from 1200px
-(`rail:` variant, `--rail-w`); `body` pays for it with `padding-left` so
-full-bleed sections start after it.
-
-Section ids must not start with a digit — `id="sec-03"`, not `id="03"` —
-or `querySelector('#03')` throws.
-
-## Motion
-
-GSAP ScrollTrigger + Lenis. Open **`/styleguide/motion`** for live primitives.
-
-`MotionProvider` (mounted once in the root layout) owns the scroll loop: Lenis
-is driven by GSAP's ticker with `lagSmoothing(0)`, so smooth scroll and every
-ScrollTrigger read the same clock. Two rAF loops fighting each other is what
-makes scrubbed animation jitter. It also refreshes ScrollTrigger on font load
-and on debounced resize, and sleeps the ticker, disables every trigger and
-pauses video when the tab is hidden.
-
-### The one place motion preference is checked
-
-`useMotion` — nothing else in the codebase calls `matchMedia` for it.
-Primitives supply `animate` and, only when the finished state isn't already
-what the server rendered, `settle`; the hook picks which runs. You cannot
-write a primitive that forgets to check, because checking isn't yours to do.
-Everything lands in a `gsap.context()`, so a route change, a dependency
-change, or the user flipping the OS setting mid-session reverts it cleanly.
-
-```tsx
-useMotion({
-  scope: ref,
-  animate({ gsap, ScrollTrigger, scope, cleanup }) { /* … */ },
-  settle({ gsap, scope }) { /* instant final state */ },
-});
-```
-
-### Primitives
-
-| Component             | What moves                                                  |
-| --------------------- | ----------------------------------------------------------- |
-| `RegistrationReveal`  | `--reg-p` 1→0 on scrub — CMYK plates converging into register |
-| `PlateWipe`           | `--plate-dot` 0→max→0 across a section boundary              |
-| `StockFlip`           | `clip-path` sheet entering from the bottom, 1px magenta edge  |
-| `CounterRoll`         | Digit wheels, `yPercent` per wheel                           |
-| `MagneticCTA`         | `quickTo` x/y, fine pointer only                             |
-| `MarqueeSpec`         | `xPercent` -50 on a doubled track, eases to 0 on hover        |
-
-### Rules these enforce
-
-1. **Nothing above the fold is hidden by JS on first paint.** A synchronous
-   script in `<body>` sets `html[data-motion="ready"]` before the first frame,
-   and every pre-reveal style is gated on it. So a hero can ship
-   `data-reg="scrub"` in its SSR HTML and be off-register from the very first
-   painted frame — or, with no JS or reduced motion, the gate never opens and
-   the solid headline the server sent simply stands. The real words are in the
-   markup either way. `StockFlip` and `CounterRoll` additionally measure their
-   own position and refuse to arm if they're already on screen.
-2. **No animation causes CLS.** Only `transform`, `opacity`, `clip-path` and
-   custom properties inside gradients are animated. `CounterRoll` reserves
-   `Nch` in the monospace face and zero-pads to the final width, so the box is
-   identical for every intermediate value. Measured 0 in both modes.
-3. **Never declare `scroll-behavior: smooth`.** Lenis *is* the smooth scroll
-   while mounted, and the two animating the same scroll position fight on
-   every anchor jump — worse, scroll-restoration code reads the computed value
-   and writes it back as an *inline* style on `<html>`, which no rule can then
-   override.
-4. **Rotated screen layers size by container-query units**, not `inset: -50%`.
-   A square of side `max(200cqw, 200cqh)` covers the container's rotated
-   bounding box at any angle and aspect ratio; a fixed inset shows cut corners
-   on a wide, short band at 75°.
-
-## Content layer
-
-Typed data in `/content`, no CMS. Pages generate statically from it.
-
-Three files carry owner instructions at the top and **must be reviewed before
-launch** — read the comment, don't just edit the values:
-
-| File | What needs doing |
-| ---- | ---------------- |
-| `site.ts` | NAP must match the Google Business Profile character for character. `streetAddress` is empty — fill it or keep it a service-area business. |
-| `packages.ts` | **Every price is a placeholder.** Nothing else hardcodes a price. |
-| `stats.ts` | Numbers are true by construction and checkable. Do not add review counts. |
-| `testimonials.ts` | Empty by design. The section does not render while it is. Real, attributed reviews only. |
-
-## Homepage
-
-Section order and the components behind each:
-
-| # | Section | Notes |
-| - | ------- | ----- |
-| 01 | Hero | `RegistrationReveal trigger="load"` — already on screen, so nothing to scrub against |
-| 02 | The split | `SplitPress` — five suppliers as five badly-registered plates, coming into register one at a time over a 90vh hold |
-| 03 | Services | Three `PinnedPanel`s, 60vh hold each |
-| 04 | Proof | `CounterRoll` press wheels |
-| 05 | Packages | From `content/packages.ts` |
-| 06 | Industries | Mono list; the detail line is always visible, hover only raises contrast |
-| 07 | Testimonials | Renders nothing while the array is empty |
-| 08 | CTA + footer | NAP, hours, every service and city route |
-
-Footer service and city links point at routes that do not exist yet — they
-come in a later pass and are generated from the content layer, so they light
-up on their own.
-
-### Two traps worth knowing about
-
-**GSAP `yPercent` on top of an SSR inline transform doubles it.** `CounterRoll`
-ships each wheel with an inline `translateY(-N%)` so the server renders the
-final number. GSAP parses that off the computed matrix into a px `y` cache and
-then applies `yPercent` *in addition*, so a counter for 3 reads 6. Always pass
-`y: 0` alongside `yPercent` when an element already carries a transform.
-
-**Scrub an effect against the distance the reader actually spends on it.** The
-split originally scrubbed against its section height and had fully resolved a
-third of the way in — the animation carrying the argument was over before
-anyone had read it. It now runs across a sticky hold, so the misregistration
-is on screen for as long as it takes to scroll past.
-
-## /packages
-
-The conversion page. Four one-time packages, three monthly plans, a real
-comparison matrix and a single-item rate card.
-
-**Desktop:** the four packages run sideways while the page scrolls down —
-`HorizontalPanels`, held with `position: sticky` and a height the stylesheet
-works out from the panel count (`100svh + count × panelWidth − 100vw`).
-Nothing is measured in JS to lay it out; GSAP only sets a transform on the
-track. Verified: the track travels exactly `trackWidth − viewportWidth`.
-
-**Everywhere else:** the same panels are an ordinary stack of cards. The
-horizontal layout is gated on the `motion-ready` variant *and* the `lg`
-breakpoint, so a phone, a reader with reduced motion and anyone with JS off
-all get a page they can operate. Nobody meets a sideways price list they
-cannot scroll.
-
-`@custom-variant motion-ready (html[data-motion="ready"] &)` is what makes
-that decision in CSS, before first paint, with no second render.
-
-### Structured data
-
-Each package and plan is a `Product` carrying a single `Offer` — the shape
-that actually earns a price in the result, since a fixed-price package has
-one offer, not a range. One `AggregateOffer` sits on the `OfferCatalog` and
-describes the real span of the list ($899–$6,999), which is what an
-AggregateOffer is for. All CAD, `InStock`, with `areaServed` from
-`content/cities.ts`.
-
-### Two things that bit, both narrow-viewport
-
-- A flex or grid child defaults to `min-width: auto`, so a single long word
-  set at display size ("Storefront" at 60px) widens its whole panel past a
-  phone viewport. `min-w-0` plus a smaller heading below `sm` fixes it.
-- A **fixed** element still books CLS if its own box changes. The mobile
-  package bar is bottom-anchored, so when its CTA mounted the bar grew and
-  its top edge moved. It now has a fixed height, and CLS is back to 0.
-
-## Service pages
-
-`/web-design-seo`, `/printing-signage`, `/custom-apparel` — three thin route
-files over one `ServicePage` component, all content from
-`content/services.ts`.
-
-Each carries a unique H1 with a location modifier, 700–800 words of body
-prose, the full orderable catalogue, a production-spec table, the four-step
-process, 7–8 FAQs, and links to every city page and to `/packages`.
-Structured data per page: `Service` with `areaServed` and an offer catalogue,
-`FAQPage`, and `BreadcrumbList`.
-
-**The specificity is the point, and it is also a liability.** Naming a 13oz
-scrim banner, a 54-inch max width and a 24-piece screen-print minimum is what
-lets these pages rank against shops that have been here twenty years. But
-those are claims about equipment and process, none of which were supplied —
-they are written to industry standards and flagged in a block at the top of
-`content/services.ts`. The FAQ answers in particular are published to Google
-as answers, so a turnaround quoted there is one the business is standing
-behind in the results page before anyone clicks. Read that block as a
-checklist.
-
-### CLS and `<details>`
-
-Expanding an FAQ pushes the ones below it down, which looks like a 0.04 CLS
-hit — but only when the click is synthetic. A real tap sets `hadRecentInput`
-on the shift and it is excluded, leaving CLS 0. Worth knowing before
-"fixing" a shift that was never counted: verify with `page.click()`, not
-`element.click()`.
-
-## Local landing pages — `/[service]/[city]`
-
-10 services × 16 cities is 160 URLs. **25 exist.** The other 135 return 404,
-and that is the feature.
-
-Generating all 160 from a template is textbook doorway spam, and Google
-penalises the domain rather than the thin pages. So the system is built so
-the shortcut is not available:
-
-1. **`content/local-pages.ts` is the only thing that creates a page.** It
-   validates at module scope, so `next build` fails the moment an entry is
-   missing 250 words of its own copy, its named neighbourhoods, a delivery
-   line, three FAQs or an image.
-2. **The strongest check is that a named neighbourhood must appear in the
-   prose.** Listing "Meadowvale" without writing about Meadowvale fails. That
-   is what stops the field being filled in to satisfy a count while the copy
-   stays generic.
-3. **`npm run check:local`** (wired to `prebuild`) adds two checks the module
-   cannot: image files exist on disk, and no two intros share more than 25% of
-   their 8-word phrasing. Current worst pair: **3%**.
-4. **`dynamicParams = false`** enforces the same rule at the routing layer —
-   a combination nobody wrote copy for 404s rather than rendering from a
-   template.
-
-Verified by injecting a plausible thin entry: the build stopped with all
-seven distinct failures named.
-
-```
-npm run check:local        # report every problem at once
-npm run gen:local-images   # regenerate the per-page plates
-```
-
-### Live coverage
-
-`mississauga` 10 · `brampton` 3 · `toronto` 3 · `vaughan` 3 · `oakville` 3 ·
-`markham` 3 — 7,168 words of city-specific copy, min 251 per page.
-
-`/service-areas` links every live page and lists the rest of the delivery
-area as plain text, saying plainly that we deliver there and have not written
-a page yet. `/sitemap.ts` carries only pages that passed the check.
-
-⚠️ **The images are designed placeholders, not photographs.** They are
-genuinely unique files — different plate, angle, pitch and composition per
-page — so the gate passes honestly rather than by pointing 25 pages at one
-graphic. A real photo of real work in that city does a job no generated
-graphic can, and a reused stock image across a local cluster is one of the
-signals that gets it read as templated. Replace them as photos exist.
-
-## /quote — the conversion path
-
-Four steps, controlled state, no `<form>` submit. The job ticket beside the
-questions fills in live and is rendered from the *same* `ticketRows` used by
-the confirmation emails and the success page — so what someone watches being
-built is literally the sheet that reaches the shop floor, not a summary that
-can drift from it.
-
-### Storage runs before email, deliberately
-
-Email is the thing most likely to fail, and a lead that exists in a table can
-be recovered from it; one that only ever existed in a failed API call cannot.
-So `app/quote/actions.ts` writes first, sends second, and reports the two
-outcomes separately:
-
-| stored | emailed | what the visitor gets |
-| ------ | ------- | --------------------- |
-| ✓ | ✓ | Success, printable spec sheet, reference |
-| ✓ | ✗ | Success **plus a notice** that the confirmation didn't send, and the phone number |
-| ✗ | ✓ | Success — the shop has it |
-| ✗ | ✗ | **Failure.** Phone number and email, form state preserved. Never a fake "thanks!" |
-
-That last row is the point. Telling somebody their request is in when it is
-not costs a customer.
-
-### Setup
+Next.js 15 (App Router), TypeScript, Tailwind v4, GSAP + Lenis for motion, MDX for the blog. No CMS: content lives in typed modules under `content/`, and several of them refuse to build when the content is wrong.
 
 ```bash
-cp .env.example .env.local
-psql "$QUOTE_DATABASE_URL" -f db/schema.sql
+npm install
+cp .env.example .env.local     # then fill it in — see Environment below
+npm run dev
 ```
 
-Set **one** of `QUOTE_DATABASE_URL` / `POSTGRES_URL` / `DATABASE_URL`
-(Postgres — Vercel, Supabase, Neon), or `QUOTE_LOG_FILE` for local work.
-With neither set the action fails loudly rather than dropping leads.
-`RESEND_API_KEY` enables both emails; the sending domain must be verified in
-Resend first. Artwork rides along as an attachment on the internal email —
-no blob storage to configure.
+---
 
-### Spam
+## The build gates
 
-Honeypot first, then a minimum fill time of 4s, then a 5-per-10-minutes rate
-limit by IP. A tripped honeypot returns a plausible success and silently
-discards everything — verified: stored rows did not move.
+Four checks run before every build (`npm run prebuild`). They exist because the failures they catch are all silent ones — a page that ranks for nothing, a lead that vanishes, a thin page that drags the domain down with it.
 
-⚠️ The rate limit is in module memory, so it is **per serverless instance**.
-It is a speed bump for a stuck submit button or one bot. If real spam
-appears, move it to Upstash or Vercel KV so the counter is shared, and only
-then consider a captcha.
+| Command | Fails when |
+|---|---|
+| `npm run check:local` | A city page is missing its copy, its FAQs, its image, or names a neighbourhood the prose never mentions |
+| `npm run check:seo` | Any page's H1 or `<title>` does not contain its primary keyword, or a title/description is over length |
+| `npm run check:env` | The code reads an environment variable that `.env.example` does not document |
+| `npm run check:redirects` | A 301 does not resolve to a live page in one hop (needs a running server) |
 
-### Verified end to end
+Two more gates throw at import rather than in a script: `content/posts.ts` rejects a malformed or under-length blog post, and `content/blog-tables.ts` rejects a duplicate table id or a row that does not match its columns.
 
-Drove the real form in a browser: `?service=` preselects the branch, the
-ticket builds as you answer, the submit gate holds until name and a valid
-email exist, the submission **persisted with its full spec**, the redirect
-carried the reference, and the success page showed the honest
-email-failed notice (no `RESEND_API_KEY` in that environment). Both-channels-
-down stays on `/quote` with the phone number. CLS 0 and no overflow on
-desktop and mobile. `/quote/sent` is `noindex, nofollow, nocache`; `/quote`
-is in the sitemap.
+If a gate is in your way, the answer is almost always to fix the content, not the gate. They were each added after the thing they check went wrong.
 
-## Scripts
+---
 
+## How to add a package
+
+Packages drive `/packages`, the pricing schema, and the deep links into the quote form.
+
+1. **Add the entry** to `packages` in `content/packages.ts`. Required: `slug`, `name`, `tagline`, `price`, `priceNote`, `bestFor`, `turnaround`, `ctaLabel`, `deliverables`, `addOns`. TypeScript will tell you if you miss one.
+2. **Read the block at the top of that file first.** It splits prices the owner has confirmed from ones written as drafts. If your price is not confirmed, say so there — it is the only place anyone will look.
+3. **Add a row** to `comparisonRows` in the same file for anything the matrix should compare. Real values only; the matrix has no "~" ratings by design.
+4. **Add a flat lay** if you want one: generate it through the Higgsfield MCP and register it in `packageStills` in `content/media.ts`, keyed by the package slug. See *Regenerating a Higgsfield asset* below.
+5. Nothing else. `/packages`, the `Product` + `AggregateOffer` schema, the comparison matrix, the mobile sticky bar and the `/quote?package=<slug>` deep link all read from the same array.
+
+The horizontal panel section sizes itself from the array length — it stacks vertically below `lg` and on reduced motion, so a fifth package does not break the layout.
+
+---
+
+## How to add a city page
+
+This is the one with teeth. `/[service]/[city]` can generate 160 URLs from 10 services × 16 cities, and generating them all as templated pages is textbook doorway spam — the kind Google penalises across a whole domain rather than page by page. So pages are an explicit allow-list, and the content requirements are enforced at build time.
+
+1. **Add an entry** to `localPages` in `content/local-pages.ts`.
+2. **Write the content.** The build will not pass without all of it:
+   - `intro` — **250+ words written for that city.** Not the same paragraph with the name swapped.
+   - `neighbourhoods` — real areas. **Every one you list must actually appear in the intro.** This is the strongest check in the file, and it is what stops the field being filled in to satisfy a count while the prose stays generic.
+   - `delivery` — a real turnaround or delivery line for that city.
+   - `faqs` — **three**, specific to that city.
+   - `image` — a unique `src` and a descriptive `alt`.
+3. **Generate the image**: `npm run gen:local-images`. These are designed plates, not photographs — genuinely unique per page, but a real photo of work in that city does a job no generated graphic can.
+4. **Check it**: `npm run check:local`.
+
+A city with nothing true to say about it does not get a page. It goes in `content/cities.ts` and appears on `/service-areas` as a place we deliver to and have not written about yet. That is an honest state and it costs nothing.
+
+---
+
+## How to add a blog post
+
+1. **Create** `content/posts/<slug>.mdx`. The slug becomes the URL.
+2. **Frontmatter** — all required except `ogImage`:
+
+```yaml
+---
+title: "The H1. A full sentence is fine."
+metaTitle: "The <title>, 47 chars max"   # 13 more go to " | Surge Labs"
+description: "80–155 characters."
+date: "2026-08-24"
+updated: "2026-08-24"                     # equal to date until you revise it
+author: "The Surge Labs shop floor"
+authorRole: "Print production"
+category: "print"                         # print | signage | apparel | web-seo
+keywords:                                 # first is the primary; ≥3 total
+  - "primary keyword"
+  - "supporting term"
+  - "supporting term"
+ogImage: null                             # null generates one from the title
+---
 ```
-npm run dev        npm run build       npm run start
-npm run lint       npm run typecheck
+
+3. **Write it.** 900–1,400 words is the house length; under 700 fails the build.
+4. **Never put a price or a spec in the prose.** Add it to `content/blog-tables.ts` and reference it as `<DataTable id="your-table" />`. One table, one place to correct it, every post that quotes it updated at once. Each table declares where its numbers come from — `standard`, `confirmed` or `draft` — and a `draft` table renders a visible note telling the reader the figure is indicative. That note is generated from the data, so a post cannot claim a number is firm when the content layer says it is not.
+5. **Link out**: the matching service page, at least one city page, and `/packages`.
+6. **The keyword gate applies.** Both the H1 and the meta title must contain `keywords[0]`, matched by subsequence — "Custom web design and SEO in Mississauga" satisfies "web design mississauga". Run `npm run check:seo`.
+
+Adding a new category means adding it to `categories` in `content/posts.ts` **and** to `lib/seo/blog-seo.ts`, which throws if copy is missing. Reading time, the table of contents, related posts, the `Article` schema and the sitemap entry are all derived — there is nothing else to update.
+
+---
+
+## Regenerating a Higgsfield asset
+
+Every generated still and loop is recorded in `content/media.ts` with the `jobId`, the `model`, and the exact `prompt` that produced it. That is the point: any asset can be reproduced or varied without reconstructing what was asked for.
+
+**To fetch what already exists:**
+
+```bash
+node scripts/fetch-media.mjs              # everything
+node scripts/fetch-media.mjs --videos     # loops and reels only
+node scripts/fetch-media.mjs --force      # re-encode what is already there
+MEDIA_BASE=http://127.0.0.1:8899 node scripts/fetch-media.mjs   # from a mirror
 ```
+
+It downloads each asset, encodes an MP4 and a WebM, extracts the poster from frame 1 of the encoded file at matching dimensions, and flips `MEDIA_PRESENT` in `content/media.ts` to `true` on a clean full run. Until that runs, components keep their placeholders and nothing points at a 404. Needs `ffmpeg` and `ffprobe` on PATH.
+
+**To regenerate one:**
+
+1. Take the `model` and `prompt` from its entry in `content/media.ts`.
+2. Submit through the Higgsfield MCP — `generate_image_batch` or `generate_video_batch`, then `jobs_wait`.
+3. Replace the `jobId` and the URL stamp on that entry.
+4. `node scripts/fetch-media.mjs --force`.
+
+**Two things worth knowing before you regenerate a loop.** Every one was made with the *same keyframe in both `start_image` and `end_image`* — that is what makes it seamless, because the last frame is the first frame and the browser's loop has nothing to cut across. Regenerate with only a start frame and it will still play, but it will jump. And the poster is frame 1 of the encoded file, so it matches the first painted frame exactly and there is no flash when playback starts.
+
+The hero press sheet is different — it is generated locally, not through Higgsfield:
+
+```bash
+node scripts/generate-hero-image.mjs      # writes both trims
+```
+
+Two trims, landscape and portrait, art-directed with `<picture>`. Cropping the landscape sheet into a phone-shaped box threw away 72% of the bytes, and Chrome scores an LCP image by the part that survives the crop.
+
+Nothing here generates a logo or a brandmark, and nothing should.
+
+---
+
+## Environment
+
+`.env.example` documents every variable, and `npm run check:env` fails the build if the code reads one that is not in there. The short version:
+
+| Variable | Needed for |
+|---|---|
+| `QUOTE_DATABASE_URL` (or `POSTGRES_URL` / `DATABASE_URL`) | Storing quote submissions. **Set one.** With none set the form fails loudly rather than dropping leads |
+| `QUOTE_LOG_FILE` | Local alternative: append-only JSONL instead of a database |
+| `RESEND_API_KEY`, `QUOTE_FROM_EMAIL`, `QUOTE_TO_EMAIL` | Sending the quote email. The sending domain must be verified in Resend first |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta Pixel. Optional — a default is compiled in. Set it empty to switch tracking off |
+| `MEDIA_BASE` | Pointing `fetch-media.mjs` at a mirror |
+
+Storage runs **before** email, deliberately, so a lead survives an email outage. `lib/quote/` documents the four failure combinations and what the visitor is told in each.
+
+---
+
+## Deploying
+
+Headers, redirects and image config all live in `next.config.ts` rather than `vercel.json` — Vercel honours the Next config, and splitting them across two files is how they drift apart. `vercel.json` carries only what is genuinely Vercel's.
+
+Security headers are applied to every route: HSTS, a host-restricted CSP, `nosniff`, `X-Frame-Options: DENY`, a referrer policy and a `Permissions-Policy` that denies every sensor the site does not use. `poweredByHeader` is off.
+
+The CSP allows `'unsafe-inline'` for scripts, deliberately. Removing it needs a per-request nonce from middleware, which makes every page dynamic and throws away the static generation. This site renders no user-supplied HTML anywhere, so the XSS surface is close to empty; what the policy actually buys is the host allowlist, which is the threat a marketing site has.
+
+**Before the first deploy:**
+
+```bash
+npm run build                    # runs all four gates
+npm run check:redirects          # against a running server
+node scripts/fetch-media.mjs     # if the footage should be live
+```
+
+`DEPLOY.md` has the domain, DNS and Search Console steps.
