@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
 import { ServicePage } from "@/components/services/service-page";
-import { getService, site } from "@/content";
+import { getService } from "@/content";
+import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
 
-const SLUG = "web-design-seo";
-const service = getService(SLUG)!;
+const PATH = "/web-design-seo";
+const service = getService("web-design-seo")!;
+const seo = getPageSeo(PATH)!;
 
-export const metadata: Metadata = {
-  title: service.metaTitle,
-  description: service.metaDescription,
-  alternates: { canonical: `/${SLUG}` },
-  openGraph: {
-    title: service.metaTitle,
-    description: service.metaDescription,
-    url: `${site.url}/${SLUG}`,
-    siteName: site.name,
-    locale: "en_CA",
-    type: "website",
-  },
-};
+export const metadata: Metadata = buildMetadata({ path: PATH, seo, ogEyebrow: "Mississauga + GTA" });
 
 export default function Page() {
-  return <ServicePage service={service} />;
+  return <ServicePage service={service} path={PATH} />;
 }

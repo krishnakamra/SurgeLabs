@@ -10,84 +10,27 @@ import {
   Split,
   Testimonials,
 } from "@/components/sections";
-import { cities, services, site } from "@/content";
+import { Schema } from "@/components/seo/schema";
+import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
+import { pageGraph, webPage } from "@/lib/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Surge Labs — web, print and custom apparel in Mississauga",
-  description:
-    "Websites, local SEO, printing, signage and custom apparel from one Mississauga shop. One team, one invoice, serving Mississauga and the GTA. Quotes in 24 hours.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "Surge Labs — web, print and custom apparel in Mississauga",
-    description:
-      "Websites, local SEO, printing, signage and custom apparel from one Mississauga shop. One team, one invoice.",
-    url: site.url,
-    siteName: site.name,
-    locale: "en_CA",
-    type: "website",
-  },
-};
+export const metadata: Metadata = buildMetadata({
+  path: "/",
+  seo: getPageSeo("/")!,
+  ogEyebrow: "Mississauga + GTA",
+});
 
-/**
- * LocalBusiness schema.
- *
- * streetAddress is only emitted once content/site.ts carries one. A schema
- * block asserting a wrong or blank address is worse for local ranking than
- * one that describes a service-area business honestly.
- */
-function localBusinessSchema() {
-  const { address } = site;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "@id": `${site.url}/#business`,
-    name: site.name,
-    url: site.url,
-    telephone: site.phone,
-    email: site.email,
-    address: {
-      "@type": "PostalAddress",
-      ...(address.streetAddress ? { streetAddress: address.streetAddress } : {}),
-      addressLocality: address.locality,
-      addressRegion: address.region,
-      ...(address.postalCode ? { postalCode: address.postalCode } : {}),
-      addressCountry: address.country,
-    },
-    areaServed: cities.map((city) => ({
-      "@type": "City",
-      name: city.name,
-      address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
-    })),
-    openingHoursSpecification: site.openingHours.map((entry) => ({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: entry.days,
-      opens: entry.opens,
-      closes: entry.closes,
-    })),
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Services",
-      itemListElement: services.map((service) => ({
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: service.name,
-          description: service.summary,
-          url: `${site.url}/services/${service.slug}`,
-        },
-      })),
-    },
-  };
+function homeGraph() {
+  const seo = getPageSeo("/")!;
+  return pageGraph([
+    webPage({ path: "/", name: seo.title, description: seo.description }),
+  ]);
 }
 
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema()) }}
-      />
+      <Schema graph={homeGraph()} />
       <main>
         <Hero />
         <Split />

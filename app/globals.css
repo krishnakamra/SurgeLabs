@@ -401,6 +401,13 @@
   will-change: transform, opacity;
 }
 
+/* The plate text is generated, not a text node — see RegistrationText. It
+   inherits every type property from the plate span, so it wraps identically
+   to the solid layer underneath it. */
+[data-registration-plate]::before {
+  content: attr(data-text);
+}
+
 /* Offsets follow the real screen-angle order: C top-left, M top-right,
    Y low-right, K low-left. */
 [data-registration-plate="c"] {

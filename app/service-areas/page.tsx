@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CallToAction, SiteFooter } from "@/components/sections";
-import { Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
+import { Schema } from "@/components/seo/schema";
+import { Breadcrumbs, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import {
   cities,
   getCity,
@@ -10,52 +11,49 @@ import {
   localPages,
   site,
 } from "@/content";
+import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
+import { breadcrumbs, pageGraph, webPage } from "@/lib/seo/schema";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
-export const metadata: Metadata = {
-  title: "Service areas across the GTA | Surge Labs",
-  description:
-    "Web, print, signage and custom apparel across Mississauga, Brampton, Toronto, Vaughan, Oakville and Markham. Produced at 2800 Skymark Ave and delivered across the Greater Toronto Area.",
-  alternates: { canonical: "/service-areas" },
-  openGraph: {
-    title: "Service areas across the GTA | Surge Labs",
-    description: "Every city we publish pages for, and everywhere else we deliver.",
-    url: `${site.url}/service-areas`,
-    siteName: site.name,
-    locale: "en_CA",
-    type: "website",
-  },
-};
+export const metadata: Metadata = buildMetadata({
+  path: "/service-areas",
+  seo: getPageSeo("/service-areas")!,
+  ogEyebrow: "Greater Toronto Area",
+});
 
 export default function ServiceAreasPage() {
   const live = liveCities();
   const covered = cities.filter((city) => !live.includes(city.slug));
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": `${site.url}/service-areas#page`,
-    name: "Service areas",
-    url: `${site.url}/service-areas`,
-    about: { "@id": `${site.url}/#business` },
-    mainEntity: {
-      "@type": "ItemList",
-      itemListElement: localPages.map((page, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: `${getLocalService(page.service)?.name} in ${getCity(page.city)?.name}`,
-        url: `${site.url}/${page.service}/${page.city}`,
-      })),
+  const seo = getPageSeo("/service-areas")!;
+  const schema = pageGraph([
+    {
+      ...webPage({
+        path: "/service-areas",
+        name: seo.title,
+        description: seo.description,
+        type: "CollectionPage",
+      }),
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: localPages.map((page, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: `${getLocalService(page.service)?.name} in ${getCity(page.city)?.name}`,
+          url: `${site.url}/${page.service}/${page.city}`,
+        })),
+      },
     },
-  };
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Service areas", path: "/service-areas" },
+    ]),
+  ]);
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
+      <Schema graph={schema} />
 
       <main>
         <SectionFrame
@@ -66,10 +64,21 @@ export default function ServiceAreasPage() {
           className="overflow-hidden"
         >
           <HalftoneField plate="c" pitch={9} dot={1.7} opacity={0.16} seed={57} fade="radial" />
-          <Eyebrow spec={`${localPages.length} PAGES · ${live.length} CITIES`}>Service areas</Eyebrow>
+          <Breadcrumbs
+            trail={[
+              { name: "Home", path: "/" },
+              { name: "Service areas", path: "/service-areas" },
+            ]}
+          />
+          <div className="mt-8">
+            <Eyebrow spec={`${localPages.length} PAGES · ${live.length} CITIES`}>Service areas</Eyebrow>
+          </div>
           <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
-            Where we work, and what we have written about it.
+            {getPageSeo("/service-areas")!.h1}
           </h1>
+          <p className="mt-6 max-w-[34ch] font-display text-xl font-bold text-fg-muted">
+            Where we work, and what we have written about it.
+          </p>
           <p className="mt-10 max-w-[58ch] text-md text-fg-muted">
             Everything is produced at {site.address.streetAddress} in {site.address.locality} and
             delivered across the Greater Toronto Area. The cities below have pages because we had

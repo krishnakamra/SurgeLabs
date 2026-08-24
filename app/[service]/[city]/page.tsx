@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CallToAction, SiteFooter } from "@/components/sections";
-import { Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
+import { Schema } from "@/components/seo/schema";
+import { Breadcrumbs, Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import {
   getCity,
   getLocalPage,
@@ -15,6 +16,8 @@ import {
   siblingServicesIn,
   site,
 } from "@/content";
+import { buildMetadata, localSeo } from "@/lib/seo/page-seo";
+import { BUSINESS_ID, breadcrumbs, faqPage, pageGraph, webPage } from "@/lib/seo/schema";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
@@ -36,29 +39,15 @@ export function generateStaticParams(): Params[] {
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { service: serviceSlug, city: citySlug } = await params;
-  const page = getLocalPage(serviceSlug, citySlug);
   const service = getLocalService(serviceSlug);
   const city = getCity(citySlug);
-  if (!page || !service || !city) return {};
+  if (!service || !city) return {};
 
-  const title = `${service.name} in ${city.name} | Surge Labs`;
-  const description = `${service.name} in ${city.name}, ${city.region}. ${service.blurb} ${page.delivery}`.slice(0, 158);
-  const url = `${site.url}/${serviceSlug}/${citySlug}`;
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `/${serviceSlug}/${citySlug}` },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: site.name,
-      locale: "en_CA",
-      type: "website",
-      images: [{ url: page.image.src, alt: page.image.alt }],
-    },
-  };
+  return buildMetadata({
+    path: `/${serviceSlug}/${citySlug}`,
+    seo: localSeo(service.name, city.name, service.blurb),
+    ogEyebrow: `${city.name}, ${city.region}`,
+  });
 }
 
 function schema(serviceSlug: string, citySlug: string) {
@@ -67,75 +56,31 @@ function schema(serviceSlug: string, citySlug: string) {
   const city = getCity(citySlug)!;
   const url = `${site.url}/${serviceSlug}/${citySlug}`;
 
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "LocalBusiness",
-        "@id": `${url}#business`,
-        name: site.name,
-        url: site.url,
-        telephone: site.phone,
-        email: site.email,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: site.address.streetAddress,
-          addressLocality: site.address.locality,
-          addressRegion: site.address.region,
-          addressCountry: site.address.country,
-        },
-        // Scoped to this page's city rather than the whole service area, so
-        // the signal matches what the page is actually about.
-        areaServed: {
-          "@type": "City",
-          name: city.name,
-          address: {
-            "@type": "PostalAddress",
-            addressRegion: "ON",
-            addressCountry: "CA",
-          },
-        },
-        openingHoursSpecification: site.openingHours.map((entry) => ({
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: entry.days,
-          opens: entry.opens,
-          closes: entry.closes,
-        })),
+  const seo = localSeo(service.name, city.name, service.blurb);
+
+  return pageGraph([
+    webPage({ path: `/${serviceSlug}/${citySlug}`, name: seo.title, description: seo.description }),
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Service areas", path: "/service-areas" },
+      { name: `${service.name} in ${city.name}`, path: `/${serviceSlug}/${citySlug}` },
+    ]),
+    faqPage(page.faqs, `${url}#faq`),
+    {
+      "@type": "Service",
+      "@id": `${url}#service`,
+      name: `${service.name} in ${city.name}`,
+      description: page.intro[0],
+      url,
+      serviceType: service.name,
+      provider: { "@id": BUSINESS_ID },
+      areaServed: {
+        "@type": "City",
+        name: city.name,
+        address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
       },
-      {
-        "@type": "Service",
-        "@id": `${url}#service`,
-        name: `${service.name} in ${city.name}`,
-        description: page.intro[0],
-        url,
-        serviceType: service.name,
-        provider: { "@id": `${url}#business` },
-        areaServed: {
-          "@type": "City",
-          name: city.name,
-          address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
-        },
-      },
-      {
-        "@type": "FAQPage",
-        "@id": `${url}#faq`,
-        mainEntity: page.faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
-        })),
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `${url}#breadcrumbs`,
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-          { "@type": "ListItem", position: 2, name: "Service areas", item: `${site.url}/service-areas` },
-          { "@type": "ListItem", position: 3, name: `${service.name} in ${city.name}`, item: url },
-        ],
-      },
-    ],
-  };
+    },
+  ]);
 }
 
 export default async function LocalServicePage({ params }: { params: Promise<Params> }) {
@@ -151,10 +96,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema(serviceSlug, citySlug)) }}
-      />
+      <Schema graph={schema(serviceSlug, citySlug)} />
 
       <main>
         <SectionFrame
@@ -166,20 +108,20 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
         >
           <HalftoneField plate="m" pitch={9} dot={1.7} opacity={0.16} seed={13} fade="radial" />
 
-          <nav aria-label="Breadcrumb" className={`${SPEC} relative z-[1] text-fg-faint`}>
-            <Link href="/service-areas" className="transition-colors hover:text-fg">
-              Service areas
-            </Link>
-            <span aria-hidden="true"> / </span>
-            <span className="text-fg">{city.name}</span>
-          </nav>
+          <Breadcrumbs
+            trail={[
+              { name: "Home", path: "/" },
+              { name: "Service areas", path: "/service-areas" },
+              { name: `${service.name} in ${city.name}`, path: `/${serviceSlug}/${citySlug}` },
+            ]}
+          />
 
           <div className="mt-10 grid gap-x-gutter gap-y-14 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <Eyebrow spec={city.region}>{service.name}</Eyebrow>
 
               <h1 className="mt-8 max-w-[16ch] font-display text-3xl font-extrabold text-fg">
-                {service.name} in {city.name}
+                {localSeo(service.name, city.name, service.blurb).h1}
               </h1>
 
               <p className="mt-10 max-w-[54ch] text-md text-fg-muted">{page.intro[0]}</p>

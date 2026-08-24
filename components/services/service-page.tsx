@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { MagneticCTA } from "@/components/motion";
 import { CallToAction, SiteFooter } from "@/components/sections";
-import { Button, Eyebrow, HalftoneField, PanelMedia, SectionFrame } from "@/components/ui";
+import { Schema } from "@/components/seo/schema";
+import { Breadcrumbs, Button, Eyebrow, HalftoneField, PanelMedia, SectionFrame } from "@/components/ui";
 import { cities, serviceProcess, site, type Service } from "@/content";
+import { getPageSeo } from "@/lib/seo/page-seo";
+import { BUSINESS_ID, breadcrumbs, faqPage, pageGraph, webPage } from "@/lib/seo/schema";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
@@ -14,67 +17,55 @@ const SPEC = "font-utility text-2xs uppercase tracking-utility";
  * turnaround quoted in schema is a turnaround the business is standing behind
  * in the results page, before anyone has even clicked.
  */
-function serviceSchema(service: Service) {
+function serviceSchema(service: Service, h1: string) {
   const url = `${site.url}/${service.slug}`;
+  const seo = getPageSeo(`/${service.slug}`)!;
 
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Service",
-        "@id": `${url}#service`,
-        name: service.h1,
-        description: service.metaDescription,
-        url,
-        serviceType: service.name,
-        provider: { "@id": `${site.url}/#business` },
-        areaServed: cities.map((city) => ({
-          "@type": "City",
-          name: city.name,
-          address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
-        })),
-        hasOfferCatalog: {
-          "@type": "OfferCatalog",
-          name: `${service.name} catalogue`,
-          itemListElement: service.catalogue.flatMap((group) =>
-            group.items.map((item) => ({
-              "@type": "Offer",
-              itemOffered: { "@type": "Service", name: item.name, description: item.detail },
-            })),
-          ),
-        },
+  return pageGraph([
+    webPage({ path: `/${service.slug}`, name: seo.title, description: seo.description }),
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: service.name, path: `/${service.slug}` },
+    ]),
+    faqPage(service.faqs, `${url}#faq`),
+    {
+      "@type": "Service",
+      "@id": `${url}#service`,
+      name: h1,
+      description: service.summary,
+      url,
+      serviceType: service.name,
+      provider: { "@id": BUSINESS_ID },
+      areaServed: cities.map((city) => ({
+        "@type": "City",
+        name: city.name,
+        address: { "@type": "PostalAddress", addressRegion: "ON", addressCountry: "CA" },
+      })),
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: `${service.name} catalogue`,
+        itemListElement: service.catalogue.flatMap((group) =>
+          group.items.map((item) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: item.name, description: item.detail },
+          })),
+        ),
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${url}#faq`,
-        mainEntity: service.faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: { "@type": "Answer", text: faq.answer },
-        })),
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `${url}#breadcrumbs`,
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-          { "@type": "ListItem", position: 2, name: service.name, item: url },
-        ],
-      },
-    ],
-  };
+    },
+  ]);
 }
 
-export function ServicePage({ service }: { service: Service }) {
+export function ServicePage({ service, path }: { service: Service; path: string }) {
+  // The H1 comes from lib/seo, which is the same string the keyword gate
+  // checks — so the headline on screen and the one asserted cannot diverge.
+  const seo = getPageSeo(path);
+  const h1 = seo?.h1 ?? service.name;
   const plateByIndex = { "01": "c", "02": "m", "03": "k" } as const;
   const plate = plateByIndex[service.number as keyof typeof plateByIndex] ?? "k";
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema(service)) }}
-      />
+      <Schema graph={serviceSchema(service, h1)} />
       <main>
         {/* Hero */}
         <SectionFrame
@@ -89,12 +80,19 @@ export function ServicePage({ service }: { service: Service }) {
 
           <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
             <div className="lg:col-span-7">
+              <Breadcrumbs
+                trail={[
+                  { name: "Home", path: "/" },
+                  { name: service.name, path: `/${service.slug}` },
+                ]}
+              />
+              <div className="mt-8" />
               <Eyebrow number={service.number} spec={site.serviceArea}>
                 {service.name}
               </Eyebrow>
 
               <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
-                {service.h1}
+                {h1}
               </h1>
 
               <div className="mt-10 max-w-[56ch] space-y-5">

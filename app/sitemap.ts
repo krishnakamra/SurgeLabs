@@ -10,6 +10,11 @@ import { localPages, packages, services, site } from "@/content";
  * is how a local page cluster gets read as doorway spam.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
+  // Build time. Honest on a site that deploys when its content changes,
+  // which is what this one is — but if deploys ever become routine (a CI
+  // cron, a dependency bump), every URL will claim to have changed and
+  // Google will start ignoring the field. At that point give the content
+  // layer real `updated` dates and read them here instead.
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [

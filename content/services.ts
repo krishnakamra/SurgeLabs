@@ -17,10 +17,6 @@ export type Service = {
   /** One honest production spec, homepage panel. */
   spec: string;
 
-  /** H1, carrying the location modifier. */
-  h1: string;
-  metaTitle: string;
-  metaDescription: string;
   /** Opening paragraphs, above the catalogue. */
   intro: readonly string[];
   /** The body copy. This is the part that has to be specific to rank. */
@@ -77,10 +73,6 @@ export const services: readonly Service[] = [
     ],
     spec: "Built in-house · Core Web Vitals scored · reported monthly",
 
-    h1: "Custom web design and SEO in Mississauga",
-    metaTitle: "Custom Web Design & SEO in Mississauga | Surge Labs",
-    metaDescription:
-      "Web design, local SEO and Shopify builds in Mississauga. Five-page sites from 2–3 weeks, Core Web Vitals scored, you own the domain and the code. Serving the GTA.",
     intro: [
       "We build websites for Mississauga businesses that need the phone to ring. Most of our work is five to fifteen pages, built to load on a phone on a weak connection, and set up so you can change your own hours and prices without booking a call.",
       "Everything is made here. The same people who build the site set the business cards and stitch the polos, which is why the blue on your homepage matches the blue on your van.",
@@ -213,10 +205,6 @@ export const services: readonly Service[] = [
     ],
     spec: "16pt–32pt stocks · spot UV · soft-touch · foil",
 
-    h1: "Commercial printing and signage in Mississauga",
-    metaTitle: "Printing & Signage in Mississauga | Business Cards, Banners, Signs",
-    metaDescription:
-      "Commercial printing and signage in Mississauga. Business cards on 16pt–32pt stock, banners, lawn signs, vehicle lettering and trade show displays. Same-day rush on stocked items.",
     intro: [
       "We print in Mississauga and deliver across the GTA. Business cards, flyers, banners, lawn signs, vehicle lettering and trade show kits, produced on site rather than brokered out to whoever is cheapest that week.",
       "That matters when the job is wrong. A broker sends your file back into a queue in another city. We reprint it here, usually the same day.",
@@ -375,10 +363,6 @@ export const services: readonly Service[] = [
     ],
     spec: "No minimum on DTF · left chest to full back · in-house digitising",
 
-    h1: "Custom apparel, embroidery and screen printing in Mississauga",
-    metaTitle: "Custom Apparel & Embroidery in Mississauga | No Minimums on DTF",
-    metaDescription:
-      "Custom embroidery, DTF and screen printing in Mississauga. No minimum on DTF, 24-piece minimum on screen printing, in-house digitising. Staff uniforms and team wear across the GTA.",
     intro: [
       "We decorate apparel in Mississauga. Embroidery, DTF heat transfer and screen printing, all done on site, which is why we can take an order for one shirt and an order for five hundred in the same week.",
       "There is no minimum on DTF. One hoodie for a new hire is a real order, not a favour, and it costs what one hoodie costs.",

@@ -65,10 +65,18 @@ export function SiteFooter() {
         <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
           {/* NAP */}
           <div className="lg:col-span-4">
-            <div className="flex items-center gap-3">
+            {/* The only link to the homepage on the site. Without it every
+                route is reachable and the front page is not — an orphan, and
+                the one page the rest of the site should be voting for. */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 rounded-[2px] outline-offset-4 focus-visible:outline-2 focus-visible:outline-focus"
+            >
               <RegistrationTarget className="size-4 text-mark" />
-              <p className="font-display text-lg font-extrabold text-fg">{site.name}</p>
-            </div>
+              <p className="font-display text-lg font-extrabold text-fg">
+                {site.name} — Mississauga
+              </p>
+            </Link>
 
             <address className="mt-6 not-italic">
               {hasStreet ? (
@@ -119,7 +127,7 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className={LINK}>
+                <Link href="/quote" className={LINK}>
                   Get a quote
                 </Link>
               </li>

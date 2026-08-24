@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
 import { QuoteForm } from "@/components/quote/quote-form";
 import { CallToAction, SiteFooter } from "@/components/sections";
-import { Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
+import { Schema } from "@/components/seo/schema";
+import { Breadcrumbs, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { packages, site } from "@/content";
+import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
+import { BUSINESS_ID, breadcrumbs, pageGraph, webPage } from "@/lib/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Get a quote in 24 hours | Surge Labs, Mississauga",
-  description:
-    "Tell us the job and get a written quote back within one business day. Web, print, signage and custom apparel from one Mississauga shop, delivered across the GTA.",
-  alternates: { canonical: "/quote" },
-  openGraph: {
-    title: "Get a quote in 24 hours | Surge Labs",
-    description: "Build a job ticket in four steps. Written quote back within one business day.",
-    url: `${site.url}/quote`,
-    siteName: site.name,
-    locale: "en_CA",
-    type: "website",
-  },
-};
+export const metadata: Metadata = buildMetadata({
+  path: "/quote",
+  seo: getPageSeo("/quote")!,
+  ogEyebrow: "24-hour turnaround",
+});
 
 /**
  * Both the service pages and the local pages link here with ?service=, using
@@ -39,6 +33,41 @@ const SERVICE_TO_NEED: Record<string, string> = {
   embroidery: "apparel",
 };
 
+function quoteGraph() {
+  const seo = getPageSeo("/quote")!;
+  return pageGraph([
+    {
+      ...webPage({ path: "/quote", name: seo.title, description: seo.description, type: "ContactPage" }),
+      // The one action this page exists for. Google surfaces it as a quote
+      // entry point rather than treating the page as another content URL.
+      potentialAction: {
+        "@type": "CommunicateAction",
+        name: "Request a quote",
+        target: { "@type": "EntryPoint", urlTemplate: `${site.url}/quote`, actionPlatform: "https://schema.org/DesktopWebPlatform" },
+        recipient: { "@id": BUSINESS_ID },
+      },
+    },
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Get a quote", path: "/quote" },
+    ]),
+  ]);
+}
+
+/**
+ * The one route in the site that is not prerendered, and deliberately so.
+ *
+ * Service and local pages link here as /quote?service=business-cards&city=
+ * mississauga, and reading that on the server is what lets step 1 arrive
+ * already answered. The alternatives both cost more than the render does:
+ * a Suspense boundary around the form leaves the prerendered HTML without a
+ * form in it, and applying the preselection after hydration pops the chosen
+ * package banner into the layout a frame late, which books CLS on the
+ * primary conversion page.
+ *
+ * Every variant canonicalises to /quote (see buildMetadata), so the query
+ * strings never become indexable duplicates.
+ */
 export default async function QuotePage({
   searchParams,
 }: {
@@ -60,6 +89,8 @@ export default async function QuotePage({
 
   return (
     <>
+      <Schema graph={quoteGraph()} />
+
       <main>
         <SectionFrame
           surface="ink"
@@ -69,10 +100,21 @@ export default async function QuotePage({
           className="overflow-hidden"
         >
           <HalftoneField plate="m" pitch={9} dot={1.7} opacity={0.18} seed={71} fade="radial" />
-          <Eyebrow spec="FOUR STEPS">Get a quote</Eyebrow>
+          <Breadcrumbs
+            trail={[
+              { name: "Home", path: "/" },
+              { name: "Get a quote", path: "/quote" },
+            ]}
+          />
+          <div className="mt-8">
+            <Eyebrow spec="FOUR STEPS">Get a quote</Eyebrow>
+          </div>
           <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
-            Build the ticket. We price it in a day.
+            {getPageSeo("/quote")!.h1}
           </h1>
+          <p className="mt-6 max-w-[26ch] font-display text-xl font-bold text-fg-muted">
+            Build the ticket. We price it in a day.
+          </p>
           <p className="mt-10 max-w-[56ch] text-md text-fg-muted">
             The questions below are the ones we actually have to answer before anyone can quote the
             job. Answer what you know and leave the rest — the sheet on the right fills in as you go,

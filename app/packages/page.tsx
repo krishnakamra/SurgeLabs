@@ -8,24 +8,17 @@ import {
   PackagePanel,
 } from "@/components/packages";
 import { CallToAction, SiteFooter } from "@/components/sections";
-import { Eyebrow, SectionFrame } from "@/components/ui";
+import { Schema } from "@/components/seo/schema";
+import { Breadcrumbs, Eyebrow, SectionFrame } from "@/components/ui";
 import { cities, monthlyPlans, packages, pricingTerms, site } from "@/content";
+import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
+import { BUSINESS_ID, breadcrumbs, pageGraph, webPage } from "@/lib/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Packages and pricing — Surge Labs, Mississauga",
-  description:
-    "Web, print and apparel packages from $899. Launch Kit, Momentum Kit, Storefront Kit and Full Surge, plus monthly SEO and social plans from $399. Prices include GTA delivery.",
-  alternates: { canonical: "/packages" },
-  openGraph: {
-    title: "Packages and pricing — Surge Labs",
-    description:
-      "Web, print and apparel packages from $899, priced on the page. Mississauga and the GTA.",
-    url: `${site.url}/packages`,
-    siteName: site.name,
-    locale: "en_CA",
-    type: "website",
-  },
-};
+export const metadata: Metadata = buildMetadata({
+  path: "/packages",
+  seo: getPageSeo("/packages")!,
+  ogEyebrow: "2026 rates",
+});
 
 const AREA_SERVED = cities.map((city) => ({
   "@type": "City",
@@ -43,77 +36,78 @@ const AREA_SERVED = cities.map((city) => ({
 function pricingSchema() {
   const prices = packages.map((pkg) => pkg.price);
 
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "OfferCatalog",
-        "@id": `${site.url}/packages#catalog`,
-        name: "Surge Labs packages",
-        url: `${site.url}/packages`,
-        provider: { "@id": `${site.url}/#business` },
-        offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "CAD",
-          lowPrice: Math.min(...prices),
-          highPrice: Math.max(...prices),
-          offerCount: packages.length,
-          availability: "https://schema.org/InStock",
-          areaServed: AREA_SERVED,
-        },
+  const seo = getPageSeo("/packages")!;
+
+  return pageGraph([
+    webPage({ path: "/packages", name: seo.title, description: seo.description, type: "CollectionPage" }),
+    breadcrumbs([
+      { name: "Home", path: "/" },
+      { name: "Packages and pricing", path: "/packages" },
+    ]),
+    {
+      "@type": "OfferCatalog",
+      "@id": `${site.url}/packages#catalog`,
+      name: "Surge Labs packages",
+      url: `${site.url}/packages`,
+      provider: { "@id": BUSINESS_ID },
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "CAD",
+        lowPrice: Math.min(...prices),
+        highPrice: Math.max(...prices),
+        offerCount: packages.length,
+        availability: "https://schema.org/InStock",
+        areaServed: AREA_SERVED,
       },
-      ...packages.map((pkg) => ({
-        "@type": "Product",
-        "@id": `${site.url}/packages#${pkg.slug}`,
-        name: pkg.name,
-        description: `${pkg.tagline} ${pkg.bestFor}`,
-        brand: { "@type": "Brand", name: site.name },
-        category: "Marketing, print and apparel package",
-        offers: {
-          "@type": "Offer",
-          url: `${site.url}/packages#${pkg.slug}`,
-          price: pkg.price,
-          priceCurrency: "CAD",
-          availability: "https://schema.org/InStock",
-          areaServed: AREA_SERVED,
-          seller: { "@id": `${site.url}/#business` },
-        },
-      })),
-      ...monthlyPlans.map((plan) => ({
-        "@type": "Product",
-        "@id": `${site.url}/packages#${plan.slug}`,
-        name: `${plan.name} plan`,
-        description: plan.bestFor,
-        brand: { "@type": "Brand", name: site.name },
-        offers: {
-          "@type": "Offer",
-          url: `${site.url}/packages#${plan.slug}`,
+    },
+    ...packages.map((pkg) => ({
+      "@type": "Product",
+      "@id": `${site.url}/packages#${pkg.slug}`,
+      name: pkg.name,
+      description: `${pkg.tagline} ${pkg.bestFor}`,
+      brand: { "@type": "Brand", name: site.name },
+      category: "Marketing, print and apparel package",
+      offers: {
+        "@type": "Offer",
+        url: `${site.url}/packages#${pkg.slug}`,
+        price: pkg.price,
+        priceCurrency: "CAD",
+        availability: "https://schema.org/InStock",
+        areaServed: AREA_SERVED,
+        seller: { "@id": BUSINESS_ID },
+      },
+    })),
+    ...monthlyPlans.map((plan) => ({
+      "@type": "Product",
+      "@id": `${site.url}/packages#${plan.slug}`,
+      name: `${plan.name} plan`,
+      description: plan.bestFor,
+      brand: { "@type": "Brand", name: site.name },
+      offers: {
+        "@type": "Offer",
+        url: `${site.url}/packages#${plan.slug}`,
+        price: plan.price,
+        priceCurrency: "CAD",
+        availability: "https://schema.org/InStock",
+        areaServed: AREA_SERVED,
+        seller: { "@id": BUSINESS_ID },
+        // A monthly plan is a subscription, not a one-off purchase.
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
           price: plan.price,
           priceCurrency: "CAD",
-          availability: "https://schema.org/InStock",
-          areaServed: AREA_SERVED,
-          seller: { "@id": `${site.url}/#business` },
-          // A monthly plan is a subscription, not a one-off purchase.
-          priceSpecification: {
-            "@type": "UnitPriceSpecification",
-            price: plan.price,
-            priceCurrency: "CAD",
-            billingIncrement: 1,
-            unitCode: "MON",
-          },
+          billingIncrement: 1,
+          unitCode: "MON",
         },
-      })),
-    ],
-  };
+      },
+    })),
+  ]);
 }
 
 export default function PackagesPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema()) }}
-      />
+      <Schema graph={pricingSchema()} />
 
       {/* Space for the sticky bar so it never covers the last row of content. */}
       <main className="pb-24 lg:pb-0">
@@ -125,11 +119,22 @@ export default function PackagesPage() {
           padding="lg"
           ticket={{ number: "01", label: "PRICE LIST", spec: "2026 RATES" }}
         >
-          <Eyebrow spec="2026 INTRODUCTORY RATES">Price list</Eyebrow>
+          <Breadcrumbs
+            trail={[
+              { name: "Home", path: "/" },
+              { name: "Packages and pricing", path: "/packages" },
+            ]}
+          />
+          <div className="mt-8">
+            <Eyebrow spec="2026 INTRODUCTORY RATES">Price list</Eyebrow>
+          </div>
 
           <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
-            Every package, every price, on this page.
+            {getPageSeo("/packages")!.h1}
           </h1>
+          <p className="mt-6 max-w-[30ch] font-display text-xl font-bold text-fg-muted">
+            Every package, every price, on this page.
+          </p>
 
           <p className="mt-10 max-w-[58ch] text-md text-fg-muted">
             Four packages that bundle the web, print and apparel work most businesses need at the
