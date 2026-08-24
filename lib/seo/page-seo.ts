@@ -59,6 +59,12 @@ export const pageSeo: Record<string, PageSeo> = {
     description: `Embroidery, DTF and screen printing in Mississauga. No minimum on DTF, 24-piece minimum on screen printing. Call ${PHONE} for a quote.`,
     h1: "Custom apparel, embroidery and screen printing in Mississauga",
   },
+  "/blog": {
+    title: "Print & Web Guides for Mississauga | Surge Labs",
+    description:
+      "Prices, specs and file rules for print, signage, apparel and web, written for GTA businesses. Check the numbers before you order. 905-598-3960.",
+    h1: "Print and web guides for Mississauga businesses",
+  },
 };
 
 export function getPageSeo(path: string): PageSeo | undefined {

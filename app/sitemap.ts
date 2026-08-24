@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { localPages, packages, services, site } from "@/content";
+import { liveCategories, posts } from "@/content/posts";
 
 /**
  * Only pages that exist and carry content.
@@ -41,9 +42,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const blog: MetadataRoute.Sitemap = [
+    { url: `${site.url}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    ...liveCategories().map((category) => ({
+      url: `${site.url}/blog/category/${category.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    })),
+    ...posts.map((post) => ({
+      // Articles are the one place lastModified is honest without any extra
+      // machinery: the frontmatter carries the real revision date, so a post
+      // that has not been touched does not claim to have changed.
+      url: `${site.url}/blog/${post.slug}`,
+      lastModified: new Date(`${post.updated}T12:00:00Z`),
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
+  ];
+
   // packages is imported so a future package-detail route is not forgotten
   // here; the teaser links are covered by /packages above.
   void packages;
 
-  return [...staticRoutes, ...servicePages, ...local];
+  return [...staticRoutes, ...servicePages, ...local, ...blog];
 }

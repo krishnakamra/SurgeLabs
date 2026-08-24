@@ -17,6 +17,8 @@ const { pageKeywords, localPageKeywords, containsKeyword } = await import(join(r
 const { pageSeo, localSeo } = await import(join(root, "lib", "seo", "page-seo.ts"));
 const { localPages, getLocalService } = await import(join(root, "content", "local-pages.ts"));
 const { getCity } = await import(join(root, "content", "cities.ts"));
+const { posts, categories } = await import(join(root, "content", "posts.ts"));
+const { categorySeoCopy } = await import(join(root, "lib", "seo", "blog-seo.ts"));
 
 const MAX_TITLE = 60;
 const MAX_DESC = 155;
@@ -67,6 +69,46 @@ for (const page of localPages) {
   if (!service || !city) continue;
   const route = `/${page.service}/${page.city}`;
   check(route, localSeo(service.name, city.name, service.blurb), localPageKeywords(service.name, city.name));
+}
+
+
+// ── Blog ─────────────────────────────────────────────────────────────
+// A post's primary keyword is the first entry in its frontmatter, and the
+// same rule applies as everywhere else: the headline on screen and the
+// title in the tab both have to carry it. Posts are the easiest place for
+// this to slip, because a good headline and a good keyword pull in
+// different directions and the headline usually wins.
+for (const post of posts) {
+  const primary = post.keywords[0];
+  check(
+    `/blog/${post.slug}`,
+    {
+      title: `${post.metaTitle} | Surge Labs`,
+      description: post.description,
+      h1: post.title,
+    },
+    { primary, secondary: post.keywords.slice(1, 4) },
+  );
+}
+
+for (const slug of Object.keys(categorySeoCopy)) {
+  if (!categories[slug]) {
+    problems.push(`/blog/category/${slug}: SEO copy for a category that does not exist`);
+  }
+}
+for (const slug of Object.keys(categories)) {
+  if (!categorySeoCopy[slug]) {
+    problems.push(`/blog/category/${slug}: category has no SEO copy in lib/seo/blog-seo.ts`);
+  } else {
+    const seo = categorySeoCopy[slug];
+    checked++;
+    if (seo.title.length > MAX_TITLE) {
+      problems.push(`/blog/category/${slug}: title is ${seo.title.length} chars, limit ${MAX_TITLE}`);
+    }
+    if (seo.description.length > MAX_DESC) {
+      problems.push(`/blog/category/${slug}: description is ${seo.description.length} chars, limit ${MAX_DESC}`);
+    }
+  }
 }
 
 // ── Report ───────────────────────────────────────────────────────────

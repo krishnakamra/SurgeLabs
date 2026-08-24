@@ -53,6 +53,10 @@ export const pageKeywords: Record<string, PageKeywords> = {
     primary: "custom apparel mississauga",
     secondary: ["embroidery mississauga", "screen printing gta", "dtf printing mississauga"],
   },
+  "/blog": {
+    primary: "print web guides mississauga",
+    secondary: ["printing prices mississauga", "flyer sizes gta", "vehicle wrap cost toronto"],
+  },
 };
 
 /** Keyword for a local service × city page, derived so it cannot go missing. */

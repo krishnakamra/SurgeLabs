@@ -173,6 +173,54 @@ export function faqPage(faqs: ReadonlyArray<{ question: string; answer: string }
   };
 }
 
+export type ArticleInput = {
+  path: string;
+  headline: string;
+  description: string;
+  datePublished: string;
+  dateModified: string;
+  authorName: string;
+  keywords: string[];
+  image: string;
+  wordCount: number;
+  section: string;
+};
+
+/**
+ * A blog post.
+ *
+ * `author` is a Person, not the Organization: Google's guidance on helpful
+ * content leans on articles having a named human behind them, and pointing
+ * the byline at the company is exactly the shape that reads as content
+ * produced at scale by nobody.
+ *
+ * `publisher` and `isPartOf` reference the sitewide @ids so a post resolves
+ * to the same business as every other page rather than floating free.
+ */
+export function article(input: ArticleInput): Node {
+  const url = `${site.url}${input.path}`;
+  return {
+    "@type": "Article",
+    "@id": `${url}#article`,
+    isPartOf: { "@id": `${url}#page` },
+    mainEntityOfPage: { "@id": `${url}#page` },
+    headline: input.headline,
+    description: input.description,
+    url,
+    datePublished: input.datePublished,
+    dateModified: input.dateModified,
+    // No `url` on the Person: there is no author page on this site yet, and
+    // a sameAs pointing at a 404 is worse than an unlinked name.
+    author: { "@type": "Person", name: input.authorName },
+    publisher: { "@id": ORG_ID },
+    image: [`${site.url}${input.image}`],
+    keywords: input.keywords.join(", "),
+    articleSection: input.section,
+    wordCount: input.wordCount,
+    inLanguage: "en-CA",
+  };
+}
+
 export type VideoInput = {
   name: string;
   description: string;
