@@ -15,6 +15,9 @@ export { JobTicketRail } from "./job-ticket-rail";
 export { PanelMedia } from "./panel-media";
 export type { PanelMediaProps } from "./panel-media";
 
+export { PressLoop } from "./press-loop";
+export type { PressLoopProps } from "./press-loop";
+
 export { CropMarks, RegistrationTarget } from "./press-marks";
 
 export { RegistrationText } from "./registration-text";

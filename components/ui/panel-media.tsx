@@ -1,15 +1,15 @@
+import { MEDIA_PRESENT, type VideoAsset } from "@/content/media";
 import { cn } from "@/lib/cn";
 import { HalftoneField } from "./halftone-field";
+import { PressLoop } from "./press-loop";
 import { RegistrationTarget } from "./press-marks";
 import type { Plate } from "@/lib/halftone";
 
 export type PanelMediaProps = {
-  /** Looping video. Until one exists, the printed plate below stands in. */
-  src?: string;
-  poster?: string;
+  /** Looping footage. Until the files are fetched, the plate below stands in. */
+  asset?: VideoAsset;
   plate?: Plate;
   numeral: string;
-  label: string;
   className?: string;
 };
 
@@ -22,10 +22,15 @@ export type PanelMediaProps = {
  * the plate number — which is a finished-looking thing in this design
  * language rather than an obvious hole where an asset should be.
  *
- * Video is muted, inline and looping; MotionProvider pauses it with
- * everything else when the tab goes away.
+ * Both branches are decoration — a screened plate, or texture behind copy
+ * that already says what the service is — so neither carries a label. The
+ * descriptive text for each clip lives on its entry in content/media.ts, for
+ * the places where the footage is the content rather than the backdrop.
  */
-export function PanelMedia({ src, poster, plate = "m", numeral, label, className }: PanelMediaProps) {
+export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMediaProps) {
+  // MEDIA_PRESENT is false until scripts/fetch-media.mjs has run, so an
+  // asset can be wired up here long before its bytes exist.
+  const showLoop = asset && MEDIA_PRESENT;
   return (
     <div
       className={cn(
@@ -33,17 +38,8 @@ export function PanelMedia({ src, poster, plate = "m", numeral, label, className
         className,
       )}
     >
-      {src ? (
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          src={src}
-          poster={poster}
-          muted
-          loop
-          playsInline
-          autoPlay
-          aria-label={label}
-        />
+      {showLoop ? (
+        <PressLoop asset={asset} className="absolute inset-0" sizes="(max-width: 1024px) 100vw, 45vw" />
       ) : (
         <>
           <HalftoneField plate={plate} pitch={8} dot={2} opacity={0.42} seed={17} fade="radial" />

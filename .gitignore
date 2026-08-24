@@ -16,3 +16,6 @@ next-env.d.ts
 # Local quote log (dev storage fallback)
 .data/
 .env.local
+
+# Working directory for scripts/fetch-media.mjs.
+.media-cache/

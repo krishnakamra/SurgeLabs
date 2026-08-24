@@ -4,6 +4,7 @@ import { CallToAction, SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, PanelMedia, SectionFrame } from "@/components/ui";
 import { cities, serviceProcess, site, type Service } from "@/content";
+import { loopForService } from "@/content/media";
 import { getPageSeo } from "@/lib/seo/page-seo";
 import { BUSINESS_ID, breadcrumbs, faqPage, pageGraph, webPage } from "@/lib/seo/schema";
 
@@ -119,9 +120,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
               <PanelMedia
                 numeral={service.number}
                 plate={plate}
-                label={`${service.name} — work sample`}
-                src={service.media?.src}
-                poster={service.media?.poster}
+                asset={loopForService[service.slug]}
               />
             </div>
           </div>

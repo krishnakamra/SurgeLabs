@@ -2,6 +2,7 @@ import Link from "next/link";
 import { PinnedPanel } from "@/components/motion";
 import { Eyebrow, PanelMedia } from "@/components/ui";
 import { services } from "@/content";
+import { loopForService } from "@/content/media";
 
 /**
  * Three panels, each holding for 60vh of scroll. The hold is `position:
@@ -82,9 +83,7 @@ export function Services() {
                   <PanelMedia
                     numeral={service.number}
                     plate={index === 0 ? "c" : index === 1 ? "m" : "k"}
-                    label={`${service.name} — work sample`}
-                    src={service.media?.src}
-                    poster={service.media?.poster}
+                    asset={loopForService[service.slug]}
                   />
                 </div>
               </div>
