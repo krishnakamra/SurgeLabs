@@ -16,14 +16,13 @@ export const site = {
   email: "hello@surgelabs.ca",
 
   address: {
-    // ⚠️  PLACEHOLDER — no street address was supplied. Fill this in from the
-    //     Google Business Profile before launch, or, if the business is not
-    //     storefront-visible, remove streetAddress from the JSON-LD entirely
-    //     and keep it a service-area business. Do not invent an address:
-    //     a wrong one on a schema block is worse than none.
-    streetAddress: "",
+    streetAddress: "2800 Skymark Ave",
     locality: "Mississauga",
     region: "ON",
+    // ⚠️  Still needed: the postal code, and the unit/suite number if the
+    //     Google Business Profile carries one. Deliberately not guessed —
+    //     2800 Skymark Ave is a multi-tenant complex, so a wrong unit is
+    //     worse than none. Copy both from GBP exactly.
     postalCode: "",
     country: "CA",
   },

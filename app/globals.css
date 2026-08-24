@@ -171,6 +171,13 @@
   }
 }
 
+/* Layout that only makes sense once motion is running. The boot script sets
+   html[data-motion="ready"] before first paint, so a horizontal-scroll section
+   can lay itself out as a stack for no-JS and reduced-motion readers and as a
+   pinned track for everyone else — decided in CSS, before anything paints,
+   with no second render and no shift. */
+@custom-variant motion-ready (html[data-motion="ready"] &);
+
 /* ═══════════════════════════════════════════════════════════════════════════
    NON-THEME VARIABLES
    Durations, rail width and crop-mark geometry. Unlayered so they beat the
@@ -433,6 +440,20 @@
 /* armed animates in CSS; scrub hands --reg-p to GSAP and must not interpolate. */
 :where(html[data-motion="ready"]) [data-registration][data-reg="armed"] {
   transition: --reg-p var(--dur-register) var(--ease-plate);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HORIZONTAL PANEL TRACK
+   Children become fixed-width full-height cells only when the track is
+   actually running horizontally. Everywhere else they stay ordinary stacked
+   blocks, so the section reads as a column of cards with no JS at all.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 64rem) {
+  html[data-motion="ready"] [data-hp-track] > * {
+    flex: 0 0 auto;
+    width: var(--hp-w);
+    height: 100%;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

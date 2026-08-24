@@ -185,6 +185,44 @@ third of the way in — the animation carrying the argument was over before
 anyone had read it. It now runs across a sticky hold, so the misregistration
 is on screen for as long as it takes to scroll past.
 
+## /packages
+
+The conversion page. Four one-time packages, three monthly plans, a real
+comparison matrix and a single-item rate card.
+
+**Desktop:** the four packages run sideways while the page scrolls down —
+`HorizontalPanels`, held with `position: sticky` and a height the stylesheet
+works out from the panel count (`100svh + count × panelWidth − 100vw`).
+Nothing is measured in JS to lay it out; GSAP only sets a transform on the
+track. Verified: the track travels exactly `trackWidth − viewportWidth`.
+
+**Everywhere else:** the same panels are an ordinary stack of cards. The
+horizontal layout is gated on the `motion-ready` variant *and* the `lg`
+breakpoint, so a phone, a reader with reduced motion and anyone with JS off
+all get a page they can operate. Nobody meets a sideways price list they
+cannot scroll.
+
+`@custom-variant motion-ready (html[data-motion="ready"] &)` is what makes
+that decision in CSS, before first paint, with no second render.
+
+### Structured data
+
+Each package and plan is a `Product` carrying a single `Offer` — the shape
+that actually earns a price in the result, since a fixed-price package has
+one offer, not a range. One `AggregateOffer` sits on the `OfferCatalog` and
+describes the real span of the list ($899–$6,999), which is what an
+AggregateOffer is for. All CAD, `InStock`, with `areaServed` from
+`content/cities.ts`.
+
+### Two things that bit, both narrow-viewport
+
+- A flex or grid child defaults to `min-width: auto`, so a single long word
+  set at display size ("Storefront" at 60px) widens its whole panel past a
+  phone viewport. `min-w-0` plus a smaller heading below `sm` fixes it.
+- A **fixed** element still books CLS if its own box changes. The mobile
+  package bar is bottom-anchored, so when its CTA mounted the bar grew and
+  its top edge moved. It now has a fixed height, and CLS is back to 0.
+
 ## Scripts
 
 ```

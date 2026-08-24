@@ -3,6 +3,9 @@ export { MotionProvider } from "./motion-provider";
 export { CounterRoll } from "./counter-roll";
 export type { CounterRollProps } from "./counter-roll";
 
+export { HorizontalPanels } from "./horizontal-panels";
+export type { HorizontalPanelsProps } from "./horizontal-panels";
+
 export { MagneticCTA } from "./magnetic-cta";
 export type { MagneticCTAProps } from "./magnetic-cta";
 

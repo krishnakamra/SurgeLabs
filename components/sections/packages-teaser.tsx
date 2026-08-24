@@ -1,9 +1,13 @@
 import { Button, Eyebrow, SectionFrame } from "@/components/ui";
-import { packages } from "@/content";
+import { formatPrice, packages } from "@/content";
 import { cn } from "@/lib/cn";
 
+/** Three on the homepage; Full Surge is the step up you find on /packages. */
+const TEASER_SLUGS = ["launch-kit", "momentum-kit", "storefront-kit"];
+
 export function PackagesTeaser() {
-  if (packages.length === 0) return null;
+  const shown = packages.filter((pkg) => TEASER_SLUGS.includes(pkg.slug));
+  if (shown.length === 0) return null;
 
   return (
     <SectionFrame
@@ -27,47 +31,54 @@ export function PackagesTeaser() {
       </div>
 
       <div className="mt-16 grid gap-gutter lg:grid-cols-3">
-        {packages.map((pkg) => (
+        {shown.map((pkg) => (
           <article
             key={pkg.slug}
             className={cn(
               "flex flex-col border bg-surface-raised p-8",
-              pkg.featured ? "border-accent" : "border-rule",
+              pkg.badge ? "border-accent" : "border-rule",
             )}
           >
             <div className="flex items-baseline justify-between gap-4">
               <h3 className="font-display text-xl font-bold text-fg">{pkg.name}</h3>
-              {pkg.featured ? (
+              {pkg.badge ? (
                 <span className="font-utility text-2xs uppercase tracking-utility text-accent-text">
-                  Most booked
+                  {pkg.badge}
                 </span>
               ) : null}
             </div>
 
-            <p className="mt-4 min-h-[3.5rem] text-sm text-fg-muted">{pkg.audience}</p>
+            <p className="mt-4 min-h-[3.5rem] text-sm text-fg-muted">{pkg.bestFor}</p>
 
             <p className="mt-8 flex items-baseline gap-3 border-t border-rule pt-8">
               <span className="font-utility text-xl leading-none font-normal tabular-nums text-fg">
-                {pkg.price}
+                {formatPrice(pkg.price)}
               </span>
               <span className="font-utility text-2xs uppercase tracking-utility text-fg-faint">
-                {pkg.cadence}
+                one-time
               </span>
             </p>
 
             <ul className="mt-8 flex-1 space-y-3">
-              {pkg.includes.map((item) => (
-                <li key={item} className="flex gap-3 text-sm text-fg-muted">
-                  <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-rule-strong" />
-                  <span>{item}</span>
-                </li>
-              ))}
+              {pkg.deliverables.flatMap((group) =>
+                group.items.slice(0, 2).map((item) => (
+                  <li key={`${group.group}-${item}`} className="flex gap-3 text-sm text-fg-muted">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.35em] w-[3.6rem] shrink-0 font-utility text-2xs uppercase tracking-utility text-fg-faint"
+                    >
+                      {group.group}
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                )),
+              )}
             </ul>
 
             <div className="mt-10">
               <Button
                 href={`/packages#${pkg.slug}`}
-                variant={pkg.featured ? "primary" : "outline"}
+                variant={pkg.badge ? "primary" : "outline"}
                 size="md"
                 className="w-full"
               >
