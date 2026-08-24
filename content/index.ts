@@ -1,5 +1,16 @@
 export { site } from "./site";
-export { services, type Service } from "./services";
+export {
+  services,
+  serviceProcess,
+  getService,
+  type Service,
+  type CatalogueGroup,
+  type CatalogueItem,
+  type SpecRow,
+  type Faq,
+  type ProcessStep,
+  type CopySection,
+} from "./services";
 export {
   packages,
   monthlyPlans,

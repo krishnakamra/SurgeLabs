@@ -223,6 +223,36 @@ AggregateOffer is for. All CAD, `InStock`, with `areaServed` from
   package bar is bottom-anchored, so when its CTA mounted the bar grew and
   its top edge moved. It now has a fixed height, and CLS is back to 0.
 
+## Service pages
+
+`/web-design-seo`, `/printing-signage`, `/custom-apparel` — three thin route
+files over one `ServicePage` component, all content from
+`content/services.ts`.
+
+Each carries a unique H1 with a location modifier, 700–800 words of body
+prose, the full orderable catalogue, a production-spec table, the four-step
+process, 7–8 FAQs, and links to every city page and to `/packages`.
+Structured data per page: `Service` with `areaServed` and an offer catalogue,
+`FAQPage`, and `BreadcrumbList`.
+
+**The specificity is the point, and it is also a liability.** Naming a 13oz
+scrim banner, a 54-inch max width and a 24-piece screen-print minimum is what
+lets these pages rank against shops that have been here twenty years. But
+those are claims about equipment and process, none of which were supplied —
+they are written to industry standards and flagged in a block at the top of
+`content/services.ts`. The FAQ answers in particular are published to Google
+as answers, so a turnaround quoted there is one the business is standing
+behind in the results page before anyone clicks. Read that block as a
+checklist.
+
+### CLS and `<details>`
+
+Expanding an FAQ pushes the ones below it down, which looks like a 0.04 CLS
+hit — but only when the click is synthetic. A real tap sets `hadRecentInput`
+on the shift and it is excluded, leaving CLS 0. Worth knowing before
+"fixing" a shift that was never counted: verify with `page.click()`, not
+`element.click()`.
+
 ## Scripts
 
 ```

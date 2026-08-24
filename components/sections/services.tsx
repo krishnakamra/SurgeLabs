@@ -70,7 +70,7 @@ export function Services() {
 
                   <p data-reveal className="mt-8">
                     <Link
-                      href={`/services/${service.slug}`}
+                      href={`/${service.slug}`}
                       className="font-utility text-2xs uppercase tracking-utility-tight text-fg underline decoration-1 underline-offset-[7px] decoration-rule-strong transition-colors hover:decoration-mark"
                     >
                       {service.name} in detail
