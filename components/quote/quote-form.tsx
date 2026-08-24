@@ -210,7 +210,7 @@ export function QuoteForm({
                   <ul className="mt-5 space-y-4">
                     {chosenPackage.deliverables.map((group) => (
                       <li key={group.group}>
-                        <p className={cn(SPEC, "text-mark")}>{group.group}</p>
+                        <p className={cn(SPEC, "text-accent-text")}>{group.group}</p>
                         <ul className="mt-2 space-y-1.5">
                           {group.items.map((item) => (
                             <li key={item} className="flex gap-3 text-sm text-fg-muted">
@@ -232,7 +232,7 @@ export function QuoteForm({
               <div className="mt-12 space-y-14">
                 {activeBranches.map((branch) => (
                   <div key={branch.id}>
-                    <p className={cn(SPEC, "text-mark")}>{branch.ticket}</p>
+                    <p className={cn(SPEC, "text-accent-text")}>{branch.ticket}</p>
                     <div className="mt-6 space-y-10 border-t border-rule pt-8">
                       {branch.fields.map((field) =>
                         field.kind === "choice" ? (

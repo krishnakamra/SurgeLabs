@@ -13,7 +13,7 @@ export function PostCard({ post, number }: { post: Post; number?: string }) {
       <div className={`${SPEC} flex items-center gap-3 text-fg-faint`}>
         {number ? (
           <>
-            <span className="text-mark">{number}</span>
+            <span className="text-accent-text">{number}</span>
             <span aria-hidden="true" className="text-rule-strong">
               /
             </span>

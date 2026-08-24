@@ -109,11 +109,13 @@ export function organisationGraph(): Node[] {
       name: site.name,
       publisher: { "@id": ORG_ID },
       inLanguage: "en-CA",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", urlTemplate: `${site.url}/service-areas?q={search_term_string}` },
-        "query-input": "required name=search_term_string",
-      },
+      // No SearchAction. It was pointing at /service-areas?q={term}, which
+      // renders that page and ignores the parameter entirely — there is no
+      // search input anywhere on this site. A sitelinks searchbox that
+      // silently drops the query is a worse result than no searchbox, and
+      // declaring one you do not have is the kind of markup Google discounts
+      // the rest of your structured data for. Add it back the day a real
+      // search endpoint exists, not before.
     },
   ];
 }

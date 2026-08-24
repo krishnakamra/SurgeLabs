@@ -55,7 +55,7 @@ export default function ServiceAreasPage() {
     <>
       <Schema graph={schema} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="ink"
           as="header"

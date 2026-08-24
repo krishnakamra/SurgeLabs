@@ -91,7 +91,7 @@ export default async function QuotePage({
     <>
       <Schema graph={quoteGraph()} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="ink"
           as="header"

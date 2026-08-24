@@ -74,7 +74,7 @@ export function DataTable({ id }: { id: string }) {
         <span className="min-w-0 text-2xs leading-relaxed">
           {isDraft ? (
             <>
-              <span className="font-utility uppercase tracking-utility text-mark">
+              <span className="font-utility uppercase tracking-utility text-accent-text">
                 Indicative — not a quote.
               </span>{" "}
               {table.source} Your figure depends on artwork, stock availability and turnaround.{" "}

@@ -18,6 +18,8 @@ export type { PanelMediaProps } from "./panel-media";
 export { PressLoop } from "./press-loop";
 export type { PressLoopProps } from "./press-loop";
 
+export { SkipLink } from "./skip-link";
+
 export { CropMarks, RegistrationTarget } from "./press-marks";
 
 export { RegistrationText } from "./registration-text";

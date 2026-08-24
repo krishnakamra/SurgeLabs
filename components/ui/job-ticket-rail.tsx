@@ -27,10 +27,10 @@ type Ticket = {
  * GSAP: the rail is design-system furniture and shouldn't wait on the
  * animation layer to boot.
  *
- * Accessibility: the vertical readout is aria-hidden, because it restates the
- * heading a screen-reader user just passed. The tick stack is the part that
- * earns its "navigation aid" billing — real anchors, real accessible names,
- * for any section given an id.
+ * Accessibility: the whole rail is aria-hidden and out of the tab order. It
+ * is furniture — a readout of where you are, not a way to get anywhere. The
+ * headings already do that job, and they name themselves better than the
+ * ticks do. Mouse users can still click a tick to jump.
  */
 export function JobTicketRail({ className }: { className?: string }) {
   const pathname = usePathname();
@@ -79,6 +79,13 @@ export function JobTicketRail({ className }: { className?: string }) {
 
   return (
     <aside
+      // Decorative. The vertical readout restates the heading a screen-reader
+      // user just passed, and the tick stack's names ("01 HERO") are a worse
+      // way to reach a section than the headings themselves. Marking the whole
+      // rail hidden means the ticks must also leave the tab order — focusable
+      // content inside aria-hidden is a failure in its own right, and it was
+      // putting five rail anchors ahead of the page on every navigation.
+      aria-hidden="true"
       data-surface={active?.surface ?? "ink"}
       className={cn(
         "fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] rail:flex",
@@ -89,7 +96,7 @@ export function JobTicketRail({ className }: { className?: string }) {
     >
       <RegistrationTarget className="size-4 shrink-0 text-mark" />
 
-      <div aria-hidden="true" className="flex min-h-0 flex-1 items-center justify-center py-6">
+      <div className="flex min-h-0 flex-1 items-center justify-center py-6">
         {active ? (
           <p
             key={`${activeIndex}-${active.number}`}
@@ -111,7 +118,7 @@ export function JobTicketRail({ className }: { className?: string }) {
         ) : null}
       </div>
 
-      <nav aria-label="Sections" className="flex shrink-0 flex-col items-center gap-2">
+      <div className="flex shrink-0 flex-col items-center gap-2">
         {tickets.map((ticket, index) => {
           const isActive = index === activeIndex;
           const bar = cn(
@@ -127,17 +134,16 @@ export function JobTicketRail({ className }: { className?: string }) {
             <Link
               key={ticket.id}
               href={`#${ticket.id}`}
-              aria-current={isActive ? "true" : undefined}
-              className="flex h-4 w-full items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+              // -1, not absent: the tick is still clickable for a mouse user,
+              // but it cannot be tabbed to from inside an aria-hidden subtree.
+              tabIndex={-1}
+              className="flex h-4 w-full items-center justify-center"
             >
               <span className={bar} />
-              <span className="sr-only">
-                {ticket.number} {ticket.label}
-              </span>
             </Link>
           );
         })}
-      </nav>
+      </div>
     </aside>
   );
 }

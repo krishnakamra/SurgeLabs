@@ -47,7 +47,7 @@ export default function BlogIndexPage() {
     <>
       <Schema graph={blogGraph()} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="ink"
           as="header"

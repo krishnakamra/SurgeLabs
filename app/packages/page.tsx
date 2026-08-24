@@ -44,12 +44,21 @@ function pricingSchema() {
       { name: "Home", path: "/" },
       { name: "Packages and pricing", path: "/packages" },
     ]),
+    // A Service, not a bare OfferCatalog. OfferCatalog is a subtype of
+    // ItemList, which has neither `provider` nor `offers` — hanging the
+    // AggregateOffer and the seller off it was invalid, and validators drop
+    // properties a type does not define rather than guessing what was meant.
+    // Service carries all three legitimately: who provides it, what the price
+    // span is, and what is in the catalogue.
     {
-      "@type": "OfferCatalog",
+      "@type": "Service",
       "@id": `${site.url}/packages#catalog`,
       name: "Surge Labs packages",
+      description: "Fixed-price web, print, signage and apparel packages for GTA businesses.",
       url: `${site.url}/packages`,
+      serviceType: "Marketing, print and apparel packages",
       provider: { "@id": BUSINESS_ID },
+      areaServed: AREA_SERVED,
       offers: {
         "@type": "AggregateOffer",
         priceCurrency: "CAD",
@@ -58,6 +67,14 @@ function pricingSchema() {
         offerCount: packages.length,
         availability: "https://schema.org/InStock",
         areaServed: AREA_SERVED,
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Packages",
+        itemListElement: packages.map((pkg) => ({
+          "@type": "Offer",
+          itemOffered: { "@id": `${site.url}/packages#${pkg.slug}` },
+        })),
       },
     },
     ...packages.map((pkg) => ({
@@ -110,7 +127,7 @@ export default function PackagesPage() {
       <Schema graph={pricingSchema()} />
 
       {/* Space for the sticky bar so it never covers the last row of content. */}
-      <main className="pb-24 lg:pb-0">
+      <main id="main" tabIndex={-1} className="pb-24 lg:pb-0">
         {/* Hero. No animation here — people came to read prices. */}
         <SectionFrame
           surface="ink"

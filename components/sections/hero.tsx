@@ -79,7 +79,17 @@ export function Hero() {
           through the optimizer, AVIF/WebP and the responsive srcset. */}
       <picture>
         <source media="(max-width: 639px)" srcSet={heroPortrait.srcSet} sizes={heroPortrait.sizes} />
-        <img {...heroLandscape} alt={HERO_ALT} className="absolute inset-0 -z-10 object-cover" />
+        {/* fetchPriority is set explicitly. getImageProps returns the srcSet
+            and sizes but drops the priority hint that <Image priority> would
+            have emitted, so the LCP image was shipping without one —
+            Lighthouse reported priorityHinted: false against it. */}
+        <img
+          {...heroLandscape}
+          alt={HERO_ALT}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 -z-10 object-cover"
+        />
       </picture>
       {/* No scrim. Both trims carry their own gradient hold over the
           column the type sits in — landscape holds from the left, portrait

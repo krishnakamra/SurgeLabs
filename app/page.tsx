@@ -31,7 +31,7 @@ export default function HomePage() {
   return (
     <>
       <Schema graph={homeGraph()} />
-      <main>
+      <main id="main" tabIndex={-1}>
         <Hero />
         <Split />
         <Services />

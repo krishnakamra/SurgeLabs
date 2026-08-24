@@ -44,7 +44,7 @@ export function SentTicket() {
 
   return (
     <>
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="stock"
           as="header"
@@ -145,7 +145,7 @@ export function SentTicket() {
               ["03", "You approve", "Nothing goes to production until you sign off a proof."],
             ].map(([step, title, detail]) => (
               <li key={step}>
-                <p className="font-utility text-lg leading-none text-mark">{step}</p>
+                <p className="font-utility text-lg leading-none text-accent-text">{step}</p>
                 <p className="mt-4 font-display text-base font-bold text-fg">{title}</p>
                 <p className="mt-2 text-sm text-fg-muted">{detail}</p>
               </li>

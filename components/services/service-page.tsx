@@ -67,7 +67,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
   return (
     <>
       <Schema graph={serviceSchema(service, h1)} />
-      <main>
+      <main id="main" tabIndex={-1}>
         {/* Hero */}
         <SectionFrame
           surface="ink"
@@ -188,7 +188,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
           <div className="mt-14 space-y-16">
             {service.catalogue.map((group) => (
               <div key={group.group}>
-                <h3 className={`${SPEC} text-mark`}>{group.group}</h3>
+                <h3 className={`${SPEC} text-accent-text`}>{group.group}</h3>
                 <ul className="mt-8 grid border-t border-rule sm:grid-cols-2 sm:gap-x-gutter lg:grid-cols-3">
                   {group.items.map((item) => (
                     <li key={item.name} className="border-b border-rule py-5">

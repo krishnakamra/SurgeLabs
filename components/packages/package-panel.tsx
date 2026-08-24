@@ -65,11 +65,20 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
       </dl>
 
       {/* Deliverables, grouped by vertical. */}
-      <div className="flex-1 overflow-y-auto p-8">
+      {/* Chrome makes a scrollable region keyboard-focusable so it can be
+          scrolled without a mouse, which is right — but it arrives in the tab
+          order with no name and no role, so a screen reader announces a stop
+          and nothing else. tabIndex and a group label make it say what it is. */}
+      <div
+        className="flex-1 overflow-y-auto p-8"
+        tabIndex={0}
+        role="group"
+        aria-label={`${pkg.name} — what is included`}
+      >
         <div className="space-y-8">
           {pkg.deliverables.map((group) => (
             <section key={group.group}>
-              <h3 className={cn(SPEC, "text-mark")}>{group.group}</h3>
+              <h3 className={cn(SPEC, "text-accent-text")}>{group.group}</h3>
               <ul className="mt-4 space-y-2.5">
                 {group.items.map((item) => (
                   <li key={item} className="flex gap-3 text-sm text-fg-muted">

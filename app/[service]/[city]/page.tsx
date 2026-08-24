@@ -98,7 +98,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
     <>
       <Schema graph={schema(serviceSlug, citySlug)} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="ink"
           as="header"
@@ -149,6 +149,10 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
                 height={600}
                 unoptimized
                 priority
+                // Set explicitly. `priority` alone did not put the hint on the
+                // tag here — same gap the hero hit — and this image is the LCP
+                // element on all 25 local pages.
+                fetchPriority="high"
                 className="w-full border border-rule"
               />
             </div>
@@ -220,7 +224,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
           <ol className="mt-14 grid gap-x-gutter gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {serviceProcess.map((step) => (
               <li key={step.step} className="border-t border-rule pt-6">
-                <p className="font-utility text-xl leading-none text-mark">{step.step}</p>
+                <p className="font-utility text-xl leading-none text-accent-text">{step.step}</p>
                 <h2 className="mt-5 font-display text-lg font-bold text-fg">{step.title}</h2>
                 <p className="mt-4 text-sm text-fg-muted">{step.detail}</p>
               </li>

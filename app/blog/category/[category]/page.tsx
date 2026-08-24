@@ -64,7 +64,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
     <>
       <Schema graph={graph} />
 
-      <main>
+      <main id="main" tabIndex={-1}>
         <SectionFrame
           surface="ink"
           as="header"

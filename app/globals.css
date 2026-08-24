@@ -54,7 +54,7 @@
   --color-ink-3: #232328;         /* hairline on ink                        */
   --color-ink-4: #08080a;         /* sunken well on ink                     */
   --color-stock-0: #f5f5f1;       /* second sheet laid on top — raised card */
-  --color-cyan-deep: #0071a3;     /* cyan as text on stock      4.59:1 AA   */
+  --color-cyan-deep: #006795;     /* cyan as text: 5.3:1 stock, 4.5:1 sunken */
   --color-magenta-deep: #b80065;  /* magenta as text on stock   5.53:1 AA   */
   --color-magenta-lift: #ff3d9e;  /* magenta as text on ink     5.98:1 AA   */
   --color-knockout: #ffffff;      /* unprinted paper inside a solid ink fill */
@@ -70,10 +70,10 @@
 
   --color-fg: #0c0c0e;            /* 16.2:1 on stock  */
   --color-fg-muted: #4a4a50;      /*  7.5:1 on stock  */
-  --color-fg-faint: #63636a;      /*  5.1:1 on stock  */
+  --color-fg-faint: #606067;      /*  5.3:1 on stock, 4.5:1 on the sunken well */
 
   --color-rule: #dcdcd5;          /* decorative hairline        */
-  --color-rule-strong: #7a7a72;   /* interactive border  3.7:1  */
+  --color-rule-strong: #6c6c64;   /* border and separator glyph  4.5:1 */
 
   --color-accent: #e6007e;          /* magenta carries the brand — as a FILL */
   --color-accent-fg: #ffffff;       /* knockout on magenta      4.50:1 AA   */
@@ -81,10 +81,13 @@
   --color-accent-hover-fg: #ffffff; /* knockout on magenta-deep 6.53:1 AA   */
   --color-accent-text: #b80065;     /* magenta as TEXT          5.53:1 AA   */
 
-  --color-link: #0071a3;          /* cyan supports  4.59:1 */
+  --color-link: #006795;          /* cyan supports  5.3:1 stock, 4.5:1 sunken */
   --color-link-hover: #0c0c0e;
 
-  --color-mark: #e6007e;          /* functional tick / underline           */
+  /* NOT a text colour. 3.83:1 on stock — fine for a tick, a rule or an icon,
+     which WCAG holds to 3:1, and a failure for anything with words in it.
+     Use --color-accent-text for text. */
+  --color-mark: #e6007e;          /* functional tick / underline   3.8:1   */
   --color-focus: #e6007e;         /* focus ring          3.83:1 vs stock   */
 
   --color-select-bg: #e6007e;
@@ -227,7 +230,7 @@
   --color-fg-faint: #7c7c86;               /*  4.7:1 */
 
   --color-rule: var(--color-ink-3);
-  --color-rule-strong: #606069;            /*  3.2:1 */
+  --color-rule-strong: #797982;            /*  4.5:1 */
 
   --color-accent: var(--color-magenta);
   --color-accent-fg: var(--color-knockout);
@@ -262,10 +265,10 @@
 
   --color-fg: var(--color-ink);
   --color-fg-muted: #4a4a50;
-  --color-fg-faint: #63636a;
+  --color-fg-faint: #606067;
 
   --color-rule: var(--color-stock-2);
-  --color-rule-strong: #7a7a72;
+  --color-rule-strong: #6c6c64;
 
   --color-accent: var(--color-magenta);
   --color-accent-fg: var(--color-knockout);

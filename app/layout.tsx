@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "@/components/motion";
-import { JobTicketRail } from "@/components/ui";
+import { JobTicketRail, SkipLink } from "@/components/ui";
 import { site } from "@/content";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT }} />
         <MotionProvider>
+          <SkipLink />
           <JobTicketRail />
           {children}
         </MotionProvider>
