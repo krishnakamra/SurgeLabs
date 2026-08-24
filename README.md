@@ -138,6 +138,53 @@ useMotion({
    bounding box at any angle and aspect ratio; a fixed inset shows cut corners
    on a wide, short band at 75°.
 
+## Content layer
+
+Typed data in `/content`, no CMS. Pages generate statically from it.
+
+Three files carry owner instructions at the top and **must be reviewed before
+launch** — read the comment, don't just edit the values:
+
+| File | What needs doing |
+| ---- | ---------------- |
+| `site.ts` | NAP must match the Google Business Profile character for character. `streetAddress` is empty — fill it or keep it a service-area business. |
+| `packages.ts` | **Every price is a placeholder.** Nothing else hardcodes a price. |
+| `stats.ts` | Numbers are true by construction and checkable. Do not add review counts. |
+| `testimonials.ts` | Empty by design. The section does not render while it is. Real, attributed reviews only. |
+
+## Homepage
+
+Section order and the components behind each:
+
+| # | Section | Notes |
+| - | ------- | ----- |
+| 01 | Hero | `RegistrationReveal trigger="load"` — already on screen, so nothing to scrub against |
+| 02 | The split | `SplitPress` — five suppliers as five badly-registered plates, coming into register one at a time over a 90vh hold |
+| 03 | Services | Three `PinnedPanel`s, 60vh hold each |
+| 04 | Proof | `CounterRoll` press wheels |
+| 05 | Packages | From `content/packages.ts` |
+| 06 | Industries | Mono list; the detail line is always visible, hover only raises contrast |
+| 07 | Testimonials | Renders nothing while the array is empty |
+| 08 | CTA + footer | NAP, hours, every service and city route |
+
+Footer service and city links point at routes that do not exist yet — they
+come in a later pass and are generated from the content layer, so they light
+up on their own.
+
+### Two traps worth knowing about
+
+**GSAP `yPercent` on top of an SSR inline transform doubles it.** `CounterRoll`
+ships each wheel with an inline `translateY(-N%)` so the server renders the
+final number. GSAP parses that off the computed matrix into a px `y` cache and
+then applies `yPercent` *in addition*, so a counter for 3 reads 6. Always pass
+`y: 0` alongside `yPercent` when an element already carries a transform.
+
+**Scrub an effect against the distance the reader actually spends on it.** The
+split originally scrubbed against its section height and had fully resolved a
+third of the way in — the animation carrying the argument was over before
+anyone had read it. It now runs across a sticky hold, so the misregistration
+is on screen for as long as it takes to scroll past.
+
 ## Scripts
 
 ```

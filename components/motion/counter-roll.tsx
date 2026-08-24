@@ -68,7 +68,13 @@ export function CounterRoll({
         const digits = [...format(n, width, separator)].filter((c) => /\d/.test(c));
         digits.forEach((digit, index) => {
           const wheel = wheels.current[index];
-          if (wheel) gsap.set(wheel, { yPercent: -Number(digit) * 10 });
+          // `y: 0` is load-bearing. The wheels ship with an inline
+          // translateY(-N%) so the server renders the final number; GSAP
+          // parses that off the computed matrix into its own `y` cache in px
+          // and then applies yPercent *in addition* to it, landing on exactly
+          // twice the intended offset — a counter reading 6 for a value of 3.
+          // Zeroing y each time makes yPercent the only vertical term.
+          if (wheel) gsap.set(wheel, { y: 0, yPercent: -Number(digit) * 10 });
         });
       };
 

@@ -9,6 +9,9 @@ export type { HalftoneFade, HalftoneFieldProps, Plate } from "./halftone-field";
 
 export { JobTicketRail } from "./job-ticket-rail";
 
+export { PanelMedia } from "./panel-media";
+export type { PanelMediaProps } from "./panel-media";
+
 export { CropMarks, RegistrationTarget } from "./press-marks";
 
 export { RegistrationText } from "./registration-text";

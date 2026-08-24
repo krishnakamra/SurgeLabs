@@ -9,10 +9,19 @@ export type RegistrationRevealProps = {
   as?: ElementType;
   /** Plate spread at rest. Any CSS length; em ties it to type size. */
   offset?: string;
-  /** ScrollTrigger start, e.g. "top 80%". */
+  /**
+   * "scroll" scrubs convergence against the element's progress through the
+   * viewport. "load" runs it once on mount — for a hero, which is already on
+   * screen and has no scroll distance to scrub against.
+   */
+  trigger?: "scroll" | "load";
+  /** ScrollTrigger start, e.g. "top 80%". Ignored when trigger is "load". */
   start?: string;
-  /** ScrollTrigger end. Convergence completes here. */
+  /** ScrollTrigger end. Convergence completes here. Ignored on "load". */
   end?: string;
+  /** trigger="load" only. */
+  duration?: number;
+  delay?: number;
   className?: string;
 };
 
@@ -36,17 +45,28 @@ export function RegistrationReveal({
   children,
   as = "span",
   offset = "0.4em",
+  trigger = "scroll",
   start = "top 85%",
   end = "top 38%",
+  duration = 1.6,
+  delay = 0.15,
   className,
 }: RegistrationRevealProps) {
   const root = useRef<HTMLElement | null>(null);
 
   useMotion({
     scope: root,
-    deps: [children, start, end],
+    deps: [children, trigger, start, end, duration, delay],
     animate({ gsap, scope }) {
       if (!scope) return;
+
+      if (trigger === "load") {
+        // The hero is already on screen, so there is no scroll distance to
+        // scrub against. The plates are painted off-register on the first
+        // frame by CSS; this pulls them home once.
+        gsap.to(scope, { "--reg-p": 0, duration, delay, ease: "power3.inOut" });
+        return;
+      }
 
       gsap.fromTo(
         scope,

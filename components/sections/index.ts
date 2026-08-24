@@ -1,0 +1,8 @@
+export { Hero } from "./hero";
+export { Split } from "./split";
+export { Services } from "./services";
+export { Proof } from "./proof";
+export { PackagesTeaser } from "./packages-teaser";
+export { Industries } from "./industries";
+export { Testimonials } from "./testimonials";
+export { CallToAction, SiteFooter } from "./cta-footer";
