@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { MotionProvider } from "@/components/motion";
 import { JobTicketRail, SkipLink } from "@/components/ui";
 import { site } from "@/content";
+import { META_PIXEL_ID, analyticsEnabled } from "@/lib/analytics/config";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -41,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <JobTicketRail />
           {children}
         </MotionProvider>
+        {analyticsEnabled ? <MetaPixel pixelId={META_PIXEL_ID} /> : null}
       </body>
     </html>
   );
