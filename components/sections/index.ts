@@ -6,3 +6,4 @@ export { PackagesTeaser } from "./packages-teaser";
 export { Industries } from "./industries";
 export { Testimonials } from "./testimonials";
 export { CallToAction, SiteFooter } from "./cta-footer";
+export { SiteHeader } from "./site-header";

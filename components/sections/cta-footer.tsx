@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { Logo } from "@/components/brand";
 import { MagneticCTA } from "@/components/motion";
-import { Button, Eyebrow, HalftoneField, RegistrationTarget, SectionFrame } from "@/components/ui";
+import { Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { getCity, liveCities, services, site } from "@/content";
 
 const LINK =
@@ -65,20 +66,31 @@ export function SiteFooter() {
         <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
           {/* NAP */}
           <div className="lg:col-span-4">
-            {/* The only link to the homepage on the site. Without it every
-                route is reachable and the front page is not — an orphan, and
-                the one page the rest of the site should be voting for. */}
+            {/* Second of the two homepage links — the masthead carries the
+                other. Both are here on purpose: without one the front page is
+                an orphan, reachable from nowhere while every route below it
+                is, and it is the page the rest of the site should be voting
+                for.
+
+                The stacked lockup, because this column is narrow and the
+                horizontal one would set the wordmark smaller than its 24px
+                floor to fit. `inline-flex` keeps the box as wide as the
+                wordmark, so the lockup sits flush to the column's left edge
+                with the mark centred over it.
+
+                The business name is not repeated as a heading underneath. It
+                is already in the wordmark, in the copyright line at the foot
+                of this footer, and in the LocalBusiness schema — three times
+                is enough, and a display-weight duplicate directly under the
+                logo reads as a mistake. */}
             <Link
               href="/"
-              className="flex items-center gap-3 rounded-[2px] outline-offset-4 focus-visible:outline-2 focus-visible:outline-focus"
+              className="inline-flex rounded-[2px] outline-offset-[6px] focus-visible:outline-2 focus-visible:outline-focus"
             >
-              <RegistrationTarget className="size-4 text-mark" />
-              <p className="font-display text-lg font-extrabold text-fg">
-                {site.name} — Mississauga
-              </p>
+              <Logo variant="stacked" size={44} />
             </Link>
 
-            <address className="mt-6 not-italic">
+            <address className="mt-8 not-italic">
               {hasStreet ? (
                 <p className="text-sm text-fg-muted">{address.streetAddress}</p>
               ) : null}

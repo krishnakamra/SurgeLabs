@@ -125,7 +125,48 @@ node scripts/generate-hero-image.mjs      # writes both trims
 
 Two trims, landscape and portrait, art-directed with `<picture>`. Cropping the landscape sheet into a phone-shaped box threw away 72% of the bytes, and Chrome scores an LCP image by the part that survives the crop.
 
-Nothing here generates a logo or a brandmark, and nothing should.
+The logo is not generated this way and never should be — it is drawn geometry, not a prompt. See *The logo* below.
+
+---
+
+## The logo
+
+One geometry, in **`lib/brand/mark.ts`**. Everything else is cut from it.
+
+```bash
+npm run gen:brand
+```
+
+That rewrites the handoff SVGs in `public/brand/`, the favicon set in `app/`
+(`favicon.ico`, `icon.svg`, `apple-icon.png`) and the PWA icons the manifest
+points at. Change a number in `mark.ts` and re-run; **do not hand-edit a
+generated file**, or the favicon and the letterhead become different logos.
+
+The running site does not load any of those files. It renders
+`components/brand/logo.tsx`, which inlines the same path so it can take
+`currentColor` from whatever `[data-surface]` section it lands in — the ink
+version and the stock version are the same call with no variant to choose.
+Three lockups: `horizontal` (default, the masthead), `stacked` (footer, OG
+card), `mark` (favicon, masthead under 480px, loading state).
+
+**`/brand` is the spec page** — every variant on both surfaces at real sizes,
+clear space, minimum sizes and misuse, all rendered by the component itself so
+the page cannot drift from the site. `noindex`, and it is the thing to send a
+client who asks for brand guidelines.
+
+**⚠️ The wordmark is a placeholder.** Until the client supplies drawn artwork,
+"SURGE LABS" is live type in the display face, tuned in
+`lib/brand/wordmark.ts` — positive tracking where the rest of the site runs
+negative, and a pinned optical size where the rest of the site leaves it
+automatic. The four-step swap for real artwork is commented above the
+`Wordmark` function in `components/brand/logo.tsx`. Until then the two lockup
+SVGs in the handoff pack carry `<text>` rather than outlines and are not safe
+to send to a printer; the mark files have no type in them and are.
+
+The rasteriser, PNG encoder and ICO container behind the favicon set are in
+`scripts/lib/raster.mjs` — about 150 lines and no dependency, because the mark
+is one closed polygon of straight edges and that is the one case where writing
+it is smaller than installing `sharp`.
 
 ---
 

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { MotionProvider } from "@/components/motion";
+import { SiteHeader } from "@/components/sections";
 import { JobTicketRail, SkipLink } from "@/components/ui";
 import { site } from "@/content";
 import { META_PIXEL_ID, analyticsEnabled } from "@/lib/analytics/config";
@@ -41,6 +42,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MotionProvider>
           <SkipLink />
           <JobTicketRail />
+          {/* The masthead lives here, not in each page, so a new route cannot
+              ship without the logo on it. The footer is still per-page — it
+              carries the NAP and the link matrix, and /quote/sent deliberately
+              does without one. */}
+          <SiteHeader />
           {children}
         </MotionProvider>
         {analyticsEnabled ? <MetaPixel pixelId={META_PIXEL_ID} /> : null}

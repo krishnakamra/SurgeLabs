@@ -149,6 +149,7 @@
   /* ─── Grid ──────────────────────────────────────────────────────────── */
   --container-page: 90rem;        /* 1440 */
   --spacing-gutter: 1.5rem;       /* 24 mobile → 40 desktop, see :root below */
+  --breakpoint-xs: 30rem;         /* 480 — where the logo drops its wordmark */
   --breakpoint-rail: 75rem;       /* 1200 — the `rail:` variant             */
 
   /* ─── Radius · zero everywhere. This is a print shop. ───────────────── */
@@ -160,6 +161,7 @@
   --ease-tick: cubic-bezier(0.4, 0, 0.2, 1);
 
   --animate-ticket-in: ticket-in 300ms var(--ease-press) both;
+  --animate-plate-pulse: plate-pulse 1.4s var(--ease-tick) infinite;
 }
 
 /* The rail readout stamps in when the reading line crosses a new sheet. */
@@ -171,6 +173,19 @@
   to {
     opacity: 1;
     translate: 0 0;
+  }
+}
+
+/* A plate coming up to density, and back. The loading state's only move —
+   opacity, so it cannot trigger layout, and no rotation because nothing in
+   this system spins. */
+@keyframes plate-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
   }
 }
 

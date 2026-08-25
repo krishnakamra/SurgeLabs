@@ -1,5 +1,7 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import { MARK_PATH, MARK_SIZE, STACK_GAP } from "@/lib/brand/mark";
+import { WORDMARK_SCALE, WORDMARK_TEXT, WORDMARK_TRACKING } from "@/lib/brand/wordmark";
 
 export const runtime = "nodejs";
 
@@ -44,6 +46,53 @@ function CropMark({ corner }: { corner: "tl" | "tr" | "bl" | "br" }) {
     <div style={{ position: "absolute", ...v, ...h, width: 44, height: 44, display: "flex" }}>
       <div style={{ ...arm, ...(corner[0] === "t" ? { top: 0 } : { bottom: 0 }), ...(corner[1] === "l" ? { left: 0 } : { right: 0 }), width: 28, height: 1 }} />
       <div style={{ ...arm, ...(corner[0] === "t" ? { top: 0 } : { bottom: 0 }), ...(corner[1] === "l" ? { left: 0 } : { right: 0 }), width: 1, height: 28 }} />
+    </div>
+  );
+}
+
+/**
+ * The stacked lockup, drawn from the same geometry as everything else
+ * (lib/brand/mark.ts) rather than approximated in Satori's subset of CSS.
+ *
+ * This replaced a magenta rule with the words "Surge Labs" under it, which
+ * was a stand-in for a logo the build did not have. Satori renders <path>, so
+ * the mark here is the mark — not a picture of one.
+ *
+ * The wordmark is still live text and inherits the placeholder's tuning:
+ * positive tracking, 800 weight, the display face when the fetch above
+ * succeeded. Satori has no font-variation-settings, so the pinned optical
+ * size cannot follow it here; the face is loaded at a single 800 instance and
+ * every card gets the same letterforms anyway, which is what pinning it was
+ * for. Satori also wants letter-spacing in px, so the em ratio is resolved
+ * against the font size rather than passed through.
+ */
+function StackedLockup({ hasFont, size = 64 }: { hasFont: boolean; size?: number }) {
+  const wordSize = size * WORDMARK_SCALE.stacked;
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: Math.round(size * STACK_GAP),
+      }}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`} fill={STOCK}>
+        <path d={MARK_PATH} />
+      </svg>
+      <div
+        style={{
+          display: "flex",
+          fontSize: wordSize,
+          lineHeight: 1,
+          letterSpacing: wordSize * WORDMARK_TRACKING,
+          color: STOCK,
+          fontWeight: 800,
+          fontFamily: hasFont ? "Bricolage" : "sans-serif",
+        }}
+      >
+        {WORDMARK_TEXT}
+      </div>
     </div>
   );
 }
@@ -99,12 +148,7 @@ export async function GET(request: NextRequest) {
         </div>
 
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ width: 132, height: 4, background: MAGENTA, display: "flex" }} />
-            <div style={{ fontSize: 22, letterSpacing: 3, color: STOCK, textTransform: "uppercase", fontFamily: "sans-serif" }}>
-              Surge Labs
-            </div>
-          </div>
+          <StackedLockup hasFont={Boolean(font)} />
           <div style={{ fontSize: 20, letterSpacing: 2.5, color: FAINT, textTransform: "uppercase", fontFamily: "sans-serif" }}>
             Web · Print · Apparel
           </div>
