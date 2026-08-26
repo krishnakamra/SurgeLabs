@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { getCity, getService, site, work } from "@/content";
+import { crossSellShots, galleryCategories } from "@/content/gallery";
 import { imageSrc, workStills } from "@/content/media";
 import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
 import { breadcrumbs, pageGraph, webPage } from "@/lib/seo/schema";
@@ -44,18 +45,66 @@ export default function WorkPage() {
           <Eyebrow spec={site.serviceArea}>Recent work</Eyebrow>
           <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">{seo.h1}</h1>
           <p className="mt-10 max-w-[60ch] text-md text-fg-muted">
-            Every job below was made in our building on Skymark Ave. Each one says what was
-            ordered, what it was printed or stitched on, and how long it took. We do not put a
-            client&rsquo;s name on a page without asking them, so each entry gives the trade and
-            the town instead.
+            Six things we make, and a run of recent jobs underneath. Everything below was made in
+            our building on Skymark Ave. We do not put a client&rsquo;s name on a page without
+            asking them first, so each job gives the trade and the town instead.
           </p>
+        </SectionFrame>
+
+        {/* The six categories, first. Someone landing on /work is more often
+            asking "do you make the thing I need" than "are you any good", and
+            the case studies underneath answer the second question. */}
+        <SectionFrame
+          surface="stock"
+          id="what-we-make"
+          padding="md"
+          ticket={{ number: "01", label: "WHAT WE MAKE", spec: `${galleryCategories.length} CATEGORIES` }}
+        >
+          <Eyebrow number="01" spec="PICK ONE">
+            What we make
+          </Eyebrow>
+          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+            Six things, all made in the same building.
+          </h2>
+
+          <ul className="mt-14 grid gap-x-gutter gap-y-14 border-t-[length:var(--hairline)] border-rule pt-12 sm:grid-cols-2 lg:grid-cols-3">
+            {galleryCategories.map((category) => {
+              const shots = crossSellShots(category);
+              return (
+                <li key={category.slug}>
+                  <Link href={`/work/${category.slug}`} className="group block">
+                    <div className="grid grid-cols-2 gap-px bg-rule">
+                      {shots.map((shot) => (
+                        <div
+                          key={shot.id}
+                          className="relative aspect-[4/3] overflow-hidden bg-surface-sunken"
+                        >
+                          <Image
+                            src={imageSrc(shot)}
+                            alt={shot.alt}
+                            fill
+                            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 15vw"
+                            className="object-cover transition-transform duration-[var(--dur-slow)] ease-press group-hover:scale-[1.04]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <h3 className="mt-6 font-display text-lg font-bold text-fg underline decoration-[length:var(--hairline)] decoration-transparent underline-offset-[6px] transition-colors group-hover:decoration-mark">
+                      {category.name}
+                    </h3>
+                    <p className="mt-3 max-w-[34ch] text-sm text-fg-muted">{category.blurb}</p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </SectionFrame>
 
         {/* The website portfolio, if there is one. Renders nothing while
             content/portfolio.ts is empty — see docs/PORTFOLIO.md. */}
         <PortfolioGrid
           surface="stock"
-          ticketNumber="01"
+          ticketNumber="02"
           heading="Websites, live right now."
           standfirst="Open any of them. The line under each says exactly what we did on it — some we designed and built, some we rebuilt, and on a few we only did the search work."
         />

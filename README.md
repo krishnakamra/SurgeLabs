@@ -94,6 +94,24 @@ Adding a new category means adding it to `categories` in `content/posts.ts` **an
 
 ---
 
+## How to add a product to a work gallery
+
+`/work` is six product galleries — websites, business cards, print material, signs and vehicles, apparel, design and branding — plus the case-study list underneath. The Work dropdown, the sitemap, the keyword gate and the route audit all read from `content/gallery.ts`, so adding a category or an item lights it up everywhere.
+
+**To add an item** to an existing category:
+
+1. Append a `GalleryItem` to `galleryItems` in `content/gallery.ts` — `slug`, `category`, `title`, `blurb`, `spec`, `price`.
+2. Add a matching entry to `galleryStills` in `content/media.ts`, keyed by the same slug. That is where the job id, model and prompt live so the image can be regenerated.
+3. `npm run build`. The validator in `content/gallery.ts` throws at import if the slug has no image, the category does not exist, or any field is blank.
+
+**To add a category**, add a `GalleryCategory` with its `h1`, `metaTitle`, `description` and `keywords`. `npm run check:seo` asserts the H1 and the title both carry the primary keyword, and `npm run check:routes` fails if nothing links to the new page — the Work dropdown is generated from this list, so it will.
+
+Every price in this file is written in two other places as well — `alaCarte` in `content/packages.ts` and the specs in `content/services.ts`. Change one, change all three. A customer who finds $79 on one page and $89 on another believes neither.
+
+The **"Goes with this"** strip at the foot of each category comes from that category's `goesWith` list. It is deliberately not labelled "people also bought": there is no purchase data behind this site, and a fabricated aggregate is a false representation rather than a design flourish. It says "usually ordered on the same job ticket", which is true and, from a shop that runs the tickets, a stronger claim than an algorithm's.
+
+---
+
 ## How to add a website to the portfolio
 
 Full instructions, including the prompt to hand to another Claude session, are in **[docs/PORTFOLIO.md](docs/PORTFOLIO.md)**. The short version:

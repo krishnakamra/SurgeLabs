@@ -1,4 +1,5 @@
 import { alaCarte, cities, monthlyPlans, packages, priceLabel, services, site } from "@/content";
+import { galleryCategories, itemsInCategory } from "@/content/gallery";
 import { posts } from "@/content/posts";
 
 /**
@@ -111,6 +112,21 @@ from the ${site.address.locality} shop is available on any order.
 ## Services
 
 ${serviceBlock()}
+
+## What we make, by category
+
+Each of these is a page listing the actual products, with the stock, the
+finish and the price for each one.
+
+${galleryCategories
+  .map((category) => {
+    const items = itemsInCategory(category.slug);
+    const lines = items
+      .map((item) => `  - ${item.title} — ${item.price} — ${item.spec}`)
+      .join("\n");
+    return `### ${category.name} — ${site.url}/work/${category.slug}\n${category.intro}${lines ? `\n\n${lines}` : ""}`;
+  })
+  .join("\n\n")}
 
 ## Packages and published prices (CAD)
 

@@ -1,4 +1,5 @@
 import { services } from "@/content";
+import { galleryCategories } from "@/content/gallery";
 
 /**
  * THE NAVIGATION MODEL — one tree, three consumers.
@@ -17,6 +18,12 @@ export type NavLink = {
   href: string;
   /** Shown in the header dropdown and the mobile overlay. */
   description?: string;
+  /**
+   * Render as a quiet single-line row at the foot of the menu rather than as
+   * one of the products above it. For the "everything" link that belongs in
+   * the menu but is not itself a thing you can order.
+   */
+  compact?: boolean;
 };
 
 export type NavItem = NavLink & { children?: readonly NavLink[] };
@@ -32,6 +39,26 @@ export const serviceLinks: readonly NavLink[] = services.map((service) => ({
   description: service.summary,
 }));
 
+/**
+ * The Work dropdown, generated from content/gallery.ts.
+ *
+ * Same rule as the service links above: a seventh category cannot be added to
+ * the gallery without appearing in the nav, and the route audit fails if a
+ * generated page is not reachable from here.
+ *
+ * "All work" is last rather than first on purpose — someone opening this menu
+ * wants a product, and the case-study index is the fallback for the person
+ * who wants to see whether we are any good.
+ */
+export const workLinks: readonly NavLink[] = [
+  ...galleryCategories.map((category) => ({
+    label: category.name,
+    href: `/work/${category.slug}`,
+    description: category.blurb,
+  })),
+  { label: "All work and recent jobs", href: "/work", compact: true },
+];
+
 export const primaryNav: readonly NavItem[] = [
   {
     label: "Services",
@@ -43,7 +70,14 @@ export const primaryNav: readonly NavItem[] = [
     children: serviceLinks,
   },
   { label: "Packages", href: "/packages", description: "What things cost, on the page" },
-  { label: "Work", href: "/work", description: "Recent jobs, as job tickets" },
+  {
+    label: "Work",
+    // Like Services, the parent is the menu rather than a destination — but
+    // unlike Services it also has a real page behind it, so it stays a link
+    // target for the footer and the audit while the header renders a button.
+    href: "/work",
+    children: workLinks,
+  },
   { label: "About", href: "/about", description: "One shop, one floor" },
   { label: "Blog", href: "/blog", description: "Guides, prices and specs" },
   {

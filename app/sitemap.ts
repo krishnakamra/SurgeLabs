@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { localPages, packages, services, site } from "@/content";
+import { galleryCategories } from "@/content/gallery";
 import { liveCategories, posts } from "@/content/posts";
 
 /**
@@ -27,6 +28,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
     { url: `${site.url}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.8 },
   ];
+
+  // The gallery categories are commercial pages, not an archive: someone
+  // searching "business card printing mississauga" wants one of these, so
+  // they sit level with the service pages rather than below them.
+  const galleries: MetadataRoute.Sitemap = galleryCategories.map((category) => ({
+    url: `${site.url}/work/${category.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
 
   const servicePages: MetadataRoute.Sitemap = services.map((service) => ({
     url: `${site.url}/${service.slug}`,
@@ -68,5 +79,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // here; the teaser links are covered by /packages above.
   void packages;
 
-  return [...staticRoutes, ...servicePages, ...local, ...blog];
+  return [...staticRoutes, ...servicePages, ...galleries, ...local, ...blog];
 }

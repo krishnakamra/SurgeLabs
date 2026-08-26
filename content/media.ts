@@ -411,6 +411,111 @@ export const categoryStills: Record<string, ImageAsset> = {
 };
 
 /**
+ * The product galleries under /work.
+ *
+ * Keyed by the item slug in content/gallery.ts, which is where the editorial
+ * side of each one lives — the title, the spec, the price note. This file
+ * holds only what is needed to reproduce the image: the job id, the model and
+ * the exact prompt.
+ *
+ * ⚠️  THESE ARE GENERATED, NOT PHOTOGRAPHS OF OUR WORK. Every prompt says "no
+ *     text, no words, no lettering" several ways, so nothing in them carries
+ *     an invented brand — they show a stock, a finish and a process, which is
+ *     what the galleries are actually about. Replace them with real product
+ *     photography as it is shot; the alt text and the aspect stay the same, so
+ *     it is a file swap and nothing else moves.
+ */
+export const galleryStills: Record<string, ImageAsset> = {
+  "cards-16pt": shot("g-cards-16pt", "7792aa17-565a-446f-8b73-7b116ff5d017", "161710", "4:3",
+    "A neat stack of thick matte black business cards on a matte charcoal surface, the clean guillotine cut edge sharp in the foreground, three cards fanned beside the stack face up and completely blank. Hard directional light from one side, crisp geometric shadows, shot from a low three-quarter angle. No text, no words, no logos, no lettering or writing on any card. Editorial product photography, photorealistic",
+    "A stack of thick matte black business cards with three fanned beside it, the cut edge sharp in the foreground."),
+  "cards-spot-uv": shot("g-cards-spot-uv", "f2650295-f389-4626-8a06-f992ea9c9e80", "161710", "4:3",
+    "Extreme close-up of a soft-touch matte laminated business card held at a raking angle, a glossy raised spot UV varnish in an abstract geometric shape catching the light against the velvety matte surface around it. Matte charcoal background, single hard light source, shallow depth of field. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A soft-touch card at a raking angle, a glossy raised spot UV shape catching the light against the matte surface."),
+  "cards-painted-edge": shot("g-cards-painted-edge", "5e4b822a-f2ae-4e52-819b-3a6b8772002a", "161710", "4:3",
+    "A fanned stack of very thick 32pt business cards standing on edge, a bright painted colour core running as a visible stripe through the middle of every card between two layers of dark matte stock. Matte charcoal surface, hard directional light, crisp shadows, macro detail on the painted edge. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "32pt cards standing on edge, a painted colour core running as a visible stripe through the middle of each one."),
+  "cards-foil": shot("g-cards-foil", "8bcbc30b-2c64-4e6d-a12a-26becb8d4eb9", "161710", "4:3",
+    "A dark uncoated business card photographed at a steep raking angle, a hot-foil stamped abstract geometric border in bright gold metal leaf catching a single hard light, the foil visibly brighter and more reflective than any ink could be. Matte charcoal surface, deep shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A dark uncoated card with a hot-foil stamped gold border catching a single hard light."),
+  "cards-letterpress": shot("g-cards-letterpress", "bef5d04a-db16-4f90-86f5-17f3b8638bbc", "161711", "4:3",
+    "Macro of a heavy uncoated cotton business card showing a deep blind deboss of an abstract geometric mark pressed into the paper, no ink at all, raking side light making the impression read as shadow and the paper fibres visible at the edge. Matte charcoal surface. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A heavy uncoated card with a deep blind deboss pressed into it, the impression reading as shadow under raking light."),
+  "cards-cut": shot("g-cards-cut", "1407eb8f-892b-410b-bc0e-a4063de95e52", "161711", "4:3",
+    "A freshly guillotined lift of thick printed cards sitting on the steel bed of a paper cutter, the blade raised above them, the cut face of the stack perfectly flush and catching hard directional light, fine paper dust in the air. Brushed steel and matte charcoal. No text, no words, no logos, no lettering. Editorial industrial photography, photorealistic",
+    "A freshly guillotined lift of cards on the steel bed of a paper cutter, the blade raised above them."),
+  "print-flyers": shot("g-print-flyers", "26ae940c-d55d-4e55-88bd-448cdd63f4d7", "161710", "4:3",
+    "A wide fan of glossy letter-size flyers spread across a matte charcoal surface like a hand of cards, the gloss coating catching a hard directional light along the sweep, edges crisp. Shot from a low three-quarter angle. No text, no words, no logos, no lettering or writing on any sheet. Editorial product photography, photorealistic",
+    "A wide fan of glossy letter-size flyers, the coating catching the light along the sweep."),
+  "print-brochures": shot("g-print-brochures", "9f52fcfe-0b6a-4ae0-bcb6-cdc0f9819e84", "161710", "4:3",
+    "A stack of folded tri-fold brochures on a matte charcoal surface with one standing open in a Z shape behind it, heavy matte paper, clean folds with no cracking on the spine. Hard directional light from one side, crisp geometric shadows. No text, no words, no logos, no lettering on any panel. Editorial product photography, photorealistic",
+    "A stack of tri-fold brochures with one standing open behind it, showing clean uncracked folds."),
+  "print-menus": shot("g-print-menus", "d5a7538a-bf5d-4739-84ad-f092cec126ae", "161710", "4:3",
+    "A short stack of folded takeaway menus on a warm concrete restaurant counter, the top one half open, heavy uncoated paper, a folded napkin and a water glass softly out of focus behind. Morning directional light, crisp shadows. No text, no words, no logos, no lettering anywhere. Editorial food-and-beverage photography, photorealistic",
+    "A stack of folded takeaway menus on a restaurant counter, the top one half open."),
+  "print-stationery": shot("g-print-stationery", "718d6781-c3c1-440f-80b1-bfb3660abf18", "161710", "4:3",
+    "Flat lay of a complete stationery set on a matte charcoal surface arranged on a precise grid: blank letterhead sheets, matching envelopes with the flaps open, a chipboard-backed notepad, and a stack of thick business cards. Hard directional light from one side, crisp geometric shadows, shot straight top-down. No text, no words, no logos, no lettering on any item. Editorial product photography, photorealistic",
+    "A stationery set photographed top-down: letterhead, envelopes with the flaps open, a notepad and a stack of cards."),
+  "print-folders": shot("g-print-folders", "772f467d-0939-4f2f-8954-9ae639acfcd3", "161710", "4:3",
+    "Two heavy card presentation folders on a matte charcoal surface, one closed and one open to show the glued interior pocket and the diagonal card slits cut into it, a few blank sheets tucked inside. Hard directional light, crisp shadows, low three-quarter angle. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Two presentation folders, one open to show the glued pocket and the diagonal card slits cut into it."),
+  "print-ncr": shot("g-print-ncr", "cfac6467-90e0-42c4-af9c-0968ffdd651b", "161710", "4:3",
+    "A stack of carbonless NCR form pads on a matte charcoal workbench, the top sheet lifted at one corner to reveal the yellow and pink copies underneath, ruled boxes visible as plain lines only, a pen resting beside them. Hard directional light, crisp shadows. No text, no words, no logos, no lettering or writing in any field. Editorial product photography, photorealistic",
+    "Carbonless NCR pads with the top sheet lifted to show the yellow and pink copies underneath."),
+  "sign-banner": shot("g-sign-banner", "1c12bc16-30e1-4332-9030-0acedf874d0e", "161732", "4:3",
+    "A large blank vinyl banner stretched tight across a construction site fence, hemmed on all four sides with brass grommets every 60 centimetres and bungee cords through them, the surface flat and untorn. Overcast daylight, shallow depth of field on the fence behind. No text, no words, no logos, no lettering or graphics on the banner. Editorial documentary photography, photorealistic",
+    "A vinyl banner stretched tight across a site fence, hemmed all round with grommets and bungee cords."),
+  "sign-lawn": shot("g-sign-lawn", "6802764a-4ad4-44af-ad6d-dd80b1d91d97", "161732", "4:3",
+    "Three blank corrugated plastic lawn signs pushed into a green suburban boulevard on folded wire H-stakes, seen from a low angle with the corrugation flutes visible along the top edge, soft late afternoon light, houses out of focus behind. No text, no words, no logos, no lettering or graphics on the signs. Editorial documentary photography, photorealistic",
+    "Three corrugated plastic lawn signs on wire H-stakes in a suburban boulevard, the flutes visible along the top edge."),
+  "sign-aframe": shot("g-sign-aframe", "f4f62652-f530-484f-9ccf-d7870cb3b066", "161732", "4:3",
+    "A blank A-frame sidewalk sign standing on a city pavement outside a shopfront at dusk, metal hinges and a plain white insert panel in the frame, warm light spilling from the window behind it. No text, no words, no logos, no lettering or graphics on the panel. Editorial architectural photography, photorealistic",
+    "An A-frame sidewalk sign on a pavement at dusk, its insert panel blank, warm light from the shopfront behind."),
+  "sign-display": shot("g-sign-display", "6603897e-c2fa-4a57-92be-f5250f8e0f0e", "161732", "4:3",
+    "A retractable roll-up banner stand fully extended beside two furled feather flags on poles in an empty exhibition hall, every printed surface completely blank flat grey, aluminium cartridge base visible. Polished concrete floor, even overhead light. No text, no words, no logos, no graphics or lettering anywhere. Editorial architectural photography, photorealistic",
+    "A retractable banner stand extended beside two feather flags in an empty hall, the aluminium cartridge base visible."),
+  "sign-vehicle": shot("g-sign-vehicle", "06ac165e-6829-42f8-9cfe-c0d4412a8842", "161732", "4:3",
+    "Close-up of finished cut vinyl graphics on the door of a clean white work van, an abstract dark grey geometric shape with a crisp knife-cut edge conforming over the door seam and handle recess. Bright overcast daylight, shallow depth of field. No text, no words, no logos, no letters anywhere in the graphic. Editorial documentary photography, photorealistic",
+    "Cut vinyl on a white van door, the knife-cut edge conforming over the door seam and the handle recess."),
+  "sign-window": shot("g-sign-window", "9f4cddca-1273-46ea-80c9-87e70b5d6130", "161732", "4:3",
+    "Storefront glass with a band of frosted etch privacy vinyl applied across it at seated height, reading as sandblasted glass, an abstract geometric shape cut out of the frost so clear glass shows through, warm interior light behind. No text, no words, no logos, no lettering. Editorial architectural photography, photorealistic",
+    "A band of frosted etch vinyl across storefront glass at seated height, with a shape cut out so clear glass shows through."),
+  "wear-polos": shot("g-wear-polos", "3913573c-c3b3-4093-a88f-ac7f3cf6193b", "161732", "4:3",
+    "A neat stack of folded black cotton polo shirts on a matte charcoal bench, the top one turned to show a plain embroidered abstract geometric shape on the left chest, the stitch texture crisp and raised. Hard directional light from one side, macro detail on the thread. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Folded black polo shirts, the top one showing an embroidered left chest with the stitch texture crisp and raised."),
+  "wear-hoodies": shot("g-wear-hoodies", "8ea18991-a379-4211-a6a5-647876a63716", "161732", "4:3",
+    "Two heavyweight hoodies laid flat and overlapping on a matte charcoal surface, one charcoal and one black, each with a plain embroidered abstract geometric shape on the left chest and a drawstring hood. Hard directional light, crisp shadows, shot straight top-down. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Two heavyweight hoodies laid flat and overlapping, each with an embroidered left chest and a drawstring hood."),
+  "wear-tees": shot("g-wear-tees", "1c40447a-af33-4361-b148-41d68e462d5e", "161732", "4:3",
+    "A stack of screen printed cotton t-shirts folded on a matte charcoal bench, the top shirt showing a bold flat abstract geometric print across the chest with the slightly raised plastisol ink texture visible, a screen printing squeegee resting beside them. Hard directional light, crisp shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Folded screen printed t-shirts with a squeegee beside them, the raised plastisol ink texture visible on the top shirt."),
+  "wear-caps": shot("g-wear-caps", "9e7e8b6b-c6f4-4323-abe1-a48fcec9f200", "161733", "4:3",
+    "Four structured baseball caps arranged in a row on a matte charcoal surface, each with a plain embroidered abstract geometric shape on the front panel, curved brims, one turned to show the closure at the back. Hard directional light from one side, crisp shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Four structured caps in a row, each embroidered on the front panel, one turned to show the closure at the back."),
+  "wear-hivis": shot("g-wear-hivis", "f4266b20-f2a5-4ce6-98d4-cb0eddcc0e88", "161732", "4:3",
+    "Hi-vis yellow safety vests and a long-sleeve hi-vis work shirt folded in a stack on a matte charcoal bench, reflective silver tape catching the light, a plain embroidered abstract shape on the chest of the top piece, work gloves and a hard hat beside them. Hard directional light, crisp shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Folded hi-vis vests and a work shirt with reflective tape catching the light, gloves and a hard hat beside them."),
+  "wear-aprons": shot("g-wear-aprons", "ce2a9939-f0ad-4b67-895f-5af10a8350a3", "161732", "4:3",
+    "A folded canvas apron with crossback straps and a natural canvas tote bag laid side by side on a warm concrete counter, each carrying a plain embroidered abstract geometric shape, the weave of the canvas visible. Morning directional light, crisp shadows, shot straight top-down. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A crossback canvas apron and a canvas tote side by side, each embroidered, the weave of the canvas visible."),
+  "design-brand-sheet": shot("g-design-brand-sheet", "7650b3e6-596e-4259-9b16-1b131e3c2747", "161749", "4:3",
+    "A printed brand guideline sheet lying open on a matte charcoal desk, showing a row of large solid colour swatch blocks with plain numeric-free rectangles beneath each, and a grid of abstract geometric mark variations at different sizes. No readable text anywhere, no words, no logos, no lettering — shapes and colour blocks only. Hard directional light from one side, crisp shadows, shot straight top-down. Editorial product photography, photorealistic",
+    "A printed brand sheet open on a desk, showing a row of solid colour blocks and a grid of mark variations at different sizes."),
+  "design-sketches": shot("g-design-sketches", "57895505-f1b2-47ea-9c28-49d64ee4f1b8", "161749", "4:3",
+    "A large sheet of tracing paper on a matte charcoal desk covered in hand-drawn pencil sketches of abstract geometric marks, shapes only and no letters, a mechanical pencil and a kneaded eraser resting on it, the pencil graphite catching raking light. Shot straight top-down, hard directional light, crisp shadows. No text, no words, no lettering anywhere. Editorial product photography, photorealistic",
+    "Tracing paper covered in hand-drawn pencil sketches of marks, with a mechanical pencil and eraser resting on it."),
+  "design-pantone": shot("g-design-pantone", "f950451d-cdbd-4050-97f7-8547f09ac8ec", "161749", "4:3",
+    "A Pantone-style fan deck of colour chips opened into a wide arc on a matte charcoal surface, the chips spanning greens and blues, a printed colour proof sheet with a CMYK control bar beneath it and a printer's loupe resting on the proof. Hard directional light, crisp geometric shadows, low three-quarter angle. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A fan deck of colour chips opened into an arc over a printed proof with a CMYK control bar and a loupe."),
+  "design-brand-kit": shot("g-design-brand-kit", "96d58ee4-2448-4467-98e3-c7ba4055e717", "161749", "4:3",
+    "Eight printed brand kit pages laid out in a precise grid on a matte charcoal surface, each page carrying only colour blocks, plain rules, spacing diagrams with thin measurement lines, and abstract geometric mark variations. No readable text anywhere, no words, no lettering, no logos — layout and colour only. Shot straight top-down, hard directional light, crisp shadows. Editorial product photography, photorealistic",
+    "Eight printed brand kit pages laid out in a grid, carrying colour blocks, spacing diagrams and mark variations."),
+  "design-vector": shot("g-design-vector", "81c83c59-34ff-4da6-820a-35543e7ce793", "161749", "4:3",
+    "A designer's monitor on a matte charcoal desk showing vector artwork in a drawing application: an abstract geometric shape with visible bezier anchor points, handles and a blue outline path, surrounded by plain grey interface panels with no readable labels. A graphics tablet and pen beside the keyboard. Hard directional light from one side, shallow depth of field. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A monitor showing vector artwork with visible bezier anchor points and handles, a graphics tablet beside the keyboard."),
+};
+
+/**
  * Where a component should point an <Image> right now.
  *
  * Once scripts/fetch-media.mjs has run, that is the self-hosted file under
@@ -436,4 +541,5 @@ export const allImages: ImageAsset[] = [
   ...Object.values(pageStills),
   ...Object.values(workStills),
   ...Object.values(categoryStills),
+  ...Object.values(galleryStills),
 ];

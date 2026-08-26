@@ -22,6 +22,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const { services } = await import(join(root, "content", "services.ts"));
 const { localPages } = await import(join(root, "content", "local-pages.ts"));
 const { posts, liveCategories } = await import(join(root, "content", "posts.ts"));
+const { galleryCategories } = await import(join(root, "content", "gallery.ts"));
 const { primaryNav, navCta } = await import(join(root, "lib", "navigation.ts"));
 
 /* ── 1. What exists ──────────────────────────────────────────────────────
@@ -55,6 +56,7 @@ const routes = new Set([
   "/",
   ...staticRoutes(),
   ...services.map((s) => `/${s.slug}`),
+  ...galleryCategories.map((c) => `/work/${c.slug}`),
   ...localPages.map((p) => `/${p.service}/${p.city}`),
   ...posts.map((p) => `/blog/${p.slug}`),
   ...liveCategories().map((c) => `/blog/category/${c.slug}`),

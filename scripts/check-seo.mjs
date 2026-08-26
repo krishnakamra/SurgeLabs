@@ -72,6 +72,16 @@ for (const page of localPages) {
 }
 
 
+// ── /work gallery categories ─────────────────────────────────────────
+// Their copy and their keywords both live on the category in
+// content/gallery.ts, so the headline on screen and the term it is aimed at
+// are written in the same place and checked against each other here.
+const { galleryCategories } = await import(join(root, "content", "gallery.ts"));
+const { galleryCategorySeo } = await import(join(root, "lib", "seo", "page-seo.ts"));
+for (const category of galleryCategories) {
+  check(`/work/${category.slug}`, galleryCategorySeo(category), category.keywords);
+}
+
 // ── Blog ─────────────────────────────────────────────────────────────
 // A post's primary keyword is the first entry in its frontmatter, and the
 // same rule applies as everywhere else: the headline on screen and the

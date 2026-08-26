@@ -61,7 +61,7 @@ export const pageSeo: Record<string, PageSeo> = {
   },
   "/work": {
     title: `Our Work in Mississauga — Print & Web${SUFFIX}`,
-    description: `Recent web, print, signage and apparel work from our Mississauga shop. See what we make and what it cost to make it. Call ${PHONE}.`,
+    description: `Everything we make in Mississauga — websites, business cards, print, signs, apparel and design — with recent jobs underneath. Call ${PHONE}.`,
     h1: "Our work, from the Mississauga floor",
   },
   "/about": {
@@ -94,6 +94,25 @@ export const pageSeo: Record<string, PageSeo> = {
 
 export function getPageSeo(path: string): PageSeo | undefined {
   return pageSeo[path];
+}
+
+/**
+ * SEO for a /work/<category> gallery, read straight off the category.
+ *
+ * The copy lives in content/gallery.ts rather than here because the H1 and
+ * the standfirst are written together — splitting them across two files is
+ * how a headline and a title stop agreeing.
+ */
+export function galleryCategorySeo(category: {
+  h1: string;
+  metaTitle: string;
+  description: string;
+}): PageSeo {
+  return {
+    title: `${category.metaTitle}${SUFFIX}`,
+    description: category.description,
+    h1: category.h1,
+  };
 }
 
 /** SEO for a local service × city page, derived so it cannot go missing. */

@@ -113,21 +113,36 @@ function Dropdown({ item, pathname }: { item: NavItem; pathname: string }) {
         hidden={!open}
         className="absolute left-0 top-full z-50 pt-5"
       >
+        {/* Capped and scrollable. The Work menu carries seven entries, which
+            at the old padding ran past the bottom of a 800px viewport and cut
+            the last item in half — a menu whose last item you cannot see is a
+            route nobody reaches. */}
         <ul
           data-surface="ink"
-          className="w-[22rem] border-[length:var(--hairline)] border-rule bg-surface p-2"
+          className="max-h-[min(72vh,34rem)] w-[22rem] overflow-y-auto border-[length:var(--hairline)] border-rule bg-surface p-2"
         >
           {item.children?.map((child) => (
-            <li key={child.href}>
+            <li key={child.href} className={child.compact ? "mt-2 border-t-[length:var(--hairline)] border-rule pt-2" : undefined}>
               <Link
                 href={child.href}
                 onClick={() => setOpen(false)}
                 aria-current={isCurrent(pathname, child.href) ? "page" : undefined}
-                className="group block p-5 transition-colors hover:bg-surface-raised focus-visible:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-focus"
+                className={cn(
+                  "group block px-5 transition-colors hover:bg-surface-raised focus-visible:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-focus",
+                  child.compact ? "py-3" : "py-4",
+                )}
               >
-                <span className="font-display text-lg font-bold text-fg">{child.label}</span>
+                <span
+                  className={cn(
+                    child.compact
+                      ? "font-utility text-2xs uppercase tracking-utility text-fg-muted group-hover:text-fg"
+                      : "font-display text-md font-bold text-fg",
+                  )}
+                >
+                  {child.label}
+                </span>
                 {child.description ? (
-                  <span className="mt-2 block max-w-[30ch] text-sm text-fg-muted">
+                  <span className="mt-1.5 block max-w-[32ch] text-sm text-fg-muted">
                     {child.description}
                   </span>
                 ) : null}
@@ -262,15 +277,32 @@ function MobileMenu({ pathname }: { pathname: string }) {
                       <p className="font-utility text-2xs uppercase tracking-utility text-fg-faint">
                         {item.label}
                       </p>
-                      <ul className="mt-5 space-y-4">
+                      {/* The same small line the desktop dropdown carries.
+                          Twelve children across two menus set at display size
+                          made a menu you scrolled rather than read; at this
+                          size the description fits and does the work. */}
+                      <ul className="mt-5 space-y-5">
                         {item.children.map((child) => (
                           <li key={child.href}>
                             <Link
                               href={child.href}
                               aria-current={isCurrent(pathname, child.href) ? "page" : undefined}
-                              className="block font-display text-xl font-extrabold text-fg"
+                              className="block"
                             >
-                              {child.label}
+                              <span
+                                className={cn(
+                                  child.compact
+                                    ? "font-utility text-2xs uppercase tracking-utility text-fg-muted"
+                                    : "font-display text-lg font-bold text-fg",
+                                )}
+                              >
+                                {child.label}
+                              </span>
+                              {child.description ? (
+                                <span className="mt-1 block max-w-[38ch] text-sm text-fg-muted">
+                                  {child.description}
+                                </span>
+                              ) : null}
                             </Link>
                           </li>
                         ))}
