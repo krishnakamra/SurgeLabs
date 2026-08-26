@@ -6,6 +6,8 @@ import { useMotion } from "@/lib/motion/use-motion";
 
 export type RegistrationRevealProps = {
   children: string;
+  /** Markup for the solid layer — see RegistrationText. */
+  solid?: React.ReactNode;
   as?: ElementType;
   /** Plate spread at rest. Any CSS length; em ties it to type size. */
   offset?: string;
@@ -43,6 +45,7 @@ export type RegistrationRevealProps = {
  */
 export function RegistrationReveal({
   children,
+  solid,
   as = "span",
   offset = "0.4em",
   trigger = "scroll",
@@ -85,6 +88,7 @@ export function RegistrationReveal({
       ref={root}
       as={as}
       offset={offset}
+      solid={solid}
       state="scrub"
       className={className}
     >

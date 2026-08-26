@@ -1,4 +1,4 @@
-import type { CSSProperties, ElementType, Ref } from "react";
+import type { CSSProperties, ElementType, ReactNode, Ref } from "react";
 import { cn } from "@/lib/cn";
 
 const PLATES = ["c", "m", "y", "k"] as const;
@@ -11,6 +11,14 @@ const PLATES = ["c", "m", "y", "k"] as const;
 export type RegistrationState = "registered" | "armed" | "scrub";
 
 export type RegistrationTextProps = {
+  /**
+   * Optional markup for the SOLID layer only — used to colour individual
+   * words. The plates keep the flat `children` string, because they paint
+   * through `content: attr(data-text)` and an attribute cannot carry spans.
+   * The result: one real text node for crawlers, and a styled headline for
+   * everyone else, with the plate effect intact.
+   */
+  solid?: ReactNode;
   /** Plain text only. One real text node; the plates are generated content. */
   children: string;
   as?: ElementType;
@@ -48,6 +56,7 @@ export type RegistrationTextProps = {
  */
 export function RegistrationText({
   children,
+  solid,
   as: Tag = "span",
   offset = "0.4em",
   state = "registered",
@@ -62,7 +71,7 @@ export function RegistrationText({
       style={{ "--reg-offset": offset } as CSSProperties}
       className={cn("relative block", className)}
     >
-      <span data-registration-solid="">{children}</span>
+      <span data-registration-solid="">{solid ?? children}</span>
       {PLATES.map((plate) => (
         <span
           key={plate}

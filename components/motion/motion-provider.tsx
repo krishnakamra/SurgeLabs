@@ -29,6 +29,8 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
 
     const startLenis = () => {
       if (lenisRef.current || prefersReducedMotion()) return;
+      // Snapping owns the scroll while it is on — see SectionSnap.
+      if (document.documentElement.dataset.snap === "on") return;
 
       const lenis = new Lenis({
         autoRaf: false, // GSAP's ticker drives it, see below
@@ -56,7 +58,21 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    startLenis();
+    // Lenis and CSS scroll-snap cannot both drive the scroll. SectionSnap
+    // sets html[data-snap] on the pages that want snapping; this watches for
+    // it and hands the scroll over, including across client-side navigation
+    // where the attribute appears and disappears without a reload.
+    const syncScrollOwner = () => {
+      if (document.documentElement.dataset.snap === "on") stopLenis();
+      else startLenis();
+    };
+    const snapWatcher = new MutationObserver(syncScrollOwner);
+    snapWatcher.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-snap"],
+    });
+
+    syncScrollOwner();
 
     // ── Refresh triggers ──────────────────────────────────────────────────
     // Fonts land after first paint and reflow every measured start/end.
@@ -135,6 +151,7 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("resize", onResize);
       window.clearTimeout(resizeTimer);
+      snapWatcher.disconnect();
       gsap.ticker.remove(tick);
       gsap.ticker.wake();
       stopLenis();

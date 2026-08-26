@@ -1,5 +1,5 @@
 import { getImageProps } from "next/image";
-import { MagneticCTA, MarqueeSpec, RegistrationReveal } from "@/components/motion";
+import { MagneticCTA, MarqueeSpec, PressLight, RegistrationReveal } from "@/components/motion";
 import { Button, CropMarks, Eyebrow } from "@/components/ui";
 import { site } from "@/content";
 import { getPageSeo } from "@/lib/seo/page-seo";
@@ -56,6 +56,19 @@ const heroCommon = {
 export function Hero() {
   const h1 = getPageSeo("/")!.h1;
 
+  // The three verbs are what the business does, so they carry the colour and
+  // the caps. The plates underneath still get the flat string — see the
+  // `solid` prop on RegistrationText — so the H1 is one text node to a
+  // crawler and the keyword gate still reads the sentence it asserts on.
+  const VERB = "font-black uppercase";
+  const headline = (
+    <>
+      We <span className={`${VERB} text-plate-m`}>print</span>,{" "}
+      <span className={`${VERB} text-plate-c`}>code</span> and{" "}
+      <span className={`${VERB} text-accent-lime`}>stitch</span> your brand into existence.
+    </>
+  );
+
   // Two trims, chosen by media query. See scripts/generate-hero-image.mjs:
   // cropping the landscape sheet into a phone-shaped box threw away 72% of
   // the bytes, and Chrome scores an LCP image by the part that survives the
@@ -77,6 +90,7 @@ export function Hero() {
       {/* getImageProps is Next's supported route to art direction: the img
           below carries the props <Image> would have set, so it still goes
           through the optimizer, AVIF/WebP and the responsive srcset. */}
+      <PressLight className="absolute inset-0 -z-10">
       <picture>
         <source media="(max-width: 639px)" srcSet={heroPortrait.srcSet} sizes={heroPortrait.sizes} />
         {/* fetchPriority is set explicitly. getImageProps returns the srcSet
@@ -96,6 +110,7 @@ export function Hero() {
 className="absolute inset-0 -z-10 object-cover"
         />
       </picture>
+      </PressLight>
       {/* No scrim. Both trims carry their own gradient hold over the
           column the type sits in — landscape holds from the left, portrait
           from the top — so a CSS overlay on top of that was darkening the
@@ -111,6 +126,7 @@ className="absolute inset-0 -z-10 object-cover"
           offset="0.09em"
           duration={1.7}
           className="mt-10 max-w-[22ch] font-display text-3xl font-extrabold text-fg"
+          solid={headline}
         >
           {h1}
         </RegistrationReveal>

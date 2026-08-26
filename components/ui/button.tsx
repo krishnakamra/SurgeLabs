@@ -12,7 +12,11 @@ export type ButtonSize = "sm" | "md" | "lg";
  */
 const BASE = [
   "group relative inline-flex items-center justify-center gap-[0.7em]",
-  "font-utility uppercase leading-none whitespace-nowrap",
+  // Display face, not the mono. A CTA set in 400-weight Geist Mono reads as
+  // a caption next to a Montserrat headline — it was the same problem the
+  // numerals had. Semibold and tracked out keeps the spec-label feel without
+  // the weakness.
+  "font-display font-semibold uppercase tracking-[0.08em] leading-none whitespace-nowrap",
   "tracking-utility-tight select-none align-middle",
   // 200ms, and only the four properties that actually change. Transitioning
   // `all` here would also catch the foil gradient's background-image, which

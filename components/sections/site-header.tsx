@@ -319,9 +319,14 @@ export function SiteHeader() {
       // however high its own z-index, is trapped inside the header's stacking
       // context and disappeared behind the hero. It sits above the job-ticket
       // rail (z-40) and below the mobile overlay (z-90) and skip link (z-100).
-      className="relative isolate z-50 border-b-[length:var(--hairline)] border-rule bg-surface text-fg"
+      className="sticky top-0 isolate z-50 border-b-[length:var(--hairline)] border-rule bg-surface text-fg"
     >
-      <div className="mx-auto flex h-16 w-full max-w-page items-center justify-between gap-gutter px-gutter sm:h-20">
+      {/* Left padding is trimmed below the page gutter so the wordmark sits
+          closer to the edge of the screen than the body copy does — a
+          masthead reads as a masthead when it is not aligned to the text
+          column. The right side keeps the full gutter so the CTA does not
+          crowd the edge. */}
+      <div className="mx-auto flex h-16 w-full max-w-page items-center justify-between gap-gutter pr-gutter pl-5 sm:h-20 lg:pl-6">
         {/* Home. The logo names itself — <Logo> carries role="img" and an
             aria-label — so this link needs no label of its own, and gets no
             second one that would read out twice.

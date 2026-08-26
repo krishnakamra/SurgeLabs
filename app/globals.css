@@ -107,6 +107,10 @@
   --color-link: #006795;
   --color-link-hover: #0a0a0b;
 
+  /* Surface-aware lime. Components use text-accent-lime and get the right
+     one automatically, exactly like accent-text does for magenta. */
+  --color-accent-lime: var(--color-lime-deep);
+
   --color-mark: #e6007e;          /* functional tick / underline     3.8:1  */
   --color-focus: #e6007e;         /* focus ring                      3.83:1 */
 
@@ -116,6 +120,13 @@
   /* Registration plates. The CMYK animation is the one place the process set
      still runs at full strength — it is a picture of a press, and a press is
      still four plates. K is whatever "printed" means here, so it flips. */
+  /* Lime. The Print & Signage accent — the colour of a cut-vinyl offcut and
+     a hi-vis vest, which is what that half of the shop actually makes.
+     Bright on ink at 16.84:1; on paper it collapses to 1.0:1, so paper gets
+     the deep cut instead. Same two-value shape magenta already uses. */
+  --color-lime: #ccff00;          /* 16.84:1 on ink                          */
+  --color-lime-deep: #366c00;     /* 5.44:1 on stock, 4.62:1 in a sunken well */
+
   --color-plate-c: #009fe3;
   --color-plate-m: #e6007e;
   --color-plate-y: #ffed00;
@@ -243,6 +254,10 @@
   /* The arms sit OUTSIDE the trim by gap + len, so the inset has to be at
      least that or they hang past the viewport edge. 6 + 12 = 18px, so 20px
      is the floor here — at 16px the marks overflowed by exactly 2px. */
+  /* Header height. Sections offset their snap position by it, and the
+     sticky header measures itself against it. */
+  --header-h: 4rem;
+
   --crop-inset: 1.25rem;
   --crop-gap: 0.375rem;
   --crop-len: 0.75rem;
@@ -297,6 +312,8 @@
   --color-link: var(--color-cyan);         /*  6.66:1 */
   --color-link-hover: var(--color-stock);
 
+  --color-accent-lime: var(--color-lime);   /* 16.84:1 on ink */
+
   --color-mark: var(--color-magenta-lift);   /* 5.98:1 on ink */
   --color-focus: var(--color-magenta-lift);
 
@@ -335,6 +352,8 @@
 
   --color-link: var(--color-cyan-deep);         /* 5.32:1, 4.51:1 sunken */
   --color-link-hover: var(--color-ink);
+
+  --color-accent-lime: var(--color-lime-deep);   /* 5.44:1 on stock */
 
   --color-mark: var(--color-magenta);
   --color-focus: var(--color-magenta);
@@ -765,5 +784,85 @@ html.lenis {
   [data-registration] {
     --reg-p: 0 !important;
     transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION SNAP
+   Set by <SectionSnap>, which only mounts on pages that want it and never
+   under reduced motion. Lenis stands down while this is on — see
+   MotionProvider; the two cannot both own the scroll.
+
+   `proximity` is deliberate. Only the hero is a full viewport tall, so
+   mandatory snap would trap a reader inside any section taller than the
+   screen: every attempt to reach the middle gets pulled back to an edge.
+   Proximity snaps when a gesture ends near a boundary and otherwise leaves
+   the reader where they put themselves.
+   ═══════════════════════════════════════════════════════════════════════════ */
+html[data-snap="on"] {
+  scroll-snap-type: y proximity;
+}
+
+@media (width >= 40rem) {
+  :root {
+    --header-h: 5rem;
+  }
+}
+
+html[data-snap="on"] main > section {
+  scroll-snap-align: start;
+  /* The header is sticky, so a section snapped flush to the viewport top
+     would sit underneath it. Offsetting by the header height is also what
+     makes 0 the resting position on load — without it the browser snapped
+     straight to the hero boundary at 81px and the header was gone before
+     the visitor had done anything. */
+  scroll-margin-top: var(--header-h);
+  /* Without this a section taller than the viewport can never satisfy the
+     snap and the browser fights the reader the whole way down it. */
+  scroll-snap-stop: normal;
+}
+
+/* Belt and braces: the media query cannot be relied on alone, because the
+   attribute is set from JS that reads the same query — but if a reader
+   changes the OS setting mid-session, this takes effect without a remount. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-snap="on"] {
+    scroll-snap-type: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRESS LIGHT — the raking light that follows the cursor over the hero sheet.
+   Position comes from --light-x / --light-y, set by <PressLight> on one rAF
+   per frame. Both default to a resting position, so with no JS, no cursor or
+   reduced motion the sheet is lit from a fixed point and nothing is missing.
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-press-light] {
+  --light-x: 72%;
+  --light-y: 34%;
+}
+
+[data-press-light]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  /* Wide and shallow: a lamp raking across a sheet, not a torch pointed at
+     it. `screen` adds light to the ink rather than washing a pale disc over
+     the top of it. */
+  background: radial-gradient(
+    58% 42% at var(--light-x) var(--light-y),
+    rgb(255 255 255 / 0.13) 0%,
+    rgb(255 255 255 / 0.05) 38%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  transition: background-position 220ms var(--ease-press);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-press-light]::after {
+    transition: none;
   }
 }
