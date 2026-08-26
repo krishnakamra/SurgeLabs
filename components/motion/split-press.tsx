@@ -98,7 +98,7 @@ export function SplitPress({
                     as="span"
                     state="scrub"
                     offset="0.22em"
-                    className="font-display text-lg font-medium"
+                    className="font-display text-lg font-bold"
                   >
                     {item}
                   </RegistrationText>
@@ -113,7 +113,7 @@ export function SplitPress({
             </p>
             <ul className="mt-10 space-y-6">
               {afterItems.map((item) => (
-                <li key={item} className="flex gap-4 font-display text-lg font-medium text-fg">
+                <li key={item} className="flex gap-4 font-display text-lg font-bold text-fg">
                   <span aria-hidden="true" className="mt-[0.55em] h-[var(--hairline)] w-6 shrink-0 bg-mark" />
                   <span>{item}</span>
                 </li>

@@ -11,7 +11,7 @@ export function MonthlyPlans() {
     <div className="grid gap-gutter lg:grid-cols-3">
       {monthlyPlans.map((plan) => (
         <article key={plan.slug} className="flex flex-col border-[length:var(--hairline)] border-rule p-8">
-          <h3 className="font-display text-xl font-medium text-fg">{plan.name}</h3>
+          <h3 className="font-display text-xl font-bold text-fg">{plan.name}</h3>
           <p className="mt-4 min-h-[3rem] text-sm text-fg-muted">{plan.bestFor}</p>
 
           <p className="mt-6 flex items-baseline gap-2 border-t-[length:var(--hairline)] border-rule pt-6">

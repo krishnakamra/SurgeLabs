@@ -1,43 +1,40 @@
-import { Bodoni_Moda, Geist_Mono } from "next/font/google";
+import { Montserrat, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
  * Three voices, three jobs. Nothing else gets loaded.
  *
- *  display  Bodoni Moda   400-500, optical sizing live, tracking negative
- *  body     Satoshi       300-900 variable, self-hosted
- *  utility  Geist Mono    400 only, uppercase, wide tracking
+ *  display  Montserrat 100-900 variable, heavy by default — and every numeral
+ *  body     Satoshi    300-900 variable, self-hosted
+ *  utility  Geist Mono 400 only, uppercase spec labels — NEVER numerals
  *
- * This is a Didone house. The display face is the typeface class that has set
- * foil-stamped stationery for two hundred years, which is the product this
- * shop sells most of — the type is the argument, so it is worth being exact
- * about how it is loaded.
+ * This was a Didone house and it is not any more. Bodoni Moda is the right
+ * face for foil-stamped stationery and the wrong one for a headline that has
+ * to read as a press shop: at 160px its hairlines go to nothing, and "We
+ * print, code and stitch" came out looking fussy rather than built.
+ *
+ * Montserrat is the geometric the brief wanted. Gotham was the other
+ * candidate and is not available: it is Hoefler & Co, licensed per-site and
+ * not on Google Fonts, so it cannot ship without someone buying it.
+ * Montserrat is the closest free equivalent, and its numerals are the reason
+ * it wins here — geometric, wide, and genuinely heavy at 800, which is what
+ * a 01 or a $1,899 needed and never got from the mono.
  */
 
-export const fontDisplay = Bodoni_Moda({
+export const fontDisplay = Montserrat({
   subsets: ["latin"],
   display: "optional",
-  variable: "--font-bodoni",
-  // opsz is the whole reason this face is here rather than a static Didone.
-  // Bodoni's hairlines are supposed to get thinner as the type gets bigger;
-  // the optical size axis is what does that, and without it a 160px hero is
-  // just a text-size Bodoni scaled up, with the hairlines too heavy and the
-  // serifs too blunt. `axes` and an explicit `weight` list are mutually
-  // exclusive in next/font, so weight comes from the variable range.
-  axes: ["opsz"],
-  // The only face preloaded. It sets every headline, including the LCP
-  // element on most pages. Preloading all three would put body and utility in
-  // competition with the thing the visitor actually sees first.
+  variable: "--font-montserrat",
+  // No `weight` list: the variable range covers 100-900, and the numerals
+  // live at 800.
+  // The only face preloaded alongside the body. It sets every headline and
+  // every numeral, including the LCP element on most pages.
   preload: true,
-  // `optional`, not `swap`. next/font emits a metric-adjusted fallback, and
-  // for a Didone the fallback is necessarily a long way off — there is no
-  // system face with this contrast — so a swap would visibly re-flow every
-  // headline. The measured cost of `swap` on the previous face was 0.5984 CLS
-  // at 768px; nothing about that calculation improves with a higher-contrast
-  // face. `optional` gives the browser ~100ms and otherwise uses the fallback
-  // for that page load, caching the face for the next navigation.
-  //
-  // Preloaded and same-origin, it almost always makes the window.
+  // `optional`, not `swap`. Measured on this codebase, swap cost 0.5984 CLS
+  // at 768px because the headline re-wrapped when the real face landed.
+  // `optional` gives the browser ~100ms and otherwise uses the fallback for
+  // that page load, caching the face for the next navigation. Preloaded and
+  // same-origin, it almost always makes the window.
   adjustFontFallback: true,
 });
 
@@ -65,6 +62,13 @@ export const fontBody = localFont({
   adjustFontFallback: "Arial",
 });
 
+/**
+ * Spec labels only — "MISSISSAUGA, ON", "4C PROCESS", the ticket rail.
+ *
+ * It does NOT set numerals. A 01 or a $1,899 in 400-weight mono reads as
+ * weak next to a heavy grotesque headline, which is exactly what was wrong
+ * before. Numerals belong to the display face; see `--font-numeral`.
+ */
 export const fontUtility = Geist_Mono({
   subsets: ["latin"],
   weight: ["400"],

@@ -52,7 +52,7 @@ export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMedi
             </div>
             <p
               aria-hidden="true"
-              className="font-display text-4xl leading-none font-normal text-fg/10"
+              className="font-numeral text-4xl leading-none font-black tabular-nums text-fg/10"
             >
               {numeral}
             </p>

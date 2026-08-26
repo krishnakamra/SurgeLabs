@@ -21,7 +21,7 @@ export function PackagesTeaser() {
           <Eyebrow number="05" spec="NO DISCOVERY CALL REQUIRED">
             Packages
           </Eyebrow>
-          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
             Priced on the page, not after a phone call.
           </h2>
         </div>
@@ -40,7 +40,7 @@ export function PackagesTeaser() {
             )}
           >
             <div className="flex items-baseline justify-between gap-4">
-              <h3 className="font-display text-xl font-medium text-fg">{pkg.name}</h3>
+              <h3 className="font-display text-xl font-bold text-fg">{pkg.name}</h3>
               {pkg.badge ? (
                 <span className="font-utility text-2xs uppercase tracking-utility text-accent-text">
                   {pkg.badge}

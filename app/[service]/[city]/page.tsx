@@ -120,7 +120,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
             <div className="lg:col-span-7">
               <Eyebrow spec={city.region}>{service.name}</Eyebrow>
 
-              <h1 className="mt-8 max-w-[16ch] font-display text-3xl font-normal text-fg">
+              <h1 className="mt-8 max-w-[16ch] font-display text-3xl font-extrabold text-fg">
                 {localSeo(service.name, city.name, service.blurb).h1}
               </h1>
 
@@ -224,8 +224,8 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
           <ol className="mt-14 grid gap-x-gutter gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {serviceProcess.map((step) => (
               <li key={step.step} className="border-t-[length:var(--hairline)] border-rule pt-6">
-                <p className="font-utility text-xl leading-none text-accent-text">{step.step}</p>
-                <h2 className="mt-5 font-display text-lg font-medium text-fg">{step.title}</h2>
+                <p className="font-numeral text-2xl leading-none font-extrabold tabular-nums text-accent-text">{step.step}</p>
+                <h2 className="mt-5 font-display text-lg font-bold text-fg">{step.title}</h2>
                 <p className="mt-4 text-sm text-fg-muted">{step.detail}</p>
               </li>
             ))}
@@ -240,7 +240,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
           ticket={{ number: "04", label: "FAQ", spec: city.name.toUpperCase() }}
         >
           <Eyebrow spec="ASKED IN THIS CITY">FAQ</Eyebrow>
-          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
             {service.name} in {city.name}, answered
           </h2>
 
@@ -252,7 +252,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
                     aria-hidden="true"
                     className="mt-[0.6em] h-[var(--hairline)] w-4 shrink-0 origin-left bg-rule-strong transition-transform duration-[var(--dur-snap)] ease-press group-open:scale-x-[2.2] group-hover:bg-mark"
                   />
-                  <h3 className="flex-1 font-display text-lg font-medium text-fg">{faq.question}</h3>
+                  <h3 className="flex-1 font-display text-lg font-bold text-fg">{faq.question}</h3>
                   <span aria-hidden="true" className={`${SPEC} mt-[0.3em] shrink-0 text-fg-faint transition-transform duration-[var(--dur-snap)] group-open:rotate-45`}>
                     +
                   </span>
@@ -283,7 +283,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
                           href={`/${sibling.service}/${citySlug}`}
                           className="block py-4 text-fg-muted transition-colors hover:text-fg sm:flex sm:items-baseline sm:justify-between sm:gap-4"
                         >
-                          <span className="font-display text-base font-medium">
+                          <span className="font-display text-base font-bold">
                             {other.name} in {city.name}
                           </span>
                           {/* Stacks below sm. As a shrink-0 flex child it could
@@ -312,7 +312,7 @@ export default async function LocalServicePage({ params }: { params: Promise<Par
                           href={`/${serviceSlug}/${other.city}`}
                           className="block py-4 text-fg-muted transition-colors hover:text-fg sm:flex sm:items-baseline sm:justify-between sm:gap-4"
                         >
-                          <span className="font-display text-base font-medium">
+                          <span className="font-display text-base font-bold">
                             {service.name} in {otherCity.name}
                           </span>
                           <span className={`${SPEC} mt-1 block text-fg-faint sm:mt-0 sm:shrink-0`}>

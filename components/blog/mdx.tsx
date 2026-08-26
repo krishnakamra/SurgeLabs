@@ -38,11 +38,11 @@ export const mdxComponents: MDXComponents = {
   h2: (props) => (
     <h2
       {...props}
-      className="mt-16 scroll-mt-28 font-display text-2xl font-normal text-fg first:mt-0"
+      className="mt-16 scroll-mt-28 font-display text-2xl font-extrabold text-fg first:mt-0"
     />
   ),
   h3: (props) => (
-    <h3 {...props} className="mt-10 scroll-mt-28 font-display text-lg font-medium text-fg" />
+    <h3 {...props} className="mt-10 scroll-mt-28 font-display text-lg font-bold text-fg" />
   ),
   p: (props) => <p {...props} className="mt-6 text-md leading-relaxed text-fg-muted" />,
   ul: (props) => <ul {...props} className="mt-6 space-y-3" />,
@@ -60,7 +60,7 @@ export const mdxComponents: MDXComponents = {
   blockquote: (props) => (
     <blockquote
       {...props}
-      className="mt-8 border-l-2 border-mark pl-6 font-display text-lg font-medium text-fg"
+      className="mt-8 border-l-2 border-mark pl-6 font-display text-lg font-bold text-fg"
     />
   ),
   hr: () => <hr className="mt-12 border-0 border-t-[length:var(--hairline)] border-rule" />,

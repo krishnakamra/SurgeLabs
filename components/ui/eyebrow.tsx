@@ -39,7 +39,11 @@ export function Eyebrow({
       )}
     >
       {mark ? <RegistrationTarget className="size-[0.9em] shrink-0 text-mark" /> : null}
-      {number ? <span className="text-fg tabular-nums">{number}</span> : null}
+      {number ? (
+        <span className="font-numeral text-[1.15em] font-extrabold tabular-nums text-fg">
+          {number}
+        </span>
+      ) : null}
       {number ? (
         <span aria-hidden="true" className="text-rule-strong">
           /

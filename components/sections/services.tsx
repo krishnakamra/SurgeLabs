@@ -32,7 +32,7 @@ export function Services() {
                   <div data-reveal className="flex items-baseline gap-6">
                     <span
                       aria-hidden="true"
-                      className="font-utility text-3xl leading-[0.8] font-normal text-mark"
+                      className="font-numeral text-3xl leading-[0.8] font-black tabular-nums text-mark"
                     >
                       {service.number}
                     </span>
@@ -41,7 +41,7 @@ export function Services() {
 
                   <h2
                     data-reveal
-                    className="mt-8 font-display text-2xl font-normal text-fg"
+                    className="mt-8 font-display text-2xl font-extrabold text-fg"
                   >
                     {service.name}
                   </h2>

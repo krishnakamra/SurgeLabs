@@ -97,7 +97,7 @@ export function CounterRoll({
   let wheelIndex = 0;
 
   return (
-    <span ref={root} className={cn("font-utility tabular-nums", className)}>
+    <span ref={root} className={cn("font-numeral font-extrabold tabular-nums", className)}>
       <span className="sr-only">{`${prefix}${formatted}${suffix}`}</span>
 
       <span aria-hidden="true" className="inline-flex items-baseline leading-none">

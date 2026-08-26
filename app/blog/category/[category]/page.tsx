@@ -85,7 +85,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
             <Eyebrow spec="GUIDES">{found.name}</Eyebrow>
           </div>
 
-          <h1 className="mt-10 max-w-[22ch] font-display text-3xl font-normal text-fg">
+          <h1 className="mt-10 max-w-[22ch] font-display text-3xl font-extrabold text-fg">
             {seo.h1}
           </h1>
           <p className="mt-6 max-w-[58ch] text-md text-fg-muted">{found.blurb}</p>

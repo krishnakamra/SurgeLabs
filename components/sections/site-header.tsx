@@ -125,7 +125,7 @@ function Dropdown({ item, pathname }: { item: NavItem; pathname: string }) {
                 aria-current={isCurrent(pathname, child.href) ? "page" : undefined}
                 className="group block p-5 transition-colors hover:bg-surface-raised focus-visible:bg-surface-raised focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-focus"
               >
-                <span className="font-display text-lg font-medium text-fg">{child.label}</span>
+                <span className="font-display text-lg font-bold text-fg">{child.label}</span>
                 {child.description ? (
                   <span className="mt-2 block max-w-[30ch] text-sm text-fg-muted">
                     {child.description}
@@ -235,7 +235,7 @@ function MobileMenu({ pathname }: { pathname: string }) {
         <div className="mx-auto flex min-h-full w-full max-w-page flex-col px-gutter py-8">
           <div className="flex h-16 shrink-0 items-center justify-between">
             <Link href="/" onClick={() => setOpen(false)} className="inline-flex">
-              <Logo variant="horizontal" foil className="[--logo-size:26px]" />
+              <Logo variant="horizontal" className="[--logo-size:26px]" />
             </Link>
             <button
               type="button"
@@ -268,7 +268,7 @@ function MobileMenu({ pathname }: { pathname: string }) {
                             <Link
                               href={child.href}
                               aria-current={isCurrent(pathname, child.href) ? "page" : undefined}
-                              className="block font-display text-xl font-normal text-fg"
+                              className="block font-display text-xl font-extrabold text-fg"
                             >
                               {child.label}
                             </Link>
@@ -280,7 +280,7 @@ function MobileMenu({ pathname }: { pathname: string }) {
                     <Link
                       href={item.href}
                       aria-current={isCurrent(pathname, item.href) ? "page" : undefined}
-                      className="block font-display text-xl font-normal text-fg"
+                      className="block font-display text-xl font-extrabold text-fg"
                     >
                       {item.label}
                     </Link>
@@ -326,22 +326,21 @@ export function SiteHeader() {
             aria-label — so this link needs no label of its own, and gets no
             second one that would read out twice.
 
-            The lockup is struck in foil, and the FoilField around it is what
-            makes the highlight travel as the pointer crosses the bar. One of
-            exactly three places the gradient is allowed. */}
+            The full wordmark shows at every width. It used to collapse to the
+            bare S under 480px, which left a phone visitor looking at a header
+            with no company name in it — the one place the name matters most,
+            because there is no nav bar spelling it out either. */}
         <FoilField as="span" className="inline-flex shrink-0">
           <Link
             href="/"
             className="inline-flex outline-offset-[6px] focus-visible:outline-2 focus-visible:outline-focus"
           >
             {/* Size is a CSS variable rather than a prop so it can step at a
-                breakpoint without a second render. Under 480px the wordmark
-                drops and the mark stands alone — one DOM tree either way. */}
+                breakpoint without a second render. No `collapse`: the
+                wordmark stays whole down to 320px. */}
             <Logo
               variant="horizontal"
-              collapse="xs"
-              foil
-              className="[--logo-size:26px] sm:[--logo-size:32px]"
+              className="[--logo-size:22px] xs:[--logo-size:26px] sm:[--logo-size:32px]"
             />
           </Link>
         </FoilField>

@@ -30,7 +30,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
           <p className={cn(SPEC, "text-fg-faint")}>
             Ticket {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </p>
-          <h2 className="mt-5 font-display text-xl leading-none font-normal text-fg sm:text-2xl">
+          <h2 className="mt-5 font-display text-xl leading-none font-extrabold text-fg sm:text-2xl">
             {pkg.name}
           </h2>
           <p className="mt-4 max-w-[34ch] text-sm text-fg-muted">{pkg.tagline}</p>
@@ -40,7 +40,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
           {pkg.badge ? (
             <p className={cn(SPEC, "mb-4 text-accent-text")}>{pkg.badge}</p>
           ) : null}
-          <p className="font-utility text-xl leading-none font-normal tabular-nums text-fg sm:text-2xl">
+          <p className="font-numeral text-2xl leading-none font-extrabold tabular-nums text-fg sm:text-3xl">
             {formatPrice(pkg.price)}
           </p>
           <p className={cn(SPEC, "mt-3 text-fg-faint")}>CAD</p>

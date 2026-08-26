@@ -16,7 +16,7 @@ export function RegistrationDemo({ text }: { text: string }) {
         as="h3"
         state={armed ? "armed" : "registered"}
         offset="0.14em"
-        className="font-display text-3xl font-normal uppercase"
+        className="font-display text-3xl font-extrabold uppercase"
       >
         {text}
       </RegistrationText>

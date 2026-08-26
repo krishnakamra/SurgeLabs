@@ -94,7 +94,7 @@ export default function AboutPage() {
           <HalftoneField plate="k" pitch={8} dot={1.5} opacity={0.15} fade="radial" seed={23} />
           <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "About", path: PATH }]} />
           <Eyebrow spec={site.serviceArea}>About</Eyebrow>
-          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-normal text-fg">{seo.h1}</h1>
+          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">{seo.h1}</h1>
           <p className="mt-10 max-w-[60ch] text-md text-fg-muted">
             One shop, one floor, four things that are usually four suppliers. The reason the blue on
             your website matches the blue on your van is that the same people made both.
@@ -111,7 +111,7 @@ export default function AboutPage() {
           <Eyebrow number="01" spec="NO SUBCONTRACTING">
             How it works
           </Eyebrow>
-          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
             Everything is made here, which is the whole argument.
           </h2>
 
@@ -156,7 +156,7 @@ export default function AboutPage() {
           <Eyebrow number="02" spec="ONE BUILDING">
             The floor
           </Eyebrow>
-          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
             What actually runs on the premises.
           </h2>
           <p className="mt-8 max-w-[60ch] text-fg-muted">
@@ -167,7 +167,7 @@ export default function AboutPage() {
           <dl className="mt-14 grid gap-x-gutter gap-y-12 border-t-[length:var(--hairline)] border-rule pt-12 sm:grid-cols-2 lg:grid-cols-3">
             {FLOOR.map((item) => (
               <div key={item.label}>
-                <dt className="font-display text-lg font-medium text-fg">{item.label}</dt>
+                <dt className="font-display text-lg font-bold text-fg">{item.label}</dt>
                 <dd className="mt-4 max-w-[34ch] text-sm text-fg-muted">{item.detail}</dd>
                 <dd className="mt-5">
                   <Link
@@ -192,7 +192,7 @@ export default function AboutPage() {
           <Eyebrow number="03" spec="FOUR RULES">
             How we work
           </Eyebrow>
-          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
             Four things we will not do.
           </h2>
 
@@ -221,7 +221,7 @@ export default function AboutPage() {
             ].map((rule) => (
               <li key={rule.n}>
                 <p className={`${SPEC} text-accent-text`}>{rule.n}</p>
-                <h3 className="mt-5 max-w-[20ch] font-display text-lg font-medium text-fg">
+                <h3 className="mt-5 max-w-[20ch] font-display text-lg font-bold text-fg">
                   {rule.t}
                 </h3>
                 <p className="mt-5 max-w-[52ch] text-sm text-fg-muted">{rule.d}</p>
@@ -240,7 +240,7 @@ export default function AboutPage() {
           <Eyebrow number="04" spec={site.serviceArea}>
             Find us
           </Eyebrow>
-          <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
             Come and look at the stock.
           </h2>
           <p className="mt-8 max-w-[58ch] text-md text-fg-muted">

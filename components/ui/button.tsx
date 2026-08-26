@@ -81,7 +81,10 @@ export function Button({ variant = "primary", size = "md", className, children, 
   const classes = cn(BASE, VARIANT[variant], variant === "ghost" ? GHOST_SIZE[size] : SIZE[size], className);
   // Only the primary CTA. A <FoilField> ancestor makes the highlight travel;
   // without one the gradient is still lit, just still.
-  const foil = variant === "primary" ? { "data-foil": "edge" } : {};
+  // No foil edge. The primary CTA is a magenta hairline that floods magenta
+  // on hover — the foil gradient belonged to an identity that has been
+  // reverted, and its darkest stop was 3.99:1 anyway.
+  const foil = {};
 
   // The old build wiped a yellow rule along the bottom of a solid fill. The
   // fill is now the hover state itself, so the tick has nothing left to

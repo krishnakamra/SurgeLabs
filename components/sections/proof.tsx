@@ -21,7 +21,7 @@ export function Proof() {
         Proof
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
         Four numbers you can check before you call.
       </h2>
 
@@ -30,7 +30,7 @@ export function Proof() {
           <div key={stat.label}>
             <dt className="sr-only">{stat.label}</dt>
             <dd>
-              <p className="font-display text-3xl leading-none font-normal text-fg">
+              <p className="font-display text-3xl leading-none font-extrabold text-fg">
                 <CounterRoll
                   value={stat.value}
                   prefix={stat.prefix}

@@ -36,7 +36,10 @@
   --color-inherit: inherit;
 
   /* ─── Fonts ─────────────────────────────────────────────────────────── */
-  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", Georgia, serif;
+  --font-display: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
+  /* Numerals are display type, always. Bound separately so a numeral can
+     never quietly fall back to the mono the way it used to. */
+  --font-numeral: var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
   --font-body: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
   --font-utility: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
@@ -92,23 +95,23 @@
 
   /* The hairline. 0.5px of gold at 30%, not 1px of grey. The width lives in
      --hairline below so the two travel together. */
-  --color-rule: rgb(200 162 74 / 0.3);
-  --color-rule-strong: #74591b;   /* interactive border, crop marks  5.63:1 */
+  --color-rule: #dcdcd5;          /* decorative hairline                    */
+  --color-rule-strong: #6c6c64;   /* border and separator glyph      4.5:1  */
 
-  --color-accent: #c8a24a;           /* gold carries the brand — as a FILL  */
-  --color-accent-fg: #0a0a0b;        /* type knocked out of foil   8.22:1   */
-  --color-accent-hover: #c8a24a;     /* the button floods gold on hover     */
-  --color-accent-hover-fg: #0a0a0b;  /* 8.22:1                              */
-  --color-accent-text: #74591b;      /* gold as TEXT on paper      5.63:1   */
+  --color-accent: #e6007e;           /* magenta carries the brand — a FILL  */
+  --color-accent-fg: #ffffff;        /* knockout on magenta        4.50:1   */
+  --color-accent-hover: #b80065;     /* on paper the ink gets denser        */
+  --color-accent-hover-fg: #ffffff;  /* knockout on magenta-deep   6.53:1   */
+  --color-accent-text: #b80065;      /* magenta as TEXT            5.53:1   */
 
   --color-link: #006795;
   --color-link-hover: #0a0a0b;
 
-  --color-mark: #74591b;          /* functional tick / rule on paper 5.63:1 */
-  --color-focus: #74591b;         /* focus ring                      5.63:1 */
+  --color-mark: #e6007e;          /* functional tick / underline     3.8:1  */
+  --color-focus: #e6007e;         /* focus ring                      3.83:1 */
 
-  --color-select-bg: #c8a24a;
-  --color-select-fg: #0a0a0b;
+  --color-select-bg: #e6007e;
+  --color-select-fg: #ffffff;
 
   /* Registration plates. The CMYK animation is the one place the process set
      still runs at full strength — it is a picture of a press, and a press is
@@ -142,23 +145,23 @@
   --text-base--line-height: 1.6;
   --text-base--letter-spacing: 0em;
 
-  --text-md: clamp(1.25rem, 1.111rem + 0.571vw, 1.625rem);      /* 20 → 26 */
+  --text-md: clamp(1.0625rem, 0.9792rem + 0.3704vw, 1.3125rem);  /* 17 → 21 */
   --text-md--line-height: 1.35;
   --text-md--letter-spacing: -0.005em;
 
-  --text-lg: clamp(1.625rem, 1.393rem + 0.952vw, 2.25rem);      /* 26 → 36 */
+  --text-lg: clamp(1.3125rem, 1.1250rem + 0.8333vw, 1.8750rem);  /* 21 → 30 */
   --text-lg--line-height: 1.05;
   --text-lg--letter-spacing: -0.012em;
 
-  --text-xl: clamp(2.125rem, 1.707rem + 1.714vw, 3.25rem);      /* 34 → 52 */
+  --text-xl: clamp(1.6250rem, 1.2917rem + 1.4815vw, 2.6250rem);  /* 26 → 42 */
   --text-xl--line-height: 1.05;
   --text-xl--letter-spacing: -0.015em;
 
-  --text-2xl: clamp(2.75rem, 2.007rem + 3.048vw, 4.75rem);      /* 44 → 76 */
+  --text-2xl: clamp(2rem, 1.4167rem + 2.5926vw, 3.7500rem);  /* 32 → 60 */
   --text-2xl--line-height: 1.05;
   --text-2xl--letter-spacing: -0.018em;
 
-  --text-3xl: clamp(3.5rem, 2.2rem + 5.333vw, 7rem);           /* 56 → 112 */
+  --text-3xl: clamp(2.3750rem, 1.3333rem + 4.6296vw, 5.5000rem);  /* 38 → 88 */
   --text-3xl--line-height: 1.05;
   --text-3xl--letter-spacing: -0.02em;
 
@@ -237,7 +240,10 @@
   --dur-register: 1100ms;
 
   --rail-w: 0px;
-  --crop-inset: 1rem;
+  /* The arms sit OUTSIDE the trim by gap + len, so the inset has to be at
+     least that or they hang past the viewport edge. 6 + 12 = 18px, so 20px
+     is the floor here — at 16px the marks overflowed by exactly 2px. */
+  --crop-inset: 1.25rem;
   --crop-gap: 0.375rem;
   --crop-len: 0.75rem;
 
@@ -279,22 +285,22 @@
 
   /* Gold is at its best here: light metal on a dark bed, 8.22:1, and it can
      be text, rule, border and fill without changing value. */
-  --color-rule: rgb(200 162 74 / 0.3);
-  --color-rule-strong: var(--color-gold);  /*  8.22:1 */
+  --color-rule: var(--color-ink-3);
+  --color-rule-strong: #797982;            /*  4.5:1 */
 
-  --color-accent: var(--color-gold);
-  --color-accent-fg: var(--color-ink);     /* type knocked out of foil 8.22:1 */
-  --color-accent-hover: var(--color-gold);
+  --color-accent: var(--color-magenta);
+  --color-accent-fg: var(--color-knockout);
+  --color-accent-hover: var(--color-magenta-lift);
   --color-accent-hover-fg: var(--color-ink);
-  --color-accent-text: var(--color-gold);  /*  8.22:1 */
+  --color-accent-text: var(--color-magenta-lift);   /* 5.98:1 */
 
   --color-link: var(--color-cyan);         /*  6.66:1 */
   --color-link-hover: var(--color-stock);
 
-  --color-mark: var(--color-gold);
-  --color-focus: var(--color-gold);
+  --color-mark: var(--color-magenta-lift);   /* 5.98:1 on ink */
+  --color-focus: var(--color-magenta-lift);
 
-  --color-select-bg: var(--color-gold);
+  --color-select-bg: var(--color-magenta);
   --color-select-fg: var(--color-ink);
 
   --color-plate-k: var(--color-stock);
@@ -314,28 +320,27 @@
   --color-fg-muted: #55524b;               /*  6.66:1, 5.64:1 in a sunken well */
   --color-fg-faint: #5f5c55;               /*  5.70:1, 4.83:1 in a sunken well */
 
-  /* The rule stays the bright gold — it is decorative and it is supposed to
-     be barely there on paper. Anything a user can read or click hands off to
-     gold-deep, which is the same hue and clears AA. */
-  --color-rule: rgb(200 162 74 / 0.3);
-  --color-rule-strong: var(--color-gold-deep);  /* 5.63:1 */
+  /* Decorative hairline, barely there on paper. Anything a visitor can read
+     or click hands off to rule-strong, which clears AA. */
+  --color-rule: var(--color-stock-2);
+  --color-rule-strong: #6c6c64;  /* 5.63:1 */
 
-  /* The fill is still the bright gold: it is the foil, and ink knocked out
-     of it reads at 8.22:1 either way round. Only TEXT gold has to darken. */
-  --color-accent: var(--color-gold);
-  --color-accent-fg: var(--color-ink);
-  --color-accent-hover: var(--color-gold);
-  --color-accent-hover-fg: var(--color-ink);
-  --color-accent-text: var(--color-gold-deep);  /* 5.63:1 */
+  /* Magenta as a FILL with type knocked out of it. Magenta as TEXT has to
+     darken to magenta-deep to clear AA on paper. */
+  --color-accent: var(--color-magenta);
+  --color-accent-fg: var(--color-knockout);
+  --color-accent-hover: var(--color-magenta-deep);
+  --color-accent-hover-fg: var(--color-knockout);
+  --color-accent-text: var(--color-magenta-deep);  /* 5.63:1 */
 
   --color-link: var(--color-cyan-deep);         /* 5.32:1, 4.51:1 sunken */
   --color-link-hover: var(--color-ink);
 
-  --color-mark: var(--color-gold-deep);
-  --color-focus: var(--color-gold-deep);
+  --color-mark: var(--color-magenta);
+  --color-focus: var(--color-magenta);
 
-  --color-select-bg: var(--color-gold);
-  --color-select-fg: var(--color-ink);
+  --color-select-bg: var(--color-magenta);
+  --color-select-fg: var(--color-knockout);
 
   --color-plate-k: var(--color-ink);
 

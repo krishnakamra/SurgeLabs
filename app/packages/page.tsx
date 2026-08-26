@@ -146,10 +146,10 @@ export default function PackagesPage() {
             <Eyebrow spec="2026 INTRODUCTORY RATES">Price list</Eyebrow>
           </div>
 
-          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-normal text-fg">
+          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
             {getPageSeo("/packages")!.h1}
           </h1>
-          <p className="mt-6 max-w-[30ch] font-display text-xl font-medium text-fg-muted">
+          <p className="mt-6 max-w-[30ch] font-display text-xl font-bold text-fg-muted">
             Every package, every price, on this page.
           </p>
 
@@ -209,7 +209,7 @@ export default function PackagesPage() {
           <Eyebrow number="03" spec="NO STAR RATINGS">
             Side by side
           </Eyebrow>
-          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
             What you actually get, counted.
           </h2>
           <div className="mt-14">
@@ -227,7 +227,7 @@ export default function PackagesPage() {
           <Eyebrow number="04" spec="CANCEL WITH 30 DAYS NOTICE">
             Monthly plans
           </Eyebrow>
-          <h2 className="mt-6 max-w-[26ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-6 max-w-[26ch] font-display text-2xl font-extrabold text-fg">
             For the work that never really finishes.
           </h2>
           <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -249,7 +249,7 @@ export default function PackagesPage() {
           <Eyebrow number="05" spec="ONE THING AT A TIME">
             Single items
           </Eyebrow>
-          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
             Only need one thing? Buy one thing.
           </h2>
           <div className="mt-14">

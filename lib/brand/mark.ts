@@ -147,17 +147,17 @@ export const MINIMUM_SIZE: Record<LogoVariant, { screen: number; print: string; 
 
 export const SURFACE_COLOR = {
   /** On the press bed: the wordmark is the paper showing through. */
-  ink: { fg: "#EFEDE8", accent: "#C8A24A", bg: "#0A0A0B" },
+  ink: { fg: "#EFEDE8", accent: "#FF3D9E", bg: "#0A0A0B" },
   /** On paper: the wordmark is the ink, and Labs darkens to clear AA. */
-  stock: { fg: "#0A0A0B", accent: "#74591B", bg: "#EFEDE8" },
+  stock: { fg: "#0A0A0B", accent: "#B80065", bg: "#EFEDE8" },
 } as const;
 
 /**
- * The plate pair for app icons. Gold leaf with the S struck out of it in ink
- * — 8.22:1, and the right way round for foil: on a stamped card the leaf is
- * the light and the paper showing through is the dark.
+ * The plate pair for app icons: a magenta plate with the S struck out of it.
+ * Magenta carries the brand, so the tab icon is the same colour as the CTA
+ * and the registration marks rather than a third identity.
  */
-export const PLATE_COLOR = { fill: "#C8A24A", knockout: "#0A0A0B" } as const;
+export const PLATE_COLOR = { fill: "#E6007E", knockout: "#FFFFFF" } as const;
 
 /** The three foil stops. Flat files bake the highlight at the centre. */
 export const FOIL_STOPS = { lo: "#8C6B1F", hi: "#E8CE84" } as const;

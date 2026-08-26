@@ -88,26 +88,12 @@ export function Hero() {
           alt={HERO_ALT}
           fetchPriority="high"
           decoding="async"
-          // Duotone, to ink and gold.
-          //
-          // The sheet underneath is a four-colour process proof and it is
-          // magenta-dominant, which is the exact vocabulary this identity
-          // moved away from — a foil house whose front door is a CMYK
-          // rosette is advertising the wrong product. Re-mapping it to the
-          // two brand colours keeps the texture (the screen, the rosette,
-          // the registration targets, the colour bar) and drops the process
-          // palette. It is still a photograph of a real press sheet; it is
-          // now printed in the house inks.
-          //
-          // A CSS filter chain rather than an SVG feColorMatrix duotone,
-          // which would be more exact: this is the LCP element on wide
-          // viewports, filter shorthand composites on the GPU, and an SVG
-          // filter reference forces a software paint pass over a full-bleed
-          // image. Not worth the fidelity here.
-          //
-          // Deliberately NOT an overlay div — see the note below about both
-          // trims already carrying their own gradient hold.
-          className="absolute inset-0 -z-10 object-cover [filter:grayscale(1)_sepia(0.86)_saturate(2.1)_hue-rotate(-6deg)_brightness(0.78)_contrast(1.18)]"
+          // No duotone. The sheet underneath is a four-colour process proof
+          // and it is meant to be: this is a press shop, and the rosette,
+          // the registration targets and the CMYK colour bar are the
+          // product. A filter chain re-mapping it to two brand inks was
+          // there to serve a foil identity that has since been reverted.
+className="absolute inset-0 -z-10 object-cover"
         />
       </picture>
       {/* No scrim. Both trims carry their own gradient hold over the
@@ -124,7 +110,7 @@ export function Hero() {
           trigger="load"
           offset="0.09em"
           duration={1.7}
-          className="mt-10 max-w-[22ch] font-display text-3xl font-normal text-fg"
+          className="mt-10 max-w-[22ch] font-display text-3xl font-extrabold text-fg"
         >
           {h1}
         </RegistrationReveal>

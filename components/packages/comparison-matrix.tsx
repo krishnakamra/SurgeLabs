@@ -19,7 +19,7 @@ export function ComparisonMatrix() {
             </th>
             {packages.map((pkg) => (
               <th key={pkg.slug} scope="col" className="pb-5 pr-6 align-bottom">
-                <span className="block font-display text-lg font-medium text-fg">{pkg.name}</span>
+                <span className="block font-display text-lg font-bold text-fg">{pkg.name}</span>
                 <span className={`${SPEC} mt-2 block tabular-nums text-accent-text`}>
                   {formatPrice(pkg.price)}
                 </span>

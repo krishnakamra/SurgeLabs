@@ -31,7 +31,7 @@ export function RecentWork() {
         Recent work
       </Eyebrow>
 
-      <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-normal text-fg">
+      <h2 className="mt-8 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
         Job tickets, not a gallery.
       </h2>
 
@@ -52,7 +52,7 @@ export function RecentWork() {
                   {city?.name}
                 </p>
 
-                <h3 className="mt-6 max-w-[18ch] font-display text-lg font-medium text-fg underline decoration-[length:var(--hairline)] decoration-transparent underline-offset-[6px] transition-colors group-hover:decoration-mark">
+                <h3 className="mt-6 max-w-[18ch] font-display text-lg font-bold text-fg underline decoration-[length:var(--hairline)] decoration-transparent underline-offset-[6px] transition-colors group-hover:decoration-mark">
                   {item.title}
                 </h3>
 

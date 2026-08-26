@@ -53,7 +53,7 @@ export function SentTicket() {
         >
           <Eyebrow spec={valid ? reference : "REFERENCE MISSING"}>Received</Eyebrow>
 
-          <h1 className="mt-8 max-w-[20ch] font-display text-3xl font-normal text-fg">
+          <h1 className="mt-8 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
             {valid ? "Your ticket is on the shop floor." : "We could not find that reference."}
           </h1>
 
@@ -145,8 +145,8 @@ export function SentTicket() {
               ["03", "You approve", "Nothing goes to production until you sign off a proof."],
             ].map(([step, title, detail]) => (
               <li key={step}>
-                <p className="font-utility text-lg leading-none text-accent-text">{step}</p>
-                <p className="mt-4 font-display text-base font-medium text-fg">{title}</p>
+                <p className="font-numeral text-xl leading-none font-extrabold tabular-nums text-accent-text">{step}</p>
+                <p className="mt-4 font-display text-base font-bold text-fg">{title}</p>
                 <p className="mt-2 text-sm text-fg-muted">{detail}</p>
               </li>
             ))}

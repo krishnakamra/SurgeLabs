@@ -13,7 +13,7 @@ export function PostCard({ post, number }: { post: Post; number?: string }) {
       <div className={`${SPEC} flex items-center gap-3 text-fg-faint`}>
         {number ? (
           <>
-            <span className="text-accent-text">{number}</span>
+            <span className="font-numeral text-[1.15em] font-extrabold tabular-nums text-accent-text">{number}</span>
             <span aria-hidden="true" className="text-rule-strong">
               /
             </span>
@@ -26,7 +26,7 @@ export function PostCard({ post, number }: { post: Post; number?: string }) {
         <span>{post.readingMinutes} min</span>
       </div>
 
-      <h3 className="mt-4 font-display text-lg font-medium text-fg">
+      <h3 className="mt-4 font-display text-lg font-bold text-fg">
         <Link
           href={`/blog/${post.slug}`}
           className="after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus"

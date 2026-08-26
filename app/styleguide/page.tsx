@@ -33,7 +33,7 @@ function Swatch({ swatch }: { swatch: InkSwatch }) {
     <div className="border-[length:var(--hairline)] border-rule">
       <div className="h-24 w-full border-b-[length:var(--hairline)] border-rule" style={{ backgroundColor: swatch.hex }} />
       <div className="p-4">
-        <p className="font-display text-sm font-medium text-fg">{swatch.name}</p>
+        <p className="font-display text-sm font-bold text-fg">{swatch.name}</p>
         <p className={`${SPEC} mt-2 text-accent-text`}>{swatch.hex}</p>
         <p className={`${SPEC} mt-1 text-fg-faint`}>{swatch.token}</p>
         <p className="mt-3 text-sm text-fg-muted">{swatch.role}</p>
@@ -52,7 +52,7 @@ function SurfaceProof() {
       <Eyebrow number="00" spec="4C PROCESS">
         Identical markup
       </Eyebrow>
-      <h3 className="mt-5 font-display text-xl font-medium text-fg">Same classes, either bed.</h3>
+      <h3 className="mt-5 font-display text-xl font-bold text-fg">Same classes, either bed.</h3>
       <p className="mt-4 text-sm text-fg-muted">
         Secondary copy sits on <span className="text-fg-faint">fg-muted</span> and metadata on
         fg-faint.
@@ -132,7 +132,7 @@ export default function StyleguidePage() {
       >
         <HalftoneField plate="m" pitch={7} dot={1.5} opacity={0.22} fade="radial" seed={11} />
         <Eyebrow spec="SURGE LABS">Design system</Eyebrow>
-        <h1 className="mt-8 font-display text-4xl font-normal text-fg">Press Room</h1>
+        <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">Press Room</h1>
         <p className="mt-8 max-w-[58ch] text-md text-fg-muted">
           Two surfaces, one set of classes. Every section declares{" "}
           <code className={`${SPEC} text-accent-text`}>data-surface</code> and the semantic tokens
@@ -157,7 +157,7 @@ export default function StyleguidePage() {
         <Eyebrow number="01" spec="7 LITERAL INKS">
           Palette
         </Eyebrow>
-        <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
           Gold, ink and paper. The process set is still here, and demoted.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -195,7 +195,7 @@ export default function StyleguidePage() {
         <Eyebrow number="02" spec="ONE CLASS SET">
           Surfaces
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
           Sheets running through a press.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -259,7 +259,7 @@ export default function StyleguidePage() {
         <Eyebrow number="03" spec="VARIABLE, next/font">
           Type
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
           Three roles. No fourth face.
         </h2>
 
@@ -269,7 +269,7 @@ export default function StyleguidePage() {
               role: "Display",
               face: "Bodoni Moda",
               detail: "700–800 · tight tracking · optical sizing on",
-              cls: "font-display text-xl font-normal",
+              cls: "font-display text-xl font-extrabold",
               sample: "Same-day rush",
             },
             {
@@ -311,7 +311,7 @@ export default function StyleguidePage() {
                 className={[
                   row.utility,
                   row.family === "display"
-                    ? "font-display font-normal"
+                    ? "font-display font-extrabold"
                     : row.family === "utility"
                       ? "font-utility uppercase tracking-utility"
                       : "font-body",
@@ -342,7 +342,7 @@ export default function StyleguidePage() {
         <Eyebrow number="04" spec="RADIUS 2PX">
           Buttons
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
           No radius, anywhere.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -391,7 +391,7 @@ export default function StyleguidePage() {
         <Eyebrow number="05" spec="TRANSFORM ONLY">
           Registration
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Four plates of the same word, pulled into register.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -432,7 +432,7 @@ export default function StyleguidePage() {
         <Eyebrow number="06" spec="feTurbulence">
           Halftone
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           A dot grid at the real screen angles.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -448,7 +448,7 @@ export default function StyleguidePage() {
                 <HalftoneField plate={screen.plate} pitch={6} dot={1.5} opacity={0.9} seed={9} />
               </div>
               <div className="border-t-[length:var(--hairline)] border-rule p-4">
-                <p className="font-display text-sm font-medium text-fg">{screen.label}</p>
+                <p className="font-display text-sm font-bold text-fg">{screen.label}</p>
                 <p className={`${SPEC} mt-2 text-fg-faint`}>{screen.angle}°</p>
               </div>
             </div>
@@ -478,7 +478,7 @@ export default function StyleguidePage() {
         <Eyebrow number="07" spec="PREPRESS">
           Marks
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Crop marks, not corner boxes.
         </h2>
 
@@ -547,7 +547,7 @@ export default function StyleguidePage() {
         <Eyebrow number="08" spec="COMPUTED, NOT CLAIMED">
           Contrast
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Every pair, measured at render time.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">

@@ -149,7 +149,7 @@ export default function BrandPage() {
       >
         <HalftoneField plate="m" pitch={7} dot={1.5} opacity={0.2} fade="radial" seed={19} />
         <Eyebrow spec="SURGE LABS">Identity</Eyebrow>
-        <h1 className="mt-8 font-display text-4xl font-normal text-fg">The logo</h1>
+        <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">The logo</h1>
         <p className="mt-8 max-w-[60ch] text-md text-fg-muted">
           Three lockups, one mark, no colour of its own. Everything on this page is rendered by the
           same component the site uses, from the same geometry the favicon is cut from — so if a
@@ -183,7 +183,7 @@ export default function BrandPage() {
         <Eyebrow number="01" spec="ONE GEOMETRY">
           Lockups
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
           Three ways to set it. Pick by the shape of the hole.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -238,7 +238,7 @@ export default function BrandPage() {
         <Eyebrow number="02" spec="NO COLOUR PROP">
           Ink and stock
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           There is no light version and no dark version.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -278,7 +278,7 @@ export default function BrandPage() {
         <Eyebrow number="03" spec="UNALTERED PATHS">
           Construction
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Their artwork, and the two numbers that govern it.
         </h2>
 
@@ -322,7 +322,7 @@ export default function BrandPage() {
             ].map((row) => (
               <div key={row.term}>
                 <dt className={`${SPEC} text-fg-faint`}>{row.term}</dt>
-                <dd className="mt-2 font-display text-lg font-medium text-fg">{row.value}</dd>
+                <dd className="mt-2 font-display text-lg font-bold text-fg">{row.value}</dd>
                 <dd className="mt-2 text-sm text-fg-muted">{row.note}</dd>
               </div>
             ))}
@@ -356,7 +356,7 @@ export default function BrandPage() {
         <Eyebrow number="04" spec={`${Math.round(CLEAR_SPACE * 100)}% OF HEIGHT`}>
           Clear space
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
           A quarter of the height, on every side.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -394,7 +394,7 @@ export default function BrandPage() {
         <Eyebrow number="05" spec="PROOFED, NOT GUESSED">
           Size
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Below the minimum, use the next lockup down.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -409,7 +409,7 @@ export default function BrandPage() {
             return (
               <div key={variant} className="border-t-2 border-fg pt-5">
                 <p className={`${SPEC} text-fg-faint`}>{variant}</p>
-                <p className="mt-3 font-display text-xl font-normal text-fg">
+                <p className="mt-3 font-display text-xl font-extrabold text-fg">
                   {min.screen}px <span className="text-fg-faint">/</span> {min.print}
                 </p>
                 <p className="mt-3 text-sm text-fg-muted">{min.note}</p>
@@ -448,7 +448,7 @@ export default function BrandPage() {
         <Eyebrow number="06" spec="NPM RUN GEN:BRAND">
           The app icon, and the files
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           The tab icon is a knockout, not the bare mark.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -521,7 +521,7 @@ export default function BrandPage() {
         <Eyebrow number="07" spec="ALL OF THESE ARE WRONG">
           Misuse
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
           Use the file.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -553,7 +553,7 @@ export default function BrandPage() {
             <span className="inline-flex items-center gap-1">
               <Logo variant="mark" size={56} />
               <span className="h-14 w-[var(--hairline)] bg-fg" />
-              <span className="font-display text-lg font-normal text-fg">GTA</span>
+              <span className="font-display text-lg font-extrabold text-fg">GTA</span>
             </span>
           </Dont>
 

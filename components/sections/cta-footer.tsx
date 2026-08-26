@@ -25,7 +25,7 @@ export function CallToAction() {
         Start a job
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[18ch] font-display text-3xl font-normal text-fg">
+      <h2 className="mt-6 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
         Tell us what you need. We&rsquo;ll quote it in a day.
       </h2>
 

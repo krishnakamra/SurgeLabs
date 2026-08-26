@@ -23,7 +23,7 @@ export function Industries() {
         Industries
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
+      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
         We already know what your industry orders.
       </h2>
 
@@ -39,7 +39,7 @@ export function Industries() {
                 aria-hidden="true"
                 className="h-[var(--hairline)] w-4 shrink-0 origin-left bg-rule-strong transition-[transform,background-color] duration-[var(--dur-snap)] ease-press group-hover:scale-x-[2.2] group-hover:bg-mark group-focus-visible:scale-x-[2.2] group-focus-visible:bg-mark"
               />
-              <h3 className="font-display text-lg font-medium text-fg">{industry.name}</h3>
+              <h3 className="font-display text-lg font-bold text-fg">{industry.name}</h3>
             </div>
             <p className="mt-3 pl-8 font-utility text-2xs uppercase tracking-utility text-fg-faint transition-colors duration-[var(--dur-snap)] group-hover:text-fg-muted group-focus-visible:text-fg-muted">
               {industry.orders}

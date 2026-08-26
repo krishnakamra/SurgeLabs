@@ -67,7 +67,7 @@ export default function BlogIndexPage() {
             <Eyebrow spec={site.serviceArea}>Guides</Eyebrow>
           </div>
 
-          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-normal text-fg">
+          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
             {seo.h1}
           </h1>
           <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
@@ -86,7 +86,7 @@ export default function BlogIndexPage() {
                   {postsInCategory(category.slug).length} article
                   {postsInCategory(category.slug).length === 1 ? "" : "s"}
                 </p>
-                <h2 className="mt-3 font-display text-lg font-medium text-fg">
+                <h2 className="mt-3 font-display text-lg font-bold text-fg">
                   <Link
                     href={`/blog/category/${category.slug}`}
                     className="after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus"

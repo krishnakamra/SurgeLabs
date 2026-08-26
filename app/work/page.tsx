@@ -39,7 +39,7 @@ export default function WorkPage() {
           <HalftoneField plate="k" pitch={9} dot={1.6} opacity={0.16} fade="radial" seed={7} />
           <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Work", path: PATH }]} />
           <Eyebrow spec={site.serviceArea}>Recent work</Eyebrow>
-          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-normal text-fg">{seo.h1}</h1>
+          <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">{seo.h1}</h1>
           <p className="mt-10 max-w-[60ch] text-md text-fg-muted">
             Job tickets rather than a gallery. What came in, what went out, what it was printed on
             and how long it took — the things you actually need to know before phoning a shop.
@@ -74,7 +74,7 @@ export default function WorkPage() {
                     ) : null}
                   </p>
 
-                  <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-normal text-fg">
+                  <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
                     {item.title}
                   </h2>
 
@@ -131,7 +131,7 @@ export default function WorkPage() {
           <Eyebrow number="09" spec="MON–FRI 9–6">
             Start a job
           </Eyebrow>
-          <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-normal text-fg">
+          <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
             Yours would get its own ticket.
           </h2>
           <p className="mt-8 max-w-[58ch] text-md text-fg-muted">

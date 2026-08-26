@@ -145,7 +145,7 @@ export function QuoteForm({
           {/* ── Step 1: needs ───────────────────────────────────────── */}
           {step === 0 ? (
             <section aria-labelledby="step-needs">
-              <h2 id="step-needs" className="font-display text-2xl font-normal text-fg">
+              <h2 id="step-needs" className="font-display text-2xl font-extrabold text-fg">
                 What do you need?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -167,7 +167,7 @@ export function QuoteForm({
                         on ? "border-accent bg-accent text-accent-fg" : "border-rule-strong text-fg hover:border-fg",
                       )}
                     >
-                      <span className="block font-display text-lg font-medium">{branch.label}</span>
+                      <span className="block font-display text-lg font-bold">{branch.label}</span>
                       <span className={cn("mt-1 block text-sm", on ? "text-accent-fg/80" : "text-fg-muted")}>
                         {branch.hint}
                       </span>
@@ -179,7 +179,7 @@ export function QuoteForm({
               {chosenPackage ? (
                 <div className="mt-10 border-l-2 border-accent bg-surface-raised p-6">
                   <p className={cn(SPEC, "text-fg-faint")}>From the packages page</p>
-                  <p className="mt-3 font-display text-lg font-medium text-fg">
+                  <p className="mt-3 font-display text-lg font-bold text-fg">
                     {chosenPackage.name} — {formatPrice(chosenPackage.price)}
                   </p>
                   <p className="mt-3 text-sm text-fg-muted">
@@ -194,7 +194,7 @@ export function QuoteForm({
           {/* ── Step 2: the spec ────────────────────────────────────── */}
           {step === 1 ? (
             <section aria-labelledby="step-spec">
-              <h2 id="step-spec" className="font-display text-2xl font-normal text-fg">
+              <h2 id="step-spec" className="font-display text-2xl font-extrabold text-fg">
                 The spec
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -273,7 +273,7 @@ export function QuoteForm({
           {/* ── Step 3: deadline + budget ───────────────────────────── */}
           {step === 2 ? (
             <section aria-labelledby="step-when">
-              <h2 id="step-when" className="font-display text-2xl font-normal text-fg">
+              <h2 id="step-when" className="font-display text-2xl font-extrabold text-fg">
                 When, and roughly how much?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -299,7 +299,7 @@ export function QuoteForm({
           {/* ── Step 4: contact ─────────────────────────────────────── */}
           {step === 3 ? (
             <section aria-labelledby="step-who">
-              <h2 id="step-who" className="font-display text-2xl font-normal text-fg">
+              <h2 id="step-who" className="font-display text-2xl font-extrabold text-fg">
                 Who are we quoting?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
