@@ -66,8 +66,13 @@ export const pageSeo: Record<string, PageSeo> = {
   },
   "/about": {
     title: `About Surge Labs, Mississauga${SUFFIX}`,
-    description: `One shop on Skymark Ave doing web, print, signage and apparel in-house. One team, one invoice, no subcontracting. Call ${PHONE}.`,
+    description: `One shop on Skymark Ave doing design, web, print, signage and apparel in-house. Five vendors\u2019 work, one team, one bill. Call ${PHONE}.`,
     h1: "About Surge Labs, Mississauga",
+  },
+  "/contact": {
+    title: `Contact Surge Labs, Mississauga${SUFFIX}`,
+    description: `Call ${PHONE} or visit 2800 Skymark Ave, Mississauga. Open Mon–Fri 9am–6pm. Print, signage, apparel and web, delivered across the GTA.`,
+    h1: "Contact Surge Labs in Mississauga",
   },
   "/graphic-design": {
     title: `Graphic Design & Logo Design in Mississauga${SUFFIX}`,

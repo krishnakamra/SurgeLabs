@@ -48,12 +48,14 @@ export const primaryNav: readonly NavItem[] = [
   { label: "Blog", href: "/blog", description: "Guides, prices and specs" },
   {
     label: "Contact",
-    // Deliberately not a /contact route. The address, hours and phone live in
-    // one place — the Find us block on /about — and a second page repeating
-    // the NAP is a way for the two to drift out of sync, which is precisely
-    // the thing content/site.ts exists to prevent.
-    href: "/about#find-us",
-    description: "Address, hours and phone",
+    // A real route now. The earlier note here argued that a second page
+    // repeating the name, address and phone would drift out of sync with the
+    // About page — but nothing on either page types the NAP: both render it
+    // from content/site.ts, so there is exactly one copy and drift is not
+    // possible. What was possible, and was happening, is that people looking
+    // for a phone number had to find it inside a page about the company.
+    href: "/contact",
+    description: "Phone, address, hours and a map",
   },
 ];
 

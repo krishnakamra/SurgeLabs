@@ -77,9 +77,19 @@ export function organisationGraph(): Node[] {
       telephone: "+1-905-598-3960",
       email: site.email,
       address: postal,
-      // Mississauga city centre, to roughly a block. Replace with the exact
-      // coordinates from the Google Business Profile pin.
-      geo: { "@type": "GeoCoordinates", latitude: 43.6205, longitude: -79.6376 },
+      // NO `geo` NODE, DELIBERATELY.
+      //
+      // This used to carry latitude 43.6205, longitude -79.6376 — Mississauga
+      // city centre, which is a couple of kilometres from Skymark Ave and was
+      // never the shop. A GeoCoordinates node is read as the precise position
+      // of the business, so an approximate one is not a placeholder; it is a
+      // wrong answer published as a right one, and it can move the pin away
+      // from where Google would otherwise geocode the street address.
+      //
+      // `address` above is exact and Google geocodes from it. Add `geo` back
+      // only with the real coordinates copied out of the Google Business
+      // Profile pin. content/site.ts has an approximate `mapPin` for drawing
+      // the service-area map on /contact; it is not for this.
       openingHoursSpecification: hours,
       areaServed: areaServed(),
       priceRange: "$$",

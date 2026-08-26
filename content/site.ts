@@ -39,4 +39,20 @@ export const site = {
   ],
 
   serviceArea: "Mississauga and the Greater Toronto Area",
+
+  /**
+   * Approximate position of the shop, for drawing the service-area map on
+   * /contact. Skymark Ave, to three decimal places — a few hundred metres.
+   *
+   * ⚠️  This is NOT the Google Business Profile pin and it is deliberately not
+   *     published as one. lib/seo/schema.ts carries no `geo` node at all — a
+   *     GeoCoordinates value is read as the exact position of the business,
+   *     and an approximate one is a wrong answer published as a right one.
+   *     Copy the real coordinates out of GBP before adding it there.
+   */
+  mapPin: { lat: 43.628, lng: -79.627 },
+
+  /** Directions by street address, which is exact, rather than by a pin. */
+  directionsUrl:
+    "https://www.google.com/maps/search/?api=1&query=2800+Skymark+Ave%2C+Mississauga%2C+ON",
 } as const;

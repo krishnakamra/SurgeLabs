@@ -61,6 +61,10 @@ export const pageKeywords: Record<string, PageKeywords> = {
     primary: "about surge labs mississauga",
     secondary: ["print shop mississauga", "in-house production gta", "skymark ave mississauga"],
   },
+  "/contact": {
+    primary: "contact surge labs mississauga",
+    secondary: ["print shop near me mississauga", "sign shop phone number gta", "skymark ave mississauga"],
+  },
   "/graphic-design": {
     primary: "graphic design mississauga",
     secondary: ["logo design mississauga", "brand identity gta", "vector logo redraw toronto"],
