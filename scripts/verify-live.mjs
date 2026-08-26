@@ -94,6 +94,19 @@ for (const loc of toCheck) {
 }
 ok(`all ${toCheck.length} sitemap URLs return 200`, bad === 0, bad ? `${bad} failing` : "");
 
-console.log(problems.length ? `\n✗ ${problems.length} problem(s):` : "\n✓ live site verified\n");
+// The summary line names the target. A clean run against localhost used to
+// print "✓ live site verified", which is how a smoke test got reported here
+// as proof the deployment was up — it was not, and the 45 URLs it had just
+// confirmed were the local ones. A pass against a local server is a pass
+// against a local server and the line now says so.
+console.log(
+  problems.length
+    ? `\n✗ ${problems.length} problem(s) at ${base}:`
+    : isLocal
+      ? `\n✓ local build verified at ${base} — this proves NOTHING about the deployment.\n` +
+        "  Re-run against the real origin before reporting it as live:\n" +
+        "    node scripts/verify-live.mjs https://surgelabs.ca\n"
+      : `\n✓ live site verified at ${base}\n`,
+);
 for (const p of problems) console.log(`  - ${p}`);
 process.exit(problems.length ? 1 : 0);

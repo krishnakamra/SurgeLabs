@@ -209,7 +209,10 @@ export default function ContactPage() {
           </p>
 
           <div className="mt-14 grid gap-x-gutter gap-y-12 lg:grid-cols-12">
-            <div className="lg:col-span-8">
+            {/* min-w-0: a grid item defaults to min-width:auto, so the map's
+                own min-width escapes its overflow-x-auto wrapper and widens
+                the page instead of scrolling inside it. */}
+            <div className="min-w-0 lg:col-span-8">
               <ServiceMap />
               <p className={`${SPEC} mt-4 text-fg-faint`}>
                 Approximate positions. Use the directions link for the exact address.

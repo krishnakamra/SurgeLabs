@@ -410,7 +410,7 @@ export default function AboutPage() {
               Call {site.phone}
             </Button>
             <Button href="/contact" size="lg" variant="outline">
-              Directions and the delivery map
+              Directions and map
             </Button>
           </div>
         </SectionFrame>
