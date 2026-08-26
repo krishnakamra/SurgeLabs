@@ -131,7 +131,7 @@ export function QuoteForm({
     <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
       <div id="quote-steps" className="lg:col-span-7">
         {/* Progress */}
-        <ol className="flex flex-wrap gap-x-6 gap-y-2 border-b border-rule pb-5">
+        <ol className="flex flex-wrap gap-x-6 gap-y-2 border-b-[length:var(--hairline)] border-rule pb-5">
           {STEPS.map((label, index) => (
             <li key={label} className={cn(SPEC, index === step ? "text-accent-text" : index < step ? "text-fg" : "text-fg-faint")}>
               <span aria-hidden="true">{String(index + 1).padStart(2, "0")} </span>
@@ -145,7 +145,7 @@ export function QuoteForm({
           {/* ── Step 1: needs ───────────────────────────────────────── */}
           {step === 0 ? (
             <section aria-labelledby="step-needs">
-              <h2 id="step-needs" className="font-display text-2xl font-extrabold text-fg">
+              <h2 id="step-needs" className="font-display text-2xl font-normal text-fg">
                 What do you need?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -162,12 +162,12 @@ export function QuoteForm({
                       aria-pressed={on}
                       onClick={() => toggleNeed(branch.id)}
                       className={cn(
-                        "rounded-btn border p-5 text-left transition-colors duration-[var(--dur-snap)] ease-press",
+                        "border-[length:var(--hairline)] p-5 text-left transition-colors duration-[var(--dur-snap)] ease-press",
                         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
                         on ? "border-accent bg-accent text-accent-fg" : "border-rule-strong text-fg hover:border-fg",
                       )}
                     >
-                      <span className="block font-display text-lg font-bold">{branch.label}</span>
+                      <span className="block font-display text-lg font-medium">{branch.label}</span>
                       <span className={cn("mt-1 block text-sm", on ? "text-accent-fg/80" : "text-fg-muted")}>
                         {branch.hint}
                       </span>
@@ -179,7 +179,7 @@ export function QuoteForm({
               {chosenPackage ? (
                 <div className="mt-10 border-l-2 border-accent bg-surface-raised p-6">
                   <p className={cn(SPEC, "text-fg-faint")}>From the packages page</p>
-                  <p className="mt-3 font-display text-lg font-bold text-fg">
+                  <p className="mt-3 font-display text-lg font-medium text-fg">
                     {chosenPackage.name} — {formatPrice(chosenPackage.price)}
                   </p>
                   <p className="mt-3 text-sm text-fg-muted">
@@ -194,7 +194,7 @@ export function QuoteForm({
           {/* ── Step 2: the spec ────────────────────────────────────── */}
           {step === 1 ? (
             <section aria-labelledby="step-spec">
-              <h2 id="step-spec" className="font-display text-2xl font-extrabold text-fg">
+              <h2 id="step-spec" className="font-display text-2xl font-normal text-fg">
                 The spec
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -203,7 +203,7 @@ export function QuoteForm({
               </p>
 
               {chosenPackage ? (
-                <div className="mt-10 border border-rule bg-surface-raised p-6">
+                <div className="mt-10 border-[length:var(--hairline)] border-rule bg-surface-raised p-6">
                   <p className={cn(SPEC, "text-fg-faint")}>
                     {chosenPackage.name} · included, read-only
                   </p>
@@ -214,7 +214,7 @@ export function QuoteForm({
                         <ul className="mt-2 space-y-1.5">
                           {group.items.map((item) => (
                             <li key={item} className="flex gap-3 text-sm text-fg-muted">
-                              <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-rule-strong" />
+                              <span aria-hidden="true" className="mt-[0.7em] h-[var(--hairline)] w-3 shrink-0 bg-rule-strong" />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -233,7 +233,7 @@ export function QuoteForm({
                 {activeBranches.map((branch) => (
                   <div key={branch.id}>
                     <p className={cn(SPEC, "text-accent-text")}>{branch.ticket}</p>
-                    <div className="mt-6 space-y-10 border-t border-rule pt-8">
+                    <div className="mt-6 space-y-10 border-t-[length:var(--hairline)] border-rule pt-8">
                       {branch.fields.map((field) =>
                         field.kind === "choice" ? (
                           <ChoiceField
@@ -273,7 +273,7 @@ export function QuoteForm({
           {/* ── Step 3: deadline + budget ───────────────────────────── */}
           {step === 2 ? (
             <section aria-labelledby="step-when">
-              <h2 id="step-when" className="font-display text-2xl font-extrabold text-fg">
+              <h2 id="step-when" className="font-display text-2xl font-normal text-fg">
                 When, and roughly how much?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -299,7 +299,7 @@ export function QuoteForm({
           {/* ── Step 4: contact ─────────────────────────────────────── */}
           {step === 3 ? (
             <section aria-labelledby="step-who">
-              <h2 id="step-who" className="font-display text-2xl font-extrabold text-fg">
+              <h2 id="step-who" className="font-display text-2xl font-normal text-fg">
                 Who are we quoting?
               </h2>
               <p className="mt-4 max-w-[52ch] text-fg-muted">
@@ -331,7 +331,7 @@ export function QuoteForm({
                   onChange={(event) => setFile(event.target.files?.[0] ?? null)}
                   className={cn(
                     "mt-3 block w-full text-sm text-fg-muted",
-                    "file:mr-4 file:rounded-btn file:border file:border-rule-strong file:bg-transparent",
+                    "file:mr-4 file:file:border-[length:var(--hairline)] file:border-rule-strong file:bg-transparent",
                     "file:px-4 file:py-2.5 file:font-utility file:text-2xs file:uppercase file:tracking-utility file:text-fg",
                     "hover:file:border-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
                   )}
@@ -343,7 +343,7 @@ export function QuoteForm({
 
               {/* Honeypot. Off-screen rather than display:none, which some
                   bots skip, and hidden from assistive tech and tab order. */}
-              <div aria-hidden="true" className="pointer-events-none absolute left-[-9999px] h-px w-px overflow-hidden">
+              <div aria-hidden="true" className="pointer-events-none absolute left-[-9999px] h-[var(--hairline)] w-[var(--hairline)] overflow-hidden">
                 <label htmlFor="company_website">Company website</label>
                 <input id="company_website" ref={honeypot} type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
               </div>
@@ -352,7 +352,7 @@ export function QuoteForm({
         </div>
 
         {/* Navigation */}
-        <div className="mt-14 flex flex-wrap items-center gap-5 border-t border-rule pt-8">
+        <div className="mt-14 flex flex-wrap items-center gap-5 border-t-[length:var(--hairline)] border-rule pt-8">
           {step > 0 ? (
             <Button variant="outline" size="md" onClick={() => go(step - 1)} disabled={pending}>
               Back

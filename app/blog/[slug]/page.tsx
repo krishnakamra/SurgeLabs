@@ -119,7 +119,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             <Eyebrow spec={category.name}>Guide</Eyebrow>
           </div>
 
-          <h1 className="mt-10 max-w-[24ch] font-display text-3xl font-extrabold text-fg">
+          <h1 className="mt-10 max-w-[24ch] font-display text-3xl font-normal text-fg">
             {post.title}
           </h1>
           <p className="mt-6 max-w-[58ch] text-md text-fg-muted">{post.description}</p>
@@ -146,9 +146,9 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
                 }}
               />
 
-              <div className="mt-16 border-t border-rule pt-8">
+              <div className="mt-16 border-t-[length:var(--hairline)] border-rule pt-8">
                 <p className={`${SPEC} text-fg-faint`}>Next step</p>
-                <p className="mt-4 max-w-[46ch] font-display text-xl font-bold text-fg">
+                <p className="mt-4 max-w-[46ch] font-display text-xl font-medium text-fg">
                   Send us the job and we will price it exactly.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-4">

@@ -36,129 +36,158 @@
   --color-inherit: inherit;
 
   /* ─── Fonts ─────────────────────────────────────────────────────────── */
-  --font-display: var(--font-bricolage), "Arial Black", ui-sans-serif, sans-serif;
-  --font-body: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
-  --font-utility: var(--font-martian), ui-monospace, "SFMono-Regular", monospace;
+  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", Georgia, serif;
+  --font-body: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+  --font-utility: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
-  /* ─── Press palette · literal inks. These NEVER flip. ───────────────── */
-  --color-ink: #0c0c0e;
-  --color-ink-2: #17171a;
-  --color-stock: #ededE8;
-  --color-stock-2: #dcdcd5;
+  /* ─── Palette · literal. These NEVER flip. ──────────────────────────────
+     A foil house, not a process-colour floor. Gold carries the brand. The
+     four-colour set is still here because the presses are still here, but it
+     is demoted to the registration animation and the production sections and
+     appears nowhere else. */
+  --color-ink: #0a0a0b;
+  --color-ink-2: #141416;
+  --color-stock: #efede8;         /* warm uncoated paper stock              */
+  --color-stock-2: #dfdbd2;
+
+  --color-gold: #c8a24a;          /* PRIMARY. 8.22:1 on ink, 2.06:1 on paper */
+  --color-gold-lo: #8c6b1f;       /* foil stop — the shade in the leaf      */
+  --color-gold-hi: #e8ce84;       /* foil stop — the catch                  */
+
+  /* DEMOTED. Cyan carries links and data readouts; magenta appears only
+     inside the CMYK registration animation and the production sections. */
   --color-cyan: #009fe3;
   --color-magenta: #e6007e;
   --color-yellow: #ffed00;
 
-  /* Tints & shades of the same four inks. Legibility only — a process ink
-     laid down at less than 100% is still that ink. Contrast noted per token. */
-  --color-ink-3: #232328;         /* hairline on ink                        */
-  --color-ink-4: #08080a;         /* sunken well on ink                     */
-  --color-stock-0: #f5f5f1;       /* second sheet laid on top — raised card */
-  --color-cyan-deep: #006795;     /* cyan as text: 5.3:1 stock, 4.5:1 sunken */
-  --color-magenta-deep: #b80065;  /* magenta as text on stock   5.53:1 AA   */
-  --color-magenta-lift: #ff3d9e;  /* magenta as text on ink     5.98:1 AA   */
-  --color-knockout: #ffffff;      /* unprinted paper inside a solid ink fill */
+  /* Tints and shades. Legibility only. Every ratio below is measured against
+     the surfaces in this file, not asserted — see /styleguide. */
+  --color-ink-4: #050506;         /* sunken well on ink                     */
+  --color-stock-0: #f6f4ef;       /* second sheet laid on top — raised card */
+
+  /* Gold is a light colour. On paper it reads at 2.06:1 — a failure for
+     anything with words in it, and for any border a user can interact with.
+     This is the same gold walked down its own hue to 28% lightness: 5.63:1
+     on stock, 4.77:1 in a sunken well. Not a second brand colour. It is the
+     one place gold is allowed to be text on paper. */
+  --color-gold-deep: #74591b;
+
+  --color-cyan-deep: #006795;     /* cyan as text: 5.32:1 stock, 4.51:1 sunken */
+  --color-magenta-deep: #b80065;  /* magenta as text on stock   5.56:1 AA   */
+  --color-magenta-lift: #ff3d9e;  /* magenta as text on ink     6.04:1 AA   */
+  --color-knockout: #ffffff;
 
   /* ─── Semantic tokens · DEFAULT = STOCK. ────────────────────────────────
      Re-declared wholesale by both [data-surface] blocks below, so nesting
      works in either direction. Values here are literal, not var() aliases:
      a var() indirection declared at :root is substituted at :root and would
      not follow the flip. */
-  --color-surface: #ededE8;
-  --color-surface-raised: #f5f5f1;
-  --color-surface-sunken: #dcdcd5;
+  --color-surface: #efede8;
+  --color-surface-raised: #f6f4ef;
+  --color-surface-sunken: #dfdbd2;
 
-  --color-fg: #0c0c0e;            /* 16.2:1 on stock  */
-  --color-fg-muted: #4a4a50;      /*  7.5:1 on stock  */
-  --color-fg-faint: #606067;      /*  5.3:1 on stock, 4.5:1 on the sunken well */
+  --color-fg: #0a0a0b;            /* 16.91:1 on stock */
+  --color-fg-muted: #55524b;      /*  6.66:1 on stock, 5.64:1 sunken */
+  --color-fg-faint: #5f5c55;      /*  5.70:1 on stock, 4.83:1 sunken */
 
-  --color-rule: #dcdcd5;          /* decorative hairline        */
-  --color-rule-strong: #6c6c64;   /* border and separator glyph  4.5:1 */
+  /* The hairline. 0.5px of gold at 30%, not 1px of grey. The width lives in
+     --hairline below so the two travel together. */
+  --color-rule: rgb(200 162 74 / 0.3);
+  --color-rule-strong: #74591b;   /* interactive border, crop marks  5.63:1 */
 
-  --color-accent: #e6007e;          /* magenta carries the brand — as a FILL */
-  --color-accent-fg: #ffffff;       /* knockout on magenta      4.50:1 AA   */
-  --color-accent-hover: #b80065;    /* on paper the ink gets denser         */
-  --color-accent-hover-fg: #ffffff; /* knockout on magenta-deep 6.53:1 AA   */
-  --color-accent-text: #b80065;     /* magenta as TEXT          5.53:1 AA   */
+  --color-accent: #c8a24a;           /* gold carries the brand — as a FILL  */
+  --color-accent-fg: #0a0a0b;        /* type knocked out of foil   8.22:1   */
+  --color-accent-hover: #c8a24a;     /* the button floods gold on hover     */
+  --color-accent-hover-fg: #0a0a0b;  /* 8.22:1                              */
+  --color-accent-text: #74591b;      /* gold as TEXT on paper      5.63:1   */
 
-  --color-link: #006795;          /* cyan supports  5.3:1 stock, 4.5:1 sunken */
-  --color-link-hover: #0c0c0e;
+  --color-link: #006795;
+  --color-link-hover: #0a0a0b;
 
-  /* NOT a text colour. 3.83:1 on stock — fine for a tick, a rule or an icon,
-     which WCAG holds to 3:1, and a failure for anything with words in it.
-     Use --color-accent-text for text. */
-  --color-mark: #e6007e;          /* functional tick / underline   3.8:1   */
-  --color-focus: #e6007e;         /* focus ring          3.83:1 vs stock   */
+  --color-mark: #74591b;          /* functional tick / rule on paper 5.63:1 */
+  --color-focus: #74591b;         /* focus ring                      5.63:1 */
 
-  --color-select-bg: #e6007e;
-  --color-select-fg: #ffffff;
+  --color-select-bg: #c8a24a;
+  --color-select-fg: #0a0a0b;
 
-  /* Registration plates. C/M/Y are literal process inks on both beds;
-     K is whatever "printed" means on this surface, so it flips. */
+  /* Registration plates. The CMYK animation is the one place the process set
+     still runs at full strength — it is a picture of a press, and a press is
+     still four plates. K is whatever "printed" means here, so it flips. */
   --color-plate-c: #009fe3;
   --color-plate-m: #e6007e;
   --color-plate-y: #ffed00;
-  --color-plate-k: #0c0c0e;
+  --color-plate-k: #0a0a0b;
 
-  /* ─── Type scale · 12 / 14 / 16 / 18 / 21 / 28 / 40 / 60 / 88 / 128 ──── */
-  --text-2xs: 0.75rem;
-  --text-2xs--line-height: 1.35;
+  /* ─── Type scale · 13 / 15 / 17 / 20 / 26 / 36 / 52 / 76 / 112 / 160 ────
+     Plus an 11px utility floor. Body copy sits on 17. Every display step is
+     a clamp, and the number in the comment is what it reaches at 1440.
+
+     Line height is 1.6 on body and 1.05 on display, and the gap between them
+     is the point: a Didone headline wants to sit tight enough that the
+     hairlines stack into a texture, and body copy in a neutral grotesque
+     wants air. */
+  --text-2xs: 0.6875rem;          /* 11 — the utility floor */
+  --text-2xs--line-height: 1.4;
   --text-2xs--letter-spacing: 0em;
 
-  --text-xs: 0.875rem;
-  --text-xs--line-height: 1.45;
+  --text-xs: 0.8125rem;           /* 13 */
+  --text-xs--line-height: 1.5;
   --text-xs--letter-spacing: 0em;
 
-  --text-sm: 1rem;
-  --text-sm--line-height: 1.55;
-  --text-sm--letter-spacing: -0.005em;
+  --text-sm: 0.9375rem;           /* 15 */
+  --text-sm--line-height: 1.6;
+  --text-sm--letter-spacing: 0em;
 
-  --text-base: 1.125rem;
+  --text-base: 1.0625rem;         /* 17 — body copy, the default */
   --text-base--line-height: 1.6;
-  --text-base--letter-spacing: -0.01em;
+  --text-base--letter-spacing: 0em;
 
-  --text-md: clamp(1.125rem, 1.05rem + 0.32vw, 1.3125rem);
-  --text-md--line-height: 1.45;
-  --text-md--letter-spacing: -0.012em;
+  --text-md: clamp(1.25rem, 1.111rem + 0.571vw, 1.625rem);      /* 20 → 26 */
+  --text-md--line-height: 1.35;
+  --text-md--letter-spacing: -0.005em;
 
-  --text-lg: clamp(1.5rem, 1.32rem + 0.75vw, 1.75rem);
-  --text-lg--line-height: 1.25;
-  --text-lg--letter-spacing: -0.018em;
+  --text-lg: clamp(1.625rem, 1.393rem + 0.952vw, 2.25rem);      /* 26 → 36 */
+  --text-lg--line-height: 1.05;
+  --text-lg--letter-spacing: -0.012em;
 
-  --text-xl: clamp(2rem, 1.6rem + 1.7vw, 2.5rem);
-  --text-xl--line-height: 1.1;
-  --text-xl--letter-spacing: -0.024em;
+  --text-xl: clamp(2.125rem, 1.707rem + 1.714vw, 3.25rem);      /* 34 → 52 */
+  --text-xl--line-height: 1.05;
+  --text-xl--letter-spacing: -0.015em;
 
-  --text-2xl: clamp(2.5rem, 1.7rem + 3.4vw, 3.75rem);
-  --text-2xl--line-height: 1.02;
-  --text-2xl--letter-spacing: -0.03em;
+  --text-2xl: clamp(2.75rem, 2.007rem + 3.048vw, 4.75rem);      /* 44 → 76 */
+  --text-2xl--line-height: 1.05;
+  --text-2xl--letter-spacing: -0.018em;
 
-  --text-3xl: clamp(3rem, 1.4rem + 6.8vw, 5.5rem);
-  --text-3xl--line-height: 0.96;
-  --text-3xl--letter-spacing: -0.035em;
+  --text-3xl: clamp(3.5rem, 2.2rem + 5.333vw, 7rem);           /* 56 → 112 */
+  --text-3xl--line-height: 1.05;
+  --text-3xl--letter-spacing: -0.02em;
 
-  --text-4xl: clamp(3.5rem, 0.9rem + 11vw, 8rem);
-  --text-4xl--line-height: 0.9;
-  --text-4xl--letter-spacing: -0.042em;
+  --text-4xl: clamp(4.5rem, 2.457rem + 8.381vw, 10rem);        /* 72 → 160 */
+  --text-4xl--line-height: 1.05;
+  --text-4xl--letter-spacing: -0.02em;
 
-  /* ─── Tracking · the utility voice is defined by its letter-spacing ──── */
-  --tracking-utility: 0.16em;
-  --tracking-utility-tight: 0.1em;
-  --tracking-utility-wide: 0.24em;
+  /* ─── Tracking · the utility voice is defined by its letter-spacing ────
+     Quieter than the press-floor build. Geist Mono at 11–13px with +0.12em
+     supports the Didone; at the old +0.16em it competed with it. */
+  --tracking-utility: 0.12em;
+  --tracking-utility-tight: 0.08em;
+  --tracking-utility-wide: 0.18em;
 
   /* ─── Grid ──────────────────────────────────────────────────────────── */
   --container-page: 90rem;        /* 1440 */
+  --container-measure: 68ch;      /* the cap. No line of prose runs wider.  */
   --spacing-gutter: 1.5rem;       /* 24 mobile → 40 desktop, see :root below */
-  --breakpoint-xs: 30rem;         /* 480 — where the logo drops its wordmark */
+  --breakpoint-xs: 30rem;         /* 480 — the `xs:` variant                */
   --breakpoint-rail: 75rem;       /* 1200 — the `rail:` variant             */
 
-  /* ─── Radius · zero everywhere. This is a print shop. ───────────────── */
-  --radius-btn: 2px;
+  /* ─── Radius · zero. Everywhere, with no exceptions and no token to reach
+     for. A foil-stamped card has a cut edge, not a rounded one. ────────── */
 
   /* ─── Motion ────────────────────────────────────────────────────────── */
   --ease-press: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-plate: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-tick: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-foil: cubic-bezier(0.33, 0, 0.2, 1);
 
   --animate-ticket-in: ticket-in 300ms var(--ease-press) both;
   --animate-plate-pulse: plate-pulse 1.4s var(--ease-tick) infinite;
@@ -210,8 +239,12 @@
   --rail-w: 0px;
   --crop-inset: 1rem;
   --crop-gap: 0.375rem;
-  --crop-len: 0.625rem;
-  --hairline: 1px;
+  --crop-len: 0.75rem;
+
+  /* Every rule on this site is this wide. 0.5px is a real hairline: browsers
+     do not round it up to 1, they paint it as a part-covered pixel, which is
+     exactly the weight a Didone's thin strokes want next to them. */
+  --hairline: 0.5px;
 }
 
 @media (min-width: 64rem) {
@@ -240,29 +273,28 @@
   --color-surface-raised: var(--color-ink-2);
   --color-surface-sunken: var(--color-ink-4);
 
-  --color-fg: var(--color-stock);          /* 16.2:1 */
-  --color-fg-muted: #a0a0a8;               /*  7.5:1 */
-  --color-fg-faint: #7c7c86;               /*  4.7:1 */
+  --color-fg: var(--color-stock);          /* 16.91:1 */
+  --color-fg-muted: #a8a69f;               /*  8.12:1 */
+  --color-fg-faint: #8a887f;               /*  5.57:1, 5.18:1 on the raised card */
 
-  --color-rule: var(--color-ink-3);
-  --color-rule-strong: #797982;            /*  4.5:1 */
+  /* Gold is at its best here: light metal on a dark bed, 8.22:1, and it can
+     be text, rule, border and fill without changing value. */
+  --color-rule: rgb(200 162 74 / 0.3);
+  --color-rule-strong: var(--color-gold);  /*  8.22:1 */
 
-  --color-accent: var(--color-magenta);
-  --color-accent-fg: var(--color-knockout);
-  /* On the press bed the plate lights up on hover, so the type has to knock
-     out to the bed. White on magenta-lift is only 3.27:1 — ink is 5.98:1. */
-  --color-accent-hover: var(--color-magenta-lift);
+  --color-accent: var(--color-gold);
+  --color-accent-fg: var(--color-ink);     /* type knocked out of foil 8.22:1 */
+  --color-accent-hover: var(--color-gold);
   --color-accent-hover-fg: var(--color-ink);
-  --color-accent-text: var(--color-magenta-lift);   /* 5.98:1 */
+  --color-accent-text: var(--color-gold);  /*  8.22:1 */
 
-  --color-link: var(--color-cyan);                  /* 6.6:1 */
+  --color-link: var(--color-cyan);         /*  6.66:1 */
   --color-link-hover: var(--color-stock);
 
-  /* Yellow only earns its keep on ink: 16.2:1 here, 1.03:1 on paper. */
-  --color-mark: var(--color-yellow);
-  --color-focus: var(--color-yellow);
+  --color-mark: var(--color-gold);
+  --color-focus: var(--color-gold);
 
-  --color-select-bg: var(--color-yellow);
+  --color-select-bg: var(--color-gold);
   --color-select-fg: var(--color-ink);
 
   --color-plate-k: var(--color-stock);
@@ -278,30 +310,32 @@
   --color-surface-raised: var(--color-stock-0);
   --color-surface-sunken: var(--color-stock-2);
 
-  --color-fg: var(--color-ink);
-  --color-fg-muted: #4a4a50;
-  --color-fg-faint: #606067;
+  --color-fg: var(--color-ink);            /* 16.91:1 */
+  --color-fg-muted: #55524b;               /*  6.66:1, 5.64:1 in a sunken well */
+  --color-fg-faint: #5f5c55;               /*  5.70:1, 4.83:1 in a sunken well */
 
-  --color-rule: var(--color-stock-2);
-  --color-rule-strong: #6c6c64;
+  /* The rule stays the bright gold — it is decorative and it is supposed to
+     be barely there on paper. Anything a user can read or click hands off to
+     gold-deep, which is the same hue and clears AA. */
+  --color-rule: rgb(200 162 74 / 0.3);
+  --color-rule-strong: var(--color-gold-deep);  /* 5.63:1 */
 
-  --color-accent: var(--color-magenta);
-  --color-accent-fg: var(--color-knockout);
-  --color-accent-hover: var(--color-magenta-deep);
-  --color-accent-hover-fg: var(--color-knockout);   /* 6.53:1 */
-  --color-accent-text: var(--color-magenta-deep);
+  /* The fill is still the bright gold: it is the foil, and ink knocked out
+     of it reads at 8.22:1 either way round. Only TEXT gold has to darken. */
+  --color-accent: var(--color-gold);
+  --color-accent-fg: var(--color-ink);
+  --color-accent-hover: var(--color-gold);
+  --color-accent-hover-fg: var(--color-ink);
+  --color-accent-text: var(--color-gold-deep);  /* 5.63:1 */
 
-  --color-link: var(--color-cyan-deep);
+  --color-link: var(--color-cyan-deep);         /* 5.32:1, 4.51:1 sunken */
   --color-link-hover: var(--color-ink);
 
-  /* Yellow is invisible on paper (1.03:1), so the functional mark role
-     hands off to magenta here. Yellow survives only in the decorative
-     registration/crop layer, where a faint Y plate is authentic. */
-  --color-mark: var(--color-magenta);
-  --color-focus: var(--color-magenta);
+  --color-mark: var(--color-gold-deep);
+  --color-focus: var(--color-gold-deep);
 
-  --color-select-bg: var(--color-magenta);
-  --color-select-fg: var(--color-knockout);
+  --color-select-bg: var(--color-gold);
+  --color-select-fg: var(--color-ink);
 
   --color-plate-k: var(--color-ink);
 
@@ -335,13 +369,27 @@
     padding-left: var(--rail-w);
   }
 
-  /* Optical sizing is the reason Bricolage is here — let it work. */
+  /* Optical sizing is the reason Bodoni Moda is here rather than a static
+     Didone — let it work.
+   *
+   * `auto` feeds the opsz axis the rendered size, so a 112px section opener
+   * is drawn with the display cut and its hairlines go properly thin, while
+   * a 26px card title gets the text cut and stays readable. That is the
+   * whole bargain of a Didone: the contrast has to scale with the type or it
+   * is either fragile when large or muddy when small.
+   *
+   * WEIGHT 400. Not 700 — the contrast between stem and hairline is what
+   * makes this face look expensive, and bolding it thickens the hairline
+   * faster than the stem and flattens exactly the thing you are paying for.
+   * 500 is available for a heading that genuinely needs to hold more ground;
+   * nothing here should go past it. */
   :where(h1, h2, h3, h4, h5, h6) {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    font-weight: 700;
+    font-weight: 400;
     text-wrap: balance;
   }
+
 
   ::selection {
     background-color: var(--color-select-bg);
@@ -353,14 +401,116 @@
     outline-offset: 2px;
   }
 
-  /* Radius is zero everywhere. Buttons opt back in at 2px, nothing else does. */
-  :where(input, select, textarea, fieldset, img, video, canvas, table) {
+  /* Radius is zero everywhere, with nothing opting back in. */
+  :where(input, select, textarea, fieldset, img, video, canvas, table, button, a) {
     border-radius: 0;
   }
+
+  /* NO SHADOW, NO GLOW, NO BLUR. There is none in the build and none should
+     be added: depth here comes from the surface flip and from space, and a
+     soft shadow under a card is the fastest way to make foil-stamped work
+     look like a template. Deliberately not written as a `* { box-shadow:
+     none }` reset — that would be a zero-specificity rule every utility
+     beats, which reads like enforcement while enforcing nothing. The real
+     control is that `shadow-*`, `blur-*` and `drop-shadow-*` have no tokens
+     behind them in this theme, so those utilities do not exist to reach for.
+     `--radius-*: initial` above does the same job for corners. */
 
   [hidden] {
     display: none !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOIL
+   A three-stop gradient — gold-lo, gold-hi, gold-lo — with the highlight
+   position driven by pointer or scroll, so the surface behaves like metal
+   catching light rather than a flat yellow fill.
+
+   WHERE THIS IS ALLOWED: the logo lockup, primary CTAs, and the foil
+   section. Nowhere else. A page covered in gold gradient looks cheap, which
+   is the exact opposite of the point — the effect only reads as foil while
+   it is rare enough that the eye treats it as a material rather than a
+   colour.
+
+   It works with no JavaScript. `--foil-pos` has an initial value, so the
+   server's HTML already carries a lit gradient; <FoilField> only takes over
+   the highlight and moves it. Under reduced motion nothing attaches and the
+   still highlight stands, which is a perfectly good piece of foil.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@property --foil-pos {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 50%;
+}
+
+[data-foil] {
+  /* One gradient, three ways of clipping it. 100deg rather than 90: real foil
+     is stamped into a sheet that is never perfectly square to the light, and
+     a truly horizontal sweep reads as a CSS gradient instead of a raking
+     reflection. */
+  --foil: linear-gradient(
+    100deg,
+    var(--color-gold-lo) 0%,
+    var(--color-gold-lo) calc(var(--foil-pos) - 22%),
+    var(--color-gold-hi) var(--foil-pos),
+    var(--color-gold-lo) calc(var(--foil-pos) + 22%),
+    var(--color-gold-lo) 100%
+  );
+}
+
+/* The highlight eases rather than tracking the pointer exactly. Metal has
+   mass; a highlight welded to the cursor reads as a shader toy. Gated on the
+   motion flag so a reduced-motion reader gets no transition either. */
+:where(html[data-motion="ready"]) [data-foil] {
+  transition: --foil-pos 260ms var(--ease-foil);
+}
+
+/* Type: clip the gradient to the glyphs.
+ *
+ * ⚠️  CONTRAST. At its darkest stop the foil is --color-gold-lo, which reads
+ *     3.99:1 on ink — under AA for body text, over the 3:1 that AA applies to
+ *     large text. So foil type is only ever set at display sizes, plus the
+ *     logo lockup, which WCAG 1.4.3 exempts outright as a logotype. It is
+ *     never used for running copy, and the rule is enforced by only ever
+ *     reaching for it in the three places named above. */
+[data-foil="text"] {
+  background-image: var(--foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Artwork: mask the gradient with the shape. The mark is a single closed
+   path, so it masks exactly, and --foil-mask is set from the same geometry
+   the SVG is drawn from (lib/brand/mark.ts) rather than a second copy. */
+[data-foil="mark"] {
+  background-image: var(--foil);
+  -webkit-mask-image: var(--foil-mask);
+  mask-image: var(--foil-mask);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* An edge struck in foil — the primary CTA at rest. The button is a hairline
+   of moving metal around nothing, and floods to a flat gold plate on hover.
+   Deliberately the border and not the fill: ink on the gradient's darkest
+   stop is 3.99:1, so a foil FILL could never carry text and there is no
+   [data-foil="fill"] to reach for. The hover fill is flat --color-accent,
+   which is 8.22:1 either way round. */
+[data-foil="edge"] {
+  border-image: var(--foil) 1;
+}
+
+/* On hover the plate is solid, so the moving edge would fight the flat fill.
+   Drop the border-image and let the fill carry the shape. */
+[data-foil="edge"]:hover,
+[data-foil="edge"]:focus-visible {
+  border-image: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

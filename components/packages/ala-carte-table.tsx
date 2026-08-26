@@ -21,7 +21,7 @@ export function AlaCarteTable() {
         </thead>
         <tbody>
           {alaCarte.map((item) => (
-            <tr key={item.name} className="border-t border-rule">
+            <tr key={item.name} className="border-t-[length:var(--hairline)] border-rule">
               <th scope="row" className="py-4 pr-6 text-sm font-normal text-fg">
                 {item.name}
               </th>

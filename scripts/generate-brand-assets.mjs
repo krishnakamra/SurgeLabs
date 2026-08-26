@@ -61,8 +61,9 @@ const ICON_SCALE = 0.7;
 /** Android's maskable safe zone is the middle 80%, so the mark comes in. */
 const MASKABLE_SCALE = 0.52;
 
-/** Cap height as a fraction of the em, for placing a baseline. */
-const CAP_HEIGHT = 0.72;
+/** Cap height as a fraction of the em, for placing a baseline. Bodoni
+    Moda runs a little shorter than the grotesque this replaced. */
+const CAP_HEIGHT = 0.7;
 
 const round = (n) => Math.round(n * 100) / 100;
 
@@ -119,8 +120,8 @@ function wordmarkSVG({ x, y, fontSize, anchor = "start", fill }) {
   const shift = anchor === "middle" ? tracking / 2 : 0;
   return `  <text
     x="${round(x + shift)}" y="${round(y)}"
-    font-family="Bricolage Grotesque, Arial Black, Helvetica, Arial, sans-serif"
-    font-weight="800"
+    font-family="Bodoni Moda, Bodoni MT, Didot, Georgia, serif"
+    font-weight="400"
     font-size="${round(fontSize)}"
     font-variation-settings="'opsz' ${WORDMARK_OPSZ}"
     letter-spacing="${tracking}"

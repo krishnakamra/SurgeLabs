@@ -55,7 +55,7 @@ export function MobilePackageBar() {
       data-surface="ink"
       aria-hidden={current === null}
       className={[
-        "fixed inset-x-0 bottom-0 z-50 border-t border-rule bg-surface lg:hidden",
+        "fixed inset-x-0 bottom-0 z-50 border-t-[length:var(--hairline)] border-rule bg-surface lg:hidden",
         "transition-[opacity,transform] duration-[var(--dur-snap)] ease-press",
         current ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0",
       ].join(" ")}

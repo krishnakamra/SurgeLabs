@@ -38,11 +38,11 @@ export const mdxComponents: MDXComponents = {
   h2: (props) => (
     <h2
       {...props}
-      className="mt-16 scroll-mt-28 font-display text-2xl font-extrabold text-fg first:mt-0"
+      className="mt-16 scroll-mt-28 font-display text-2xl font-normal text-fg first:mt-0"
     />
   ),
   h3: (props) => (
-    <h3 {...props} className="mt-10 scroll-mt-28 font-display text-lg font-bold text-fg" />
+    <h3 {...props} className="mt-10 scroll-mt-28 font-display text-lg font-medium text-fg" />
   ),
   p: (props) => <p {...props} className="mt-6 text-md leading-relaxed text-fg-muted" />,
   ul: (props) => <ul {...props} className="mt-6 space-y-3" />,
@@ -50,18 +50,20 @@ export const mdxComponents: MDXComponents = {
   li: (props) => (
     <li
       {...props}
-      className="text-md leading-relaxed text-fg-muted marker:text-mark [ul>&]:relative [ul>&]:pl-6 [ul>&]:before:absolute [ul>&]:before:left-0 [ul>&]:before:top-[0.7em] [ul>&]:before:h-px [ul>&]:before:w-3 [ul>&]:before:bg-mark"
+      className="text-md leading-relaxed text-fg-muted marker:text-mark [ul>&]:relative [ul>&]:pl-6 [ul>&]:before:absolute [ul>&]:before:left-0 [ul>&]:before:top-[0.7em] [ul>&]:before:h-[var(--hairline)] [ul>&]:before:w-3 [ul>&]:before:bg-mark"
     />
   ),
-  strong: (props) => <strong {...props} className="font-semibold text-fg" />,
+  // Body copy, not display — the 400-500 ceiling is a rule about the
+  // Didone, and Satoshi has a real 700 that <strong> should use.
+  strong: (props) => <strong {...props} className="font-bold text-fg" />,
   a: Anchor,
   blockquote: (props) => (
     <blockquote
       {...props}
-      className="mt-8 border-l-2 border-mark pl-6 font-display text-lg font-bold text-fg"
+      className="mt-8 border-l-2 border-mark pl-6 font-display text-lg font-medium text-fg"
     />
   ),
-  hr: () => <hr className="mt-12 border-0 border-t border-rule" />,
+  hr: () => <hr className="mt-12 border-0 border-t-[length:var(--hairline)] border-rule" />,
   code: (props) => (
     <code
       {...props}
@@ -71,16 +73,16 @@ export const mdxComponents: MDXComponents = {
   // Tables written as markdown, for the small ones that do not need an entry
   // in the data layer. Anything carrying a price uses <DataTable> instead.
   table: (props) => (
-    <div className="my-10 overflow-x-auto border border-rule">
+    <div className="my-10 overflow-x-auto border-[length:var(--hairline)] border-rule">
       <table {...props} className="w-full border-collapse text-left text-sm" />
     </div>
   ),
   th: (props) => (
     <th
       {...props}
-      className="border-b border-rule px-5 py-3 font-utility text-2xs uppercase tracking-utility text-fg-faint"
+      className="border-b-[length:var(--hairline)] border-rule px-5 py-3 font-utility text-2xs uppercase tracking-utility text-fg-faint"
     />
   ),
-  td: (props) => <td {...props} className="border-b border-rule px-5 py-3 align-top text-fg-muted" />,
+  td: (props) => <td {...props} className="border-b-[length:var(--hairline)] border-rule px-5 py-3 align-top text-fg-muted" />,
   DataTable,
 };

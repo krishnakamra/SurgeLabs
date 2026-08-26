@@ -5,6 +5,6 @@
        The 14-unit margin IS the clear space rule, one bar on every
        side. Place this file as-is and the rule is already honoured.
         -->
-  <rect width="92" height="92" fill="#EDEDE8"/>
-  <path d="M0 0 H50 L64 14 H14 V25 H64 V64 H14 L0 50 H50 V39 H0 Z" fill="#0C0C0E" transform="translate(14 14)"/>
+  <rect width="92" height="92" fill="#EFEDE8"/>
+  <path d="M0 0 H50 L64 14 H14 V25 H64 V64 H14 L0 50 H50 V39 H0 Z" fill="#0A0A0B" transform="translate(14 14)"/>
 </svg>

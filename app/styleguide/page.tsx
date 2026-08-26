@@ -30,10 +30,10 @@ const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
 function Swatch({ swatch }: { swatch: InkSwatch }) {
   return (
-    <div className="border border-rule">
-      <div className="h-24 w-full border-b border-rule" style={{ backgroundColor: swatch.hex }} />
+    <div className="border-[length:var(--hairline)] border-rule">
+      <div className="h-24 w-full border-b-[length:var(--hairline)] border-rule" style={{ backgroundColor: swatch.hex }} />
       <div className="p-4">
-        <p className="font-display text-sm font-bold text-fg">{swatch.name}</p>
+        <p className="font-display text-sm font-medium text-fg">{swatch.name}</p>
         <p className={`${SPEC} mt-2 text-accent-text`}>{swatch.hex}</p>
         <p className={`${SPEC} mt-1 text-fg-faint`}>{swatch.token}</p>
         <p className="mt-3 text-sm text-fg-muted">{swatch.role}</p>
@@ -52,7 +52,7 @@ function SurfaceProof() {
       <Eyebrow number="00" spec="4C PROCESS">
         Identical markup
       </Eyebrow>
-      <h3 className="mt-5 font-display text-xl font-bold text-fg">Same classes, either bed.</h3>
+      <h3 className="mt-5 font-display text-xl font-medium text-fg">Same classes, either bed.</h3>
       <p className="mt-4 text-sm text-fg-muted">
         Secondary copy sits on <span className="text-fg-faint">fg-muted</span> and metadata on
         fg-faint.
@@ -63,7 +63,7 @@ function SurfaceProof() {
         </a>{" "}
         <span className="text-fg-muted">— deepened on paper so it clears 4.5:1.</span>
       </p>
-      <div className="mt-6 border-t border-rule pt-6">
+      <div className="mt-6 border-t-[length:var(--hairline)] border-rule pt-6">
         <div className="bg-surface-raised p-4">
           <p className={`${SPEC} text-fg-faint`}>surface-raised</p>
         </div>
@@ -97,10 +97,10 @@ function ContrastRow({
   const tone = expectFail ? "text-fg-faint" : passes ? "text-link" : "text-accent-text";
 
   return (
-    <tr className="border-t border-rule align-middle">
+    <tr className="border-t-[length:var(--hairline)] border-rule align-middle">
       <td className="py-3 pr-4">
         <span
-          className="inline-block size-6 shrink-0 border border-rule-strong align-middle"
+          className="inline-block size-6 shrink-0 border-[length:var(--hairline)] border-rule-strong align-middle"
           style={{ backgroundColor: bg }}
         >
           <span className="block px-1 text-center text-[10px] leading-6" style={{ color: fg }}>
@@ -132,7 +132,7 @@ export default function StyleguidePage() {
       >
         <HalftoneField plate="m" pitch={7} dot={1.5} opacity={0.22} fade="radial" seed={11} />
         <Eyebrow spec="SURGE LABS">Design system</Eyebrow>
-        <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">Press Room</h1>
+        <h1 className="mt-8 font-display text-4xl font-normal text-fg">Press Room</h1>
         <p className="mt-8 max-w-[58ch] text-md text-fg-muted">
           Two surfaces, one set of classes. Every section declares{" "}
           <code className={`${SPEC} text-accent-text`}>data-surface</code> and the semantic tokens
@@ -157,13 +157,14 @@ export default function StyleguidePage() {
         <Eyebrow number="01" spec="7 LITERAL INKS">
           Palette
         </Eyebrow>
-        <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
-          The four-colour process set, and nothing else.
+        <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-normal text-fg">
+          Gold, ink and paper. The process set is still here, and demoted.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
-          Magenta carries the brand and appears as a fill. Cyan supports and carries links and data.
-          Yellow is a highlighter — registration marks, hover ticks — capped at two uses per
-          viewport, never a fill.
+          Gold carries the brand and appears as a fill, a rule and — sparingly — as foil. The
+          four-colour set is not deleted, because the presses are real and the registration
+          animation is a picture of one: cyan carries links and data, magenta is confined to the
+          registration layer and the production sections, and yellow survives only as a plate.
         </p>
 
         <div className="mt-12 grid gap-gutter sm:grid-cols-2 lg:grid-cols-4">
@@ -175,8 +176,7 @@ export default function StyleguidePage() {
         <h3 className={`${SPEC} mt-16 text-fg-faint`}>Derived — tints and shades of the same inks</h3>
         <p className="mt-4 max-w-[58ch] text-sm text-fg-muted">
           Legibility only. A process ink laid down at less than 100% is still that ink; these exist
-          because pure cyan reads at 2.52:1 on paper and pure magenta at 3.83:1, and running text
-          needs 4.5:1.
+          because gold reads at 2.06:1 on paper and pure cyan at 2.54:1, and running text needs 4.5:1.
         </p>
         <div className="mt-8 grid gap-gutter sm:grid-cols-2 lg:grid-cols-4">
           {DERIVED_INKS.map((swatch) => (
@@ -195,7 +195,7 @@ export default function StyleguidePage() {
         <Eyebrow number="02" spec="ONE CLASS SET">
           Surfaces
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
           Sheets running through a press.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -205,14 +205,14 @@ export default function StyleguidePage() {
         </p>
 
         <div className="mt-12 grid gap-gutter lg:grid-cols-2">
-          <div data-surface="ink" className="border border-rule">
-            <p className={`${SPEC} border-b border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
+          <div data-surface="ink" className="border-[length:var(--hairline)] border-rule">
+            <p className={`${SPEC} border-b-[length:var(--hairline)] border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
               data-surface=&quot;ink&quot;
             </p>
             <SurfaceProof />
           </div>
-          <div data-surface="stock" className="border border-rule">
-            <p className={`${SPEC} border-b border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
+          <div data-surface="stock" className="border-[length:var(--hairline)] border-rule">
+            <p className={`${SPEC} border-b-[length:var(--hairline)] border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
               data-surface=&quot;stock&quot;
             </p>
             <SurfaceProof />
@@ -232,7 +232,7 @@ export default function StyleguidePage() {
             </thead>
             <tbody>
               {SEMANTIC_TOKENS.map((row) => (
-                <tr key={row.token} className="border-t border-rule">
+                <tr key={row.token} className="border-t-[length:var(--hairline)] border-rule">
                   <td className={`${SPEC} py-3 pr-6 whitespace-nowrap text-fg`}>{row.token}</td>
                   <td className={`${SPEC} py-3 pr-6 whitespace-nowrap text-accent-text`}>
                     {row.utility}
@@ -259,7 +259,7 @@ export default function StyleguidePage() {
         <Eyebrow number="03" spec="VARIABLE, next/font">
           Type
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
           Three roles. No fourth face.
         </h2>
 
@@ -267,30 +267,30 @@ export default function StyleguidePage() {
           {[
             {
               role: "Display",
-              face: "Bricolage Grotesque",
+              face: "Bodoni Moda",
               detail: "700–800 · tight tracking · optical sizing on",
-              cls: "font-display text-xl font-extrabold",
+              cls: "font-display text-xl font-normal",
               sample: "Same-day rush",
             },
             {
               role: "Body",
-              face: "Inter Tight",
+              face: "Satoshi",
               detail: "400 / 500",
               cls: "font-body text-md",
               sample: "Embroidery, DTF and screen printing, all in-house.",
             },
             {
               role: "Utility",
-              face: "Martian Mono",
+              face: "Geist Mono",
               detail: "400 · uppercase · wide tracking",
               cls: `${SPEC} text-fg`,
               sample: "JOB #2418 — 4C PROCESS — 14PT C2S",
             },
           ].map((voice) => (
-            <div key={voice.role} className="border border-rule bg-surface-raised p-8">
+            <div key={voice.role} className="border-[length:var(--hairline)] border-rule bg-surface-raised p-8">
               <p className={`${SPEC} text-fg-faint`}>{voice.role}</p>
               <p className={`mt-6 ${voice.cls} text-fg`}>{voice.sample}</p>
-              <p className="mt-8 border-t border-rule pt-4 text-sm text-fg-muted">{voice.face}</p>
+              <p className="mt-8 border-t-[length:var(--hairline)] border-rule pt-4 text-sm text-fg-muted">{voice.face}</p>
               <p className={`${SPEC} mt-1 text-fg-faint`}>{voice.detail}</p>
             </div>
           ))}
@@ -299,7 +299,7 @@ export default function StyleguidePage() {
         <h3 className={`${SPEC} mt-16 text-fg-faint`}>
           Scale — 12 / 14 / 16 / 18 / 21 / 28 / 40 / 60 / 88 / 128
         </h3>
-        <div className="mt-8 divide-y divide-rule border-y border-rule">
+        <div className="mt-8 divide-y divide-rule border-y-[length:var(--hairline)] border-rule">
           {TYPE_SCALE.map((row) => (
             <div key={row.utility} className="grid gap-4 py-6 lg:grid-cols-[10rem_1fr]">
               <div>
@@ -311,7 +311,7 @@ export default function StyleguidePage() {
                 className={[
                   row.utility,
                   row.family === "display"
-                    ? "font-display font-extrabold"
+                    ? "font-display font-normal"
                     : row.family === "utility"
                       ? "font-utility uppercase tracking-utility"
                       : "font-body",
@@ -342,18 +342,19 @@ export default function StyleguidePage() {
         <Eyebrow number="04" spec="RADIUS 2PX">
           Buttons
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
-          The only radius in the system.
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
+          No radius, anywhere.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
-          Hover a primary and a 2px yellow rule wipes in along the bottom edge — transform only. On
-          paper the fill deepens; on the bed it lights up and the type knocks out to black, because
-          white on lifted magenta is 3.27:1.
+          A primary CTA is a foil hairline around nothing until you reach for it, and then the whole
+          shape floods to a flat gold plate with the type knocked out in ink — 8.22:1 on either bed.
+          The edge is foil and the fill is not, deliberately: the gradient&rsquo;s darkest stop is
+          3.99:1, so a foil fill could never carry type.
         </p>
 
         {(["ink", "stock"] as const).map((surface) => (
-          <div key={surface} data-surface={surface} className="mt-12 border border-rule bg-surface">
-            <p className={`${SPEC} border-b border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
+          <div key={surface} data-surface={surface} className="mt-12 border-[length:var(--hairline)] border-rule bg-surface">
+            <p className={`${SPEC} border-b-[length:var(--hairline)] border-rule bg-surface-sunken px-8 py-3 text-fg-faint`}>
               data-surface=&quot;{surface}&quot;
             </p>
             <div className="space-y-10 p-8">
@@ -390,7 +391,7 @@ export default function StyleguidePage() {
         <Eyebrow number="05" spec="TRANSFORM ONLY">
           Registration
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           Four plates of the same word, pulled into register.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -401,10 +402,10 @@ export default function StyleguidePage() {
         </p>
 
         <div className="mt-14 grid gap-gutter lg:grid-cols-2">
-          <div data-surface="stock" className="border border-rule bg-surface p-8 sm:p-12">
+          <div data-surface="stock" className="border-[length:var(--hairline)] border-rule bg-surface p-8 sm:p-12">
             <RegistrationDemoBlock label="On stock — subtractive, multiply" />
           </div>
-          <div data-surface="ink" className="border border-rule bg-surface p-8 sm:p-12">
+          <div data-surface="ink" className="border-[length:var(--hairline)] border-rule bg-surface p-8 sm:p-12">
             <RegistrationDemoBlock label="On ink — additive, screen" />
           </div>
         </div>
@@ -431,7 +432,7 @@ export default function StyleguidePage() {
         <Eyebrow number="06" spec="feTurbulence">
           Halftone
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           A dot grid at the real screen angles.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -442,12 +443,12 @@ export default function StyleguidePage() {
 
         <div className="mt-12 grid gap-gutter sm:grid-cols-2 lg:grid-cols-4">
           {SCREEN_ANGLES.map((screen) => (
-            <div key={screen.plate} className="border border-rule">
+            <div key={screen.plate} className="border-[length:var(--hairline)] border-rule">
               <div className="relative h-48 overflow-hidden bg-surface-sunken">
                 <HalftoneField plate={screen.plate} pitch={6} dot={1.5} opacity={0.9} seed={9} />
               </div>
-              <div className="border-t border-rule p-4">
-                <p className="font-display text-sm font-bold text-fg">{screen.label}</p>
+              <div className="border-t-[length:var(--hairline)] border-rule p-4">
+                <p className="font-display text-sm font-medium text-fg">{screen.label}</p>
                 <p className={`${SPEC} mt-2 text-fg-faint`}>{screen.angle}°</p>
               </div>
             </div>
@@ -457,11 +458,11 @@ export default function StyleguidePage() {
         <h3 className={`${SPEC} mt-16 text-fg-faint`}>Fades</h3>
         <div className="mt-8 grid gap-gutter sm:grid-cols-2 lg:grid-cols-4">
           {(["none", "top", "bottom", "radial"] as const).map((fade) => (
-            <div key={fade} className="border border-rule">
+            <div key={fade} className="border-[length:var(--hairline)] border-rule">
               <div className="relative h-40 overflow-hidden bg-surface-sunken">
                 <HalftoneField plate="c" fade={fade} pitch={5} dot={1.3} opacity={0.85} seed={3} />
               </div>
-              <p className={`${SPEC} border-t border-rule p-4 text-fg-faint`}>fade=&quot;{fade}&quot;</p>
+              <p className={`${SPEC} border-t-[length:var(--hairline)] border-rule p-4 text-fg-faint`}>fade=&quot;{fade}&quot;</p>
             </div>
           ))}
         </div>
@@ -477,35 +478,35 @@ export default function StyleguidePage() {
         <Eyebrow number="07" spec="PREPRESS">
           Marks
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           Crop marks, not corner boxes.
         </h2>
 
         <div className="mt-12 grid gap-gutter lg:grid-cols-3">
-          <div className="border border-rule bg-surface-raised">
+          <div className="border-[length:var(--hairline)] border-rule bg-surface-raised">
             <div className="relative h-64">
               <CropMarks />
               <div className="absolute inset-0 flex items-center justify-center">
                 <p className={`${SPEC} text-fg-faint`}>trim box</p>
               </div>
             </div>
-            <p className={`${SPEC} border-t border-rule p-4 text-fg-faint`}>
+            <p className={`${SPEC} border-t-[length:var(--hairline)] border-rule p-4 text-fg-faint`}>
               Two hairlines per corner, stopping short of the corner point
             </p>
           </div>
 
-          <div className="border border-rule bg-surface-raised">
+          <div className="border-[length:var(--hairline)] border-rule bg-surface-raised">
             <div className="flex h-64 items-center justify-center gap-8">
               <RegistrationTarget className="size-10 text-fg" />
               <RegistrationTarget className="size-6 text-mark" />
               <RegistrationTarget className="size-4 text-accent" />
             </div>
-            <p className={`${SPEC} border-t border-rule p-4 text-fg-faint`}>
+            <p className={`${SPEC} border-t-[length:var(--hairline)] border-rule p-4 text-fg-faint`}>
               Registration target — circle plus crosshair
             </p>
           </div>
 
-          <div className="border border-rule bg-surface-raised">
+          <div className="border-[length:var(--hairline)] border-rule bg-surface-raised">
             <div className="flex h-64 flex-col justify-center gap-6 p-8">
               <Eyebrow number="03" spec="4C PROCESS">
                 Services
@@ -517,7 +518,7 @@ export default function StyleguidePage() {
                 Packages
               </Eyebrow>
             </div>
-            <p className={`${SPEC} border-t border-rule p-4 text-fg-faint`}>
+            <p className={`${SPEC} border-t-[length:var(--hairline)] border-rule p-4 text-fg-faint`}>
               Eyebrow — the job-ticket line
             </p>
           </div>
@@ -546,7 +547,7 @@ export default function StyleguidePage() {
         <Eyebrow number="08" spec="COMPUTED, NOT CLAIMED">
           Contrast
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           Every pair, measured at render time.
         </h2>
         <p className="mt-6 max-w-[58ch] text-fg-muted">

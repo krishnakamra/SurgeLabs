@@ -48,7 +48,7 @@ export default function MotionStyleguidePage() {
         ticket={{ number: "00", label: "MOTION", spec: "GSAP + LENIS" }}
       >
         <Eyebrow spec="STYLEGUIDE">Motion infrastructure</Eyebrow>
-        <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">Press Run</h1>
+        <h1 className="mt-8 font-display text-4xl font-normal text-fg">Press Run</h1>
         <p className="mt-8 max-w-[58ch] text-md text-fg-muted">
           Six primitives on one clock. Everything below is scroll-driven; nothing above this
           line is, because it is above the fold and the rule is that JS never removes
@@ -86,7 +86,7 @@ export default function MotionStyleguidePage() {
           <RegistrationReveal
             as="h2"
             offset="0.12em"
-            className="font-display text-3xl font-extrabold uppercase"
+            className="font-display text-3xl font-normal uppercase"
           >
             Surge Labs
           </RegistrationReveal>
@@ -138,7 +138,7 @@ export default function MotionStyleguidePage() {
           <Eyebrow number="03" spec="1PX MAGENTA">
             StockFlip
           </Eyebrow>
-          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-normal text-fg">
             The sheet comes off the press.
           </h2>
           <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -170,14 +170,14 @@ export default function MotionStyleguidePage() {
           its digits, so units spin while thousands barely turn — the way a real counter behaves.
         </p>
 
-        <div className="mt-16 grid gap-gutter border-y border-rule py-12 sm:grid-cols-3">
+        <div className="mt-16 grid gap-gutter border-y-[length:var(--hairline)] border-rule py-12 sm:grid-cols-3">
           {[
             { value: 1240, suffix: "+", label: "Jobs run", separator: true },
             { value: 48, suffix: "H", label: "Rush turnaround" },
             { value: 100, suffix: "%", label: "In-house" },
           ].map((stat) => (
             <div key={stat.label}>
-              <p className="font-display text-3xl font-extrabold text-fg">
+              <p className="font-display text-3xl font-normal text-fg">
                 <CounterRoll
                   value={stat.value}
                   suffix={stat.suffix}

@@ -14,11 +14,17 @@ export type SectionPadding = "none" | "sm" | "md" | "lg";
  * the rhythm, pass padding="none" and put your own classes on className —
  * one class wins, visibly, at the call site.
  */
+/**
+ * Up roughly 40% from the press-floor build, across the board. That was a
+ * working floor and it was allowed to be busy; this is a showroom, and the
+ * single cheapest way to make print work look expensive is to give it more
+ * paper than it needs. The white space is the product.
+ */
 const PADDING: Record<SectionPadding, string> = {
   none: "",
-  sm: "py-[clamp(2.5rem,4vw,4rem)]",
-  md: "py-[clamp(4rem,7vw,7rem)]",
-  lg: "py-[clamp(6rem,11vw,11rem)]",
+  sm: "py-[clamp(3.5rem,5.6vw,5.6rem)]",
+  md: "py-[clamp(5.6rem,9.8vw,9.8rem)]",
+  lg: "py-[clamp(8.5rem,15.4vw,15.4rem)]",
 };
 
 export type SectionTicket = {

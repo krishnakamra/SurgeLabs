@@ -53,7 +53,7 @@ export function SentTicket() {
         >
           <Eyebrow spec={valid ? reference : "REFERENCE MISSING"}>Received</Eyebrow>
 
-          <h1 className="mt-8 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
+          <h1 className="mt-8 max-w-[20ch] font-display text-3xl font-normal text-fg">
             {valid ? "Your ticket is on the shop floor." : "We could not find that reference."}
           </h1>
 
@@ -110,7 +110,7 @@ export function SentTicket() {
               <>
                 <JobTicket submission={submission} reference={reference} printable className="max-w-[46rem]" />
                 {submission.contact?.notes ? (
-                  <div className="mt-8 max-w-[46rem] border border-rule bg-surface-raised p-6">
+                  <div className="mt-8 max-w-[46rem] border-[length:var(--hairline)] border-rule bg-surface-raised p-6">
                     <p className={`${SPEC} text-fg-faint`}>Notes</p>
                     <p className="mt-3 whitespace-pre-wrap text-sm text-fg-muted">
                       {submission.contact.notes}
@@ -123,7 +123,7 @@ export function SentTicket() {
                 </p>
               </>
             ) : (
-              <div className="max-w-[46rem] border border-rule bg-surface-raised p-8">
+              <div className="max-w-[46rem] border-[length:var(--hairline)] border-rule bg-surface-raised p-8">
                 <p className={`${SPEC} text-fg-faint`}>Spec sheet not available here</p>
                 <p className="mt-4 text-sm text-fg-muted">
                   We have your request under <span className="font-utility text-fg">{reference}</span>,
@@ -146,7 +146,7 @@ export function SentTicket() {
             ].map(([step, title, detail]) => (
               <li key={step}>
                 <p className="font-utility text-lg leading-none text-accent-text">{step}</p>
-                <p className="mt-4 font-display text-base font-bold text-fg">{title}</p>
+                <p className="mt-4 font-display text-base font-medium text-fg">{title}</p>
                 <p className="mt-2 text-sm text-fg-muted">{detail}</p>
               </li>
             ))}

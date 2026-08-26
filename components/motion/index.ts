@@ -26,3 +26,5 @@ export type { SplitPressProps } from "./split-press";
 
 export { StockFlip } from "./stock-flip";
 export type { StockFlipProps } from "./stock-flip";
+
+export { FoilField } from "./foil";

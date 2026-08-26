@@ -129,6 +129,47 @@ The logo is not generated this way and never should be — it is drawn geometry,
 
 ---
 
+## The design system
+
+`app/globals.css` is the source of truth. `/styleguide` renders it and proves
+every contrast ratio from the real hex values; `/brand` does the same for the
+logo. Both are `noindex` working tools.
+
+**This is a foil house, not a process-colour floor.** The press vocabulary is
+still here — registration, crop marks, halftone screens, the CMYK plate
+animation — because the presses are real. The surface treatment is foil,
+deckled edge, thick stock and Didone hairlines.
+
+| | |
+|---|---|
+| Display | **Bodoni Moda**, 400–500, `opsz` live. Never 700 — bolding a Didone thickens the hairline faster than the stem and throws away the contrast that is the whole point. |
+| Body | **Satoshi**, one variable file, self-hosted in `public/fonts` (Fontshare licence ships beside it). |
+| Utility | **Geist Mono** 400, 11–13px, `+0.12em`. It supports the Didone; it does not compete. |
+
+Scale: **13 / 15 / 17 / 20 / 26 / 36 / 52 / 76 / 112 / 160**, plus an 11px
+utility floor. Body copy sits on 17. Line height 1.6 on body, 1.05 on display.
+Measure capped at 68 characters (`--container-measure`).
+
+**Gold carries the brand.** `--color-gold` `#C8A24A` is 8.22:1 on ink and
+**2.06:1 on paper** — so it is a fill, a rule and text on the dark bed only.
+Anything on paper that has to be read or clicked uses `--color-gold-deep`
+`#74591B` (5.63:1), which is the same hue walked down to 28% lightness. Cyan
+is demoted to links and data; magenta appears only inside the registration
+animation and the production sections.
+
+**The foil** is a three-stop gradient whose highlight follows the pointer
+(or, on touch, the element's travel through the viewport). It is allowed on
+the logo lockup, primary CTAs and the foil section, and **nowhere else** — a
+page covered in gold gradient looks cheap, which is the opposite of the
+point. It works with no JavaScript: `--foil-pos` has an initial value and
+`<FoilField>` only takes over moving it.
+
+Details that are load-bearing: every rule is `--hairline` (0.5px) of gold at
+30%; radius is zero everywhere with no token to reach for; there are no
+shadows, glows or blurs, and no utilities behind them.
+
+---
+
 ## The logo
 
 One geometry, in **`lib/brand/mark.ts`**. Everything else is cut from it.

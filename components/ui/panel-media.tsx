@@ -34,7 +34,7 @@ export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMedi
   return (
     <div
       className={cn(
-        "relative aspect-[4/3] w-full overflow-hidden border border-rule bg-surface-sunken",
+        "relative aspect-[4/3] w-full overflow-hidden border-[length:var(--hairline)] border-rule bg-surface-sunken",
         className,
       )}
     >
@@ -52,7 +52,7 @@ export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMedi
             </div>
             <p
               aria-hidden="true"
-              className="font-display text-4xl leading-none font-extrabold text-fg/10"
+              className="font-display text-4xl leading-none font-normal text-fg/10"
             >
               {numeral}
             </p>

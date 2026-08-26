@@ -37,10 +37,12 @@ export function RegistrationTarget({
  *         │     neither touches the corner point
  *
  * Geometry comes from --crop-inset / --crop-gap / --crop-len so the marks
- * scale with the gutter.
+ * scale with the gutter, and the weight from --hairline so they match every
+ * other rule on the sheet. Gold, at 0.5px: on a foil job the trim marks are
+ * struck in the same leaf as the artwork.
  */
-const ARM_H = "h-px w-[var(--crop-len)]";
-const ARM_V = "w-px h-[var(--crop-len)]";
+const ARM_H = "h-[var(--hairline)] w-[var(--crop-len)]";
+const ARM_V = "w-[var(--hairline)] h-[var(--crop-len)]";
 
 const MARKS: readonly string[] = [
   // top-left

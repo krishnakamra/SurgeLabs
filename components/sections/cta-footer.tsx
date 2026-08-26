@@ -23,7 +23,7 @@ export function CallToAction() {
         Start a job
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
+      <h2 className="mt-6 max-w-[18ch] font-display text-3xl font-normal text-fg">
         Tell us what you need. We&rsquo;ll quote it in a day.
       </h2>
 
@@ -176,7 +176,7 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-rule pt-8">
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t-[length:var(--hairline)] border-rule pt-8">
           <p className="font-utility text-2xs uppercase tracking-utility text-fg-faint">
             © {new Date().getFullYear()} {site.name} — {address.locality}, {address.region}
           </p>

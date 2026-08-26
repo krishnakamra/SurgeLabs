@@ -133,10 +133,24 @@ export const MINIMUM_SIZE: Record<LogoVariant, { screen: number; print: string; 
 
 export const SURFACE_COLOR = {
   /** On the press bed: the mark is the paper showing through. */
-  ink: { fg: "#EDEDE8", bg: "#0C0C0E" },
+  ink: { fg: "#EFEDE8", bg: "#0A0A0B" },
   /** On paper: the mark is the ink. */
-  stock: { fg: "#0C0C0E", bg: "#EDEDE8" },
+  stock: { fg: "#0A0A0B", bg: "#EFEDE8" },
 } as const;
 
-/** The plate pair, straight off --color-accent / --color-accent-fg. */
-export const PLATE_COLOR = { fill: "#E6007E", knockout: "#FFFFFF" } as const;
+/**
+ * The plate pair, straight off --color-accent / --color-accent-fg.
+ *
+ * Gold leaf with the mark struck out of it in ink — 8.22:1, and the right way
+ * round for foil: on a real stamped card the leaf is the light and the paper
+ * showing through is the dark. The previous build knocked white out of
+ * magenta; white on gold is 2.41:1 and would have been unreadable as well as
+ * wrong.
+ */
+export const PLATE_COLOR = { fill: "#C8A24A", knockout: "#0A0A0B" } as const;
+
+/**
+ * The three foil stops. Flat files cannot follow the pointer, so the static
+ * SVGs bake the highlight at the centre — the same place --foil-pos starts.
+ */
+export const FOIL_STOPS = { lo: "#8C6B1F", hi: "#E8CE84" } as const;

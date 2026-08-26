@@ -21,16 +21,16 @@ export function Proof() {
         Proof
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+      <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
         Four numbers you can check before you call.
       </h2>
 
-      <dl className="mt-16 grid gap-x-gutter gap-y-14 border-t border-rule pt-14 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mt-16 grid gap-x-gutter gap-y-14 border-t-[length:var(--hairline)] border-rule pt-14 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <div key={stat.label}>
             <dt className="sr-only">{stat.label}</dt>
             <dd>
-              <p className="font-display text-3xl leading-none font-extrabold text-fg">
+              <p className="font-display text-3xl leading-none font-normal text-fg">
                 <CounterRoll
                   value={stat.value}
                   prefix={stat.prefix}

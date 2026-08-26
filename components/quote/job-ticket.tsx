@@ -26,9 +26,9 @@ export function JobTicket({
 
   return (
     <div
-      className={cn("border border-rule bg-surface-raised", printable && "print:border-black", className)}
+      className={cn("border-[length:var(--hairline)] border-rule bg-surface-raised", printable && "print:border-black", className)}
     >
-      <div className="flex items-baseline justify-between gap-4 border-b border-rule px-6 py-4">
+      <div className="flex items-baseline justify-between gap-4 border-b-[length:var(--hairline)] border-rule px-6 py-4">
         <p className={cn(SPEC, "text-fg-faint")}>Job ticket</p>
         <p className={cn(SPEC, reference ? "text-accent-text" : "text-fg-faint")}>
           {reference ?? "REF PENDING"}
@@ -53,7 +53,7 @@ export function JobTicket({
                   // rather than an empty gap that makes the sheet look broken.
                   <span
                     aria-hidden="true"
-                    className="block h-px w-24 translate-y-[0.7em] bg-rule-strong"
+                    className="block h-[var(--hairline)] w-24 translate-y-[0.7em] bg-rule-strong"
                   />
                 )}
                 {!filled ? <span className="sr-only">Not answered yet</span> : null}

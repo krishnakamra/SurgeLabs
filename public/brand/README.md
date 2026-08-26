@@ -23,14 +23,14 @@ an email signature, a supplier's artwork portal.
 ## ⚠️ The wordmark is a placeholder
 
 There is no drawn wordmark yet. Until the client supplies one, **"SURGE LABS"
-is live text in Bricolage Grotesque**, tuned in `lib/brand/wordmark.ts` so it
+is live text in Bodoni Moda**, tuned in `lib/brand/wordmark.ts` so it
 sets as a wordmark rather than as a heading — positive tracking, pinned
 optical size, a tightened word space.
 
 Two consequences, and both matter before you send these to anyone:
 
 1. **The lockup SVGs in this folder carry `<text>`, not outlines.** Opened on a
-   machine without Bricolage Grotesque installed — which is most machines —
+   machine without Bodoni Moda installed — which is most machines —
    they fall back to Arial Black and the spacing will be wrong. They are safe
    to look at and not yet safe to hand to a printer.
 2. **The mark SVGs are final in the sense that matters**: pure geometry, no
@@ -71,9 +71,10 @@ who asks for brand guidelines.
 - **Clear space is the bar** — the stroke weight of the S, which is 14/64 of the
   mark's height. Nothing sets inside it.
 - **Minimum sizes**: horizontal 24px / 10mm · stacked 32px / 12mm · mark 16px / 6mm.
-- **One colour.** The logo is `--color-fg` on whatever it sits on. It is not
-  magenta. Magenta is the accent, and the one place it fills the mark is the
-  app icon, where the S is knocked out of a solid plate.
+- **One colour, or foil.** The logo is `--color-fg` on whatever it sits on.
+  It may also be struck in foil — a gold gradient that moves with the light —
+  on the masthead, a primary CTA and the foil section, and nowhere else. The
+  app icon is the one place the mark is knocked out of a solid gold plate.
 - **Never** re-space the wordmark, re-draw the mark with a stroke, put the
   lockup on a busy photograph, or rebuild the horizontal lockup by setting the
   mark next to typed text. Use the file.

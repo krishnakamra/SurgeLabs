@@ -104,7 +104,7 @@ export function MarqueeSpec({
     <div
       ref={root}
       className={cn(
-        "relative flex overflow-hidden border-y border-rule py-4",
+        "relative flex overflow-hidden border-y-[length:var(--hairline)] border-rule py-4",
         "font-utility text-2xs uppercase tracking-utility whitespace-nowrap text-fg-muted",
         className,
       )}

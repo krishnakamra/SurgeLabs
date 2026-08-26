@@ -21,7 +21,7 @@ export function PackagesTeaser() {
           <Eyebrow number="05" spec="NO DISCOVERY CALL REQUIRED">
             Packages
           </Eyebrow>
-          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[20ch] font-display text-2xl font-normal text-fg">
             Priced on the page, not after a phone call.
           </h2>
         </div>
@@ -35,12 +35,12 @@ export function PackagesTeaser() {
           <article
             key={pkg.slug}
             className={cn(
-              "flex flex-col border bg-surface-raised p-8",
+              "flex flex-col border-[length:var(--hairline)] bg-surface-raised p-8",
               pkg.badge ? "border-accent" : "border-rule",
             )}
           >
             <div className="flex items-baseline justify-between gap-4">
-              <h3 className="font-display text-xl font-bold text-fg">{pkg.name}</h3>
+              <h3 className="font-display text-xl font-medium text-fg">{pkg.name}</h3>
               {pkg.badge ? (
                 <span className="font-utility text-2xs uppercase tracking-utility text-accent-text">
                   {pkg.badge}
@@ -50,7 +50,7 @@ export function PackagesTeaser() {
 
             <p className="mt-4 min-h-[3.5rem] text-sm text-fg-muted">{pkg.bestFor}</p>
 
-            <p className="mt-8 flex items-baseline gap-3 border-t border-rule pt-8">
+            <p className="mt-8 flex items-baseline gap-3 border-t-[length:var(--hairline)] border-rule pt-8">
               <span className="font-utility text-xl leading-none font-normal tabular-nums text-fg">
                 {formatPrice(pkg.price)}
               </span>

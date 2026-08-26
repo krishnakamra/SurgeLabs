@@ -4,8 +4,8 @@
        The tab icon is the mark KNOCKED OUT of the accent plate, not the bare
        mark: at 16px a solid fill with a hole in it survives where a figure
        made of hairlines does not, and a knockout is what this would be on a
-       press anyway. The accent fill over its knockout, #E6007E under
-       #FFFFFF, at 4.5:1. -->
-  <rect width="64" height="64" fill="#E6007E"/>
-  <path d="M0 0 H50 L64 14 H14 V25 H64 V64 H14 L0 50 H50 V39 H0 Z" fill="#FFFFFF" transform="translate(9.6 9.6) scale(0.7)"/>
+       press anyway. The accent fill over its knockout, #C8A24A under
+       #0A0A0B, at 4.5:1. -->
+  <rect width="64" height="64" fill="#C8A24A"/>
+  <path d="M0 0 H50 L64 14 H14 V25 H64 V64 H14 L0 50 H50 V39 H0 Z" fill="#0A0A0B" transform="translate(9.6 9.6) scale(0.7)"/>
 </svg>

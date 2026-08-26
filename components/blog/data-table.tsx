@@ -24,13 +24,13 @@ export function DataTable({ id }: { id: string }) {
 
   return (
     <figure className="not-prose my-12">
-      <div className="overflow-x-auto border border-rule">
+      <div className="overflow-x-auto border-[length:var(--hairline)] border-rule">
         <table className="w-full border-collapse text-left text-sm">
-          <caption className="border-b border-rule bg-surface-sunken px-5 py-3 text-left font-utility text-2xs uppercase tracking-utility text-fg-muted">
+          <caption className="border-b-[length:var(--hairline)] border-rule bg-surface-sunken px-5 py-3 text-left font-utility text-2xs uppercase tracking-utility text-fg-muted">
             {table.caption}
           </caption>
           <thead>
-            <tr className="border-b border-rule">
+            <tr className="border-b-[length:var(--hairline)] border-rule">
               {table.columns.map((col, i) => (
                 <th
                   key={col || `col-${i}`}
@@ -44,7 +44,7 @@ export function DataTable({ id }: { id: string }) {
           </thead>
           <tbody>
             {table.rows.map((row) => (
-              <tr key={row.join("|")} className="border-b border-rule last:border-b-0">
+              <tr key={row.join("|")} className="border-b-[length:var(--hairline)] border-rule last:border-b-0">
                 {row.map((cell, i) => (
                   <td
                     key={`${row[0]}-${i}`}

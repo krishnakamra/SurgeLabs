@@ -42,10 +42,10 @@ function Field({
   className?: string;
 }) {
   return (
-    <div data-surface={surface} className={`border border-rule bg-surface ${className ?? ""}`}>
+    <div data-surface={surface} className={`border-[length:var(--hairline)] border-rule bg-surface ${className ?? ""}`}>
       <div className="flex min-h-[9rem] items-center justify-center p-8">{children}</div>
       {label ? (
-        <p className={`${SPEC} border-t border-rule px-4 py-3 text-fg-faint`}>{label}</p>
+        <p className={`${SPEC} border-t-[length:var(--hairline)] border-rule px-4 py-3 text-fg-faint`}>{label}</p>
       ) : null}
     </div>
   );
@@ -65,7 +65,7 @@ function SizeRow({
   const below = size < floor;
 
   return (
-    <tr className="border-t border-rule align-middle">
+    <tr className="border-t-[length:var(--hairline)] border-rule align-middle">
       <td className="py-6 pr-8">
         <Logo variant={variant} size={size} />
       </td>
@@ -81,7 +81,7 @@ function SizeRow({
 /**
  * The clear space diagram.
  *
- * Magenta hairline = the lockup's own bounding box. Dashed rule = the limit of
+ * Gold hairline = the lockup's own bounding box. Dashed rule = the limit of
  * the clear space. The band between them is one bar, resolved from the same
  * constant the component uses, so this diagram cannot drift from the rule it
  * is describing.
@@ -92,11 +92,11 @@ function ClearSpace({ variant, size }: { variant: LogoVariant; size: number }) {
     <div className="relative inline-block" style={{ padding: pad }}>
       <span
         aria-hidden="true"
-        className="absolute inset-0 border border-dashed border-rule-strong"
+        className="absolute inset-0 border-[length:var(--hairline)] border-dashed border-rule-strong"
       />
       <span
         aria-hidden="true"
-        className="absolute border border-accent"
+        className="absolute border-[length:var(--hairline)] border-accent"
         style={{ inset: pad }}
       />
       <Logo variant={variant} size={size} />
@@ -107,11 +107,11 @@ function ClearSpace({ variant, size }: { variant: LogoVariant; size: number }) {
 /** A misuse tile. The example is always wrong on purpose. */
 function Dont({ title, why, children }: { title: string; why: string; children: React.ReactNode }) {
   return (
-    <div className="border border-rule">
+    <div className="border-[length:var(--hairline)] border-rule">
       <div className="relative flex min-h-[10rem] items-center justify-center overflow-hidden bg-surface-raised p-8">
         {children}
       </div>
-      <div className="border-t border-rule p-5">
+      <div className="border-t-[length:var(--hairline)] border-rule p-5">
         <p className={`${SPEC} text-accent-text`}>Don&rsquo;t — {title}</p>
         <p className="mt-3 text-sm text-fg-muted">{why}</p>
       </div>
@@ -148,7 +148,7 @@ export default function BrandPage() {
       >
         <HalftoneField plate="m" pitch={7} dot={1.5} opacity={0.2} fade="radial" seed={19} />
         <Eyebrow spec="SURGE LABS">Identity</Eyebrow>
-        <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">The logo</h1>
+        <h1 className="mt-8 font-display text-4xl font-normal text-fg">The logo</h1>
         <p className="mt-8 max-w-[60ch] text-md text-fg-muted">
           Three lockups, one mark, no colour of its own. Everything on this page is rendered by the
           same component the site uses, from the same geometry the favicon is cut from — so if a
@@ -157,7 +157,7 @@ export default function BrandPage() {
 
         <div
           data-surface="stock"
-          className="mt-14 flex max-w-3xl items-center justify-center border border-rule bg-surface p-14"
+          className="mt-14 flex max-w-3xl items-center justify-center border-[length:var(--hairline)] border-rule bg-surface p-14"
         >
           <Logo variant="horizontal" size={64} />
         </div>
@@ -182,7 +182,7 @@ export default function BrandPage() {
         <Eyebrow number="01" spec="ONE GEOMETRY">
           Lockups
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
           Three ways to set it. Pick by the shape of the hole.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -202,7 +202,7 @@ export default function BrandPage() {
           </Field>
         </div>
 
-        <dl className="mt-12 grid gap-x-gutter gap-y-8 border-t border-rule pt-10 sm:grid-cols-3">
+        <dl className="mt-12 grid gap-x-gutter gap-y-8 border-t-[length:var(--hairline)] border-rule pt-10 sm:grid-cols-3">
           <div>
             <dt className={`${SPEC} text-fg`}>Horizontal</dt>
             <dd className="mt-3 text-sm text-fg-muted">
@@ -237,7 +237,7 @@ export default function BrandPage() {
         <Eyebrow number="02" spec="NO COLOUR PROP">
           Ink and stock
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           There is no light version and no dark version.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -261,7 +261,7 @@ export default function BrandPage() {
         </div>
 
         <p className="mt-8 max-w-[60ch] text-sm text-fg-muted">
-          For a fixed plate that has no surface to ask — a magenta panel, a photograph, someone
+          For a fixed plate that has no surface to ask — a gold panel, a photograph, someone
           else&rsquo;s slide template — pass <code className={`${SPEC} text-accent-text`}>surface</code>{" "}
           and it stops inheriting. That is the only reason the prop exists.
         </p>
@@ -277,7 +277,7 @@ export default function BrandPage() {
         <Eyebrow number="03" spec="THE BAR IS THE UNIT">
           Construction
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           One stroke weight, and everything measured against it.
         </h2>
 
@@ -297,21 +297,21 @@ export default function BrandPage() {
             ].map((row) => (
               <div key={row.term}>
                 <dt className={`${SPEC} text-fg-faint`}>{row.term}</dt>
-                <dd className="mt-2 font-display text-lg font-bold text-fg">{row.value}</dd>
+                <dd className="mt-2 font-display text-lg font-medium text-fg">{row.value}</dd>
                 <dd className="mt-2 text-sm text-fg-muted">{row.note}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <div className="mt-14 border-t border-rule pt-10">
+        <div className="mt-14 border-t-[length:var(--hairline)] border-rule pt-10">
           <h3 className={`${SPEC} text-fg-faint`}>The wordmark is a placeholder</h3>
           <p className="mt-4 max-w-[62ch] text-sm text-fg-muted">
-            Until drawn artwork arrives, &ldquo;SURGE LABS&rdquo; is live type in Bricolage
-            Grotesque at 800, tracked <strong className="text-fg">+{WORDMARK_TRACKING}em</strong>{" "}
+            Until drawn artwork arrives, &ldquo;SURGE LABS&rdquo; is live type in Bodoni
+            Moda at 400, tracked <strong className="text-fg">+{WORDMARK_TRACKING}em</strong>{" "}
             with the optical size pinned at <strong className="text-fg">{WORDMARK_OPSZ}</strong>.
-            Positive tracking, where every headline on this site runs negative: caps at this weight
-            close their own counters when they sit tight. Pinned optical size, where the rest of the
+            Positive tracking, where every headline on this site runs negative: Didone caps need
+            air around the hairlines or they fill in under the die. Pinned optical size, where the rest of the
             site leaves it automatic: a wordmark that redraws itself between a phone masthead and a
             trade-show banner is not a wordmark.
           </p>
@@ -332,7 +332,7 @@ export default function BrandPage() {
         <Eyebrow number="04" spec={`${Math.round(BAR * 1000) / 10}% OF HEIGHT`}>
           Clear space
         </Eyebrow>
-        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
           Clear space is the bar.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -351,7 +351,7 @@ export default function BrandPage() {
           </Field>
         </div>
         <p className={`${SPEC} mt-6 text-fg-faint`}>
-          Magenta rule — the lockup&rsquo;s own box. Dashed rule — the limit of the clear space.
+          Gold rule — the lockup&rsquo;s own box. Dashed rule — the limit of the clear space.
         </p>
         <p className="mt-6 max-w-[60ch] text-sm text-fg-muted">
           The SVGs in the handoff pack have this margin built into their viewBox and filled with the
@@ -369,7 +369,7 @@ export default function BrandPage() {
         <Eyebrow number="05" spec="PROOFED, NOT GUESSED">
           Size
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           Below the minimum, use the next lockup down.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -384,7 +384,7 @@ export default function BrandPage() {
             return (
               <div key={variant} className="border-t-2 border-fg pt-5">
                 <p className={`${SPEC} text-fg-faint`}>{variant}</p>
-                <p className="mt-3 font-display text-xl font-extrabold text-fg">
+                <p className="mt-3 font-display text-xl font-normal text-fg">
                   {min.screen}px <span className="text-fg-faint">/</span> {min.print}
                 </p>
                 <p className="mt-3 text-sm text-fg-muted">{min.note}</p>
@@ -423,7 +423,7 @@ export default function BrandPage() {
         <Eyebrow number="06" spec="NPM RUN GEN:BRAND">
           The app icon, and the files
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           The tab icon is a knockout, not the bare mark.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -431,8 +431,8 @@ export default function BrandPage() {
           so the icon is the mark knocked out of the accent plate —{" "}
           <code className={`${SPEC} text-accent-text`}>{PLATE_COLOR.fill}</code> under{" "}
           <code className={`${SPEC} text-accent-text`}>{PLATE_COLOR.knockout}</code>, the same pair
-          the primary button uses, at 4.5:1. It is also what this would be on a press. Magenta is the
-          accent and it fills the mark here and nowhere else.
+          the primary button uses, at 8.22:1. It is also the right way round for foil: on a stamped
+          card the leaf is the light and the paper showing through is the dark.
         </p>
 
         <div className="mt-12 flex flex-wrap items-end gap-10">
@@ -454,14 +454,14 @@ export default function BrandPage() {
           of it is hand-drawn, and none of it should be hand-edited.
         </p>
 
-        <div className="mt-14 overflow-x-auto border-t border-rule pt-10">
+        <div className="mt-14 overflow-x-auto border-t-[length:var(--hairline)] border-rule pt-10">
           <table className="w-full min-w-[34rem] border-collapse text-left">
             <caption className={`${SPEC} pb-6 text-left text-fg-faint`}>
               public/brand — the handoff pack
             </caption>
             <tbody>
               {FILES.map((row) => (
-                <tr key={row.file} className="border-t border-rule">
+                <tr key={row.file} className="border-t-[length:var(--hairline)] border-rule">
                   <td className="py-4 pr-8">
                     <a
                       href={`/brand/${row.file}`}
@@ -481,7 +481,7 @@ export default function BrandPage() {
         <p className="mt-8 max-w-[62ch] text-sm text-fg-muted">
           <strong className="text-fg">Before sending a lockup to a printer:</strong> the two lockup
           SVGs carry the wordmark as live text, because there is no drawn wordmark yet. On a machine
-          without Bricolage Grotesque they fall back and the spacing goes wrong. The mark files have
+          without Bodoni Moda they fall back and the spacing goes wrong. The mark files have
           no type in them at all and are safe to send today.
         </p>
       </SectionFrame>
@@ -496,7 +496,7 @@ export default function BrandPage() {
         <Eyebrow number="07" spec="ALL OF THESE ARE WRONG">
           Misuse
         </Eyebrow>
-        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+        <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
           Use the file.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
@@ -507,7 +507,7 @@ export default function BrandPage() {
         <div className="mt-12 grid gap-gutter sm:grid-cols-2 lg:grid-cols-4">
           <Dont
             title="recolour it"
-            why="The logo is the foreground colour of whatever it sits on. Magenta is the accent, and the one place it fills the mark is the app icon."
+            why="The logo is the foreground colour of whatever it sits on, or foil. It is never a third colour — and cyan is reserved for links."
           >
             <Logo variant="mark" size={56} className="text-link" />
           </Dont>
@@ -527,8 +527,8 @@ export default function BrandPage() {
           >
             <span className="inline-flex items-center gap-1">
               <Logo variant="mark" size={56} />
-              <span className="h-14 w-px bg-fg" />
-              <span className="font-display text-lg font-extrabold text-fg">GTA</span>
+              <span className="h-14 w-[var(--hairline)] bg-fg" />
+              <span className="font-display text-lg font-normal text-fg">GTA</span>
             </span>
           </Dont>
 

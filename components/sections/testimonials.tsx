@@ -24,11 +24,11 @@ export function Testimonials() {
       <ul className="mt-16 grid gap-gutter lg:grid-cols-3">
         {testimonials.map((testimonial) => (
           <li key={`${testimonial.name}-${testimonial.business}`}>
-            <figure className="flex h-full flex-col border border-rule bg-surface-raised p-8">
-              <blockquote className="flex-1 font-display text-lg font-bold text-fg">
+            <figure className="flex h-full flex-col border-[length:var(--hairline)] border-rule bg-surface-raised p-8">
+              <blockquote className="flex-1 font-display text-lg font-medium text-fg">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
-              <figcaption className="mt-8 border-t border-rule pt-6">
+              <figcaption className="mt-8 border-t-[length:var(--hairline)] border-rule pt-6">
                 <p className="font-utility text-2xs uppercase tracking-utility text-fg">
                   {testimonial.name}
                 </p>

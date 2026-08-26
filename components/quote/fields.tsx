@@ -51,7 +51,7 @@ export function ChoiceField({
               aria-pressed={on}
               onClick={() => toggle(option.value)}
               className={cn(
-                "rounded-btn border px-4 py-3 text-left transition-colors duration-[var(--dur-snap)] ease-press",
+                "border-[length:var(--hairline)] px-4 py-3 text-left transition-colors duration-[var(--dur-snap)] ease-press",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
                 on
                   ? "border-accent bg-accent text-accent-fg"
@@ -105,7 +105,7 @@ export function TextField({
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         className={cn(
-          "mt-3 w-full border border-rule-strong bg-surface px-4 py-3 text-base text-fg",
+          "mt-3 w-full border-[length:var(--hairline)] border-rule-strong bg-surface px-4 py-3 text-base text-fg",
           "placeholder:text-fg-faint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
         )}
       />
@@ -140,7 +140,7 @@ export function TextArea({
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         className={cn(
-          "mt-3 w-full resize-y border border-rule-strong bg-surface px-4 py-3 text-base text-fg",
+          "mt-3 w-full resize-y border-[length:var(--hairline)] border-rule-strong bg-surface px-4 py-3 text-base text-fg",
           "placeholder:text-fg-faint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
         )}
       />

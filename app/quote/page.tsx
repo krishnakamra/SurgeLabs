@@ -109,10 +109,10 @@ export default async function QuotePage({
           <div className="mt-8">
             <Eyebrow spec="FOUR STEPS">Get a quote</Eyebrow>
           </div>
-          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
+          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-normal text-fg">
             {getPageSeo("/quote")!.h1}
           </h1>
-          <p className="mt-6 max-w-[26ch] font-display text-xl font-bold text-fg-muted">
+          <p className="mt-6 max-w-[26ch] font-display text-xl font-medium text-fg-muted">
             Build the ticket. We price it in a day.
           </p>
           <p className="mt-10 max-w-[56ch] text-md text-fg-muted">

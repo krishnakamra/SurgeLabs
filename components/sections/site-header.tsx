@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand";
+import { FoilField } from "@/components/motion";
 import { Button } from "@/components/ui";
 import { site } from "@/content";
 
@@ -24,25 +25,31 @@ export function SiteHeader() {
   return (
     <header
       data-surface="ink"
-      className="relative isolate border-b border-rule bg-surface text-fg"
+      className="relative isolate border-b-[length:var(--hairline)] border-rule bg-surface text-fg"
     >
       <div className="mx-auto flex h-16 w-full max-w-page items-center justify-between gap-gutter px-gutter sm:h-20">
         {/* Home. The logo names itself — <Logo> carries role="img" and an
             aria-label — so this link needs no label of its own, and gets no
             second one that would read out twice. */}
-        <Link
-          href="/"
-          className="inline-flex rounded-[2px] outline-offset-[6px] focus-visible:outline-2 focus-visible:outline-focus"
-        >
+        {/* The masthead lockup is struck in foil, and the FoilField around it
+            is what makes the highlight travel as the pointer crosses the bar.
+            One of exactly three places the gradient is allowed. */}
+        <FoilField as="span" className="inline-flex">
+          <Link
+            href="/"
+            className="inline-flex outline-offset-[6px] focus-visible:outline-2 focus-visible:outline-focus"
+          >
           {/* Size is a CSS variable rather than a prop so it can step at a
               breakpoint without a second render. Under 480px the wordmark
               drops and the mark stands alone — one DOM tree either way. */}
-          <Logo
-            variant="horizontal"
-            collapse="xs"
-            className="[--logo-size:26px] sm:[--logo-size:32px]"
-          />
-        </Link>
+            <Logo
+              variant="horizontal"
+              collapse="xs"
+              foil
+              className="[--logo-size:26px] sm:[--logo-size:32px]"
+            />
+          </Link>
+        </FoilField>
 
         <div className="flex items-center gap-6">
           <a

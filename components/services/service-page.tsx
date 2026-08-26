@@ -92,7 +92,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
                 {service.name}
               </Eyebrow>
 
-              <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
+              <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-normal text-fg">
                 {h1}
               </h1>
 
@@ -138,7 +138,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
               <div className="space-y-16">
                 {service.sections.map((section) => (
                   <section key={section.heading}>
-                    <h2 className="max-w-[24ch] font-display text-xl font-extrabold text-fg">
+                    <h2 className="max-w-[24ch] font-display text-xl font-normal text-fg">
                       {section.heading}
                     </h2>
                     <div className="mt-6 max-w-[62ch] space-y-5">
@@ -155,8 +155,8 @@ export function ServicePage({ service, path }: { service: Service; path: string 
 
             {/* Spec table, set like a job ticket. */}
             <aside className="lg:col-span-5">
-              <div className="border border-rule bg-surface-raised lg:sticky lg:top-10">
-                <p className={`${SPEC} border-b border-rule px-6 py-4 text-fg-faint`}>
+              <div className="border-[length:var(--hairline)] border-rule bg-surface-raised lg:sticky lg:top-10">
+                <p className={`${SPEC} border-b-[length:var(--hairline)] border-rule px-6 py-4 text-fg-faint`}>
                   Production specs
                 </p>
                 <dl className="divide-y divide-rule">
@@ -181,7 +181,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
         >
           <Eyebrow spec="EVERYTHING BELOW IS MADE HERE">Catalogue</Eyebrow>
 
-          <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
             What you can order
           </h2>
 
@@ -189,10 +189,10 @@ export function ServicePage({ service, path }: { service: Service; path: string 
             {service.catalogue.map((group) => (
               <div key={group.group}>
                 <h3 className={`${SPEC} text-accent-text`}>{group.group}</h3>
-                <ul className="mt-8 grid border-t border-rule sm:grid-cols-2 sm:gap-x-gutter lg:grid-cols-3">
+                <ul className="mt-8 grid border-t-[length:var(--hairline)] border-rule sm:grid-cols-2 sm:gap-x-gutter lg:grid-cols-3">
                   {group.items.map((item) => (
-                    <li key={item.name} className="border-b border-rule py-5">
-                      <p className="font-display text-base font-bold text-fg">{item.name}</p>
+                    <li key={item.name} className="border-b-[length:var(--hairline)] border-rule py-5">
+                      <p className="font-display text-base font-medium text-fg">{item.name}</p>
                       <p className={`${SPEC} mt-2 text-fg-faint`}>{item.detail}</p>
                     </li>
                   ))}
@@ -211,17 +211,17 @@ export function ServicePage({ service, path }: { service: Service; path: string 
         >
           <Eyebrow spec="QUOTE → ARTWORK → PROOF → PRODUCTION">How it works</Eyebrow>
 
-          <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
             Four steps, and you sign off before anything runs.
           </h2>
 
           <ol className="mt-16 grid gap-x-gutter gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {serviceProcess.map((step) => (
-              <li key={step.step} className="border-t border-rule pt-6">
+              <li key={step.step} className="border-t-[length:var(--hairline)] border-rule pt-6">
                 <p className="font-utility text-2xl leading-none font-normal text-mark">
                   {step.step}
                 </p>
-                <h3 className="mt-6 font-display text-lg font-bold text-fg">{step.title}</h3>
+                <h3 className="mt-6 font-display text-lg font-medium text-fg">{step.title}</h3>
                 <p className="mt-4 text-sm text-fg-muted">{step.detail}</p>
               </li>
             ))}
@@ -237,19 +237,19 @@ export function ServicePage({ service, path }: { service: Service; path: string 
         >
           <Eyebrow spec="STRAIGHT ANSWERS">FAQ</Eyebrow>
 
-          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
             Questions we get asked
           </h2>
 
-          <div className="mt-14 border-t border-rule">
+          <div className="mt-14 border-t-[length:var(--hairline)] border-rule">
             {service.faqs.map((faq) => (
-              <details key={faq.question} className="group border-b border-rule">
+              <details key={faq.question} className="group border-b-[length:var(--hairline)] border-rule">
                 <summary className="flex cursor-pointer list-none items-start gap-6 py-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)]">
                   <span
                     aria-hidden="true"
-                    className="mt-[0.6em] h-px w-4 shrink-0 origin-left bg-rule-strong transition-transform duration-[var(--dur-snap)] ease-press group-open:scale-x-[2.2] group-hover:bg-mark"
+                    className="mt-[0.6em] h-[var(--hairline)] w-4 shrink-0 origin-left bg-rule-strong transition-transform duration-[var(--dur-snap)] ease-press group-open:scale-x-[2.2] group-hover:bg-mark"
                   />
-                  <h3 className="flex-1 font-display text-lg font-bold text-fg">{faq.question}</h3>
+                  <h3 className="flex-1 font-display text-lg font-medium text-fg">{faq.question}</h3>
                   <span
                     aria-hidden="true"
                     className={`${SPEC} mt-[0.3em] shrink-0 text-fg-faint transition-transform duration-[var(--dur-snap)] group-open:rotate-45`}
@@ -273,7 +273,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
           <div className="grid gap-x-gutter gap-y-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <Eyebrow spec="MISSISSAUGA + GTA">Where we work</Eyebrow>
-              <h2 className="mt-6 max-w-[20ch] font-display text-xl font-extrabold text-fg">
+              <h2 className="mt-6 max-w-[20ch] font-display text-xl font-normal text-fg">
                 {service.name} across the Greater Toronto Area.
               </h2>
               <p className="mt-6 max-w-[46ch] text-fg-muted">
@@ -288,14 +288,14 @@ export function ServicePage({ service, path }: { service: Service; path: string 
             </div>
 
             <nav aria-label="Cities we serve" className="lg:col-span-7">
-              <ul className="grid border-t border-rule sm:grid-cols-2 sm:gap-x-gutter">
+              <ul className="grid border-t-[length:var(--hairline)] border-rule sm:grid-cols-2 sm:gap-x-gutter">
                 {cities.map((city) => (
-                  <li key={city.slug} className="border-b border-rule">
+                  <li key={city.slug} className="border-b-[length:var(--hairline)] border-rule">
                     <Link
                       href={`/service-areas#${city.slug}`}
                       className="block py-4 text-fg-muted transition-colors hover:text-fg sm:flex sm:items-baseline sm:justify-between sm:gap-4"
                     >
-                      <span className="font-display text-base font-bold">
+                      <span className="font-display text-base font-medium">
                         {service.name} in {city.name}
                       </span>
                       <span className={`${SPEC} mt-1 block text-fg-faint sm:mt-0 sm:shrink-0`}>

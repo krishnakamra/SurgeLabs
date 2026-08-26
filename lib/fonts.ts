@@ -1,64 +1,78 @@
-import { Bricolage_Grotesque, Inter_Tight, Martian_Mono } from "next/font/google";
+import { Bodoni_Moda, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 /**
  * Three voices, three jobs. Nothing else gets loaded.
  *
- *  display  Bricolage Grotesque  700-800, tight tracking, optical sizing live
- *  body     Inter Tight          400/500
- *  utility  Martian Mono         400, uppercase, wide tracking - the job-ticket voice
+ *  display  Bodoni Moda   400-500, optical sizing live, tracking negative
+ *  body     Satoshi       300-900 variable, self-hosted
+ *  utility  Geist Mono    400 only, uppercase, wide tracking
+ *
+ * This is a Didone house. The display face is the typeface class that has set
+ * foil-stamped stationery for two hundred years, which is the product this
+ * shop sells most of — the type is the argument, so it is worth being exact
+ * about how it is loaded.
  */
 
-export const fontDisplay = Bricolage_Grotesque({
+export const fontDisplay = Bodoni_Moda({
   subsets: ["latin"],
   display: "optional",
-  variable: "--font-bricolage",
-  // Variable across the full weight range. `axes` and an explicit `weight`
-  // list are mutually exclusive in next/font, and we want opsz live.
+  variable: "--font-bodoni",
+  // opsz is the whole reason this face is here rather than a static Didone.
+  // Bodoni's hairlines are supposed to get thinner as the type gets bigger;
+  // the optical size axis is what does that, and without it a 160px hero is
+  // just a text-size Bodoni scaled up, with the hairlines too heavy and the
+  // serifs too blunt. `axes` and an explicit `weight` list are mutually
+  // exclusive in next/font, so weight comes from the variable range.
   axes: ["opsz"],
-  // The only face that is preloaded. It sets every headline, including the
-  // LCP element on most pages, so it is worth a connection at the front of
-  // the queue. Preloading all three would put body and utility faces in
+  // The only face preloaded. It sets every headline, including the LCP
+  // element on most pages. Preloading all three would put body and utility in
   // competition with the thing the visitor actually sees first.
   preload: true,
-  // `optional`, not `swap`. next/font emits a metric-adjusted Arial fallback
-  // (size-adjust 105.43%) which matches the vertical metrics but not the
-  // per-glyph advance widths, so a multi-line headline re-wraps when the real
-  // face lands and everything below it moves.
+  // `optional`, not `swap`. next/font emits a metric-adjusted fallback, and
+  // for a Didone the fallback is necessarily a long way off — there is no
+  // system face with this contrast — so a swap would visibly re-flow every
+  // headline. The measured cost of `swap` on the previous face was 0.5984 CLS
+  // at 768px; nothing about that calculation improves with a higher-contrast
+  // face. `optional` gives the browser ~100ms and otherwise uses the fallback
+  // for that page load, caching the face for the next navigation.
   //
-  // That was measured at 0.017–0.034 CLS at 1440 and 390 and accepted as the
-  // cheaper of two evils. It was not measured at 768, where a blog headline
-  // re-wraps into an extra line and the shift is 0.5984 — twelve times the
-  // budget and a failing Core Web Vital on a width Google actually samples.
-  // `optional` gives the browser roughly 100ms to produce the font and
-  // otherwise uses the fallback for that page load, caching the face for the
-  // next navigation. Preloaded and same-origin, it almost always makes the
-  // window. The cost is that some first-time visitors on a slow connection
-  // see Arial Black once; the alternative was a headline that jumps.
-});
-
-export const fontBody = Inter_Tight({
-  subsets: ["latin"],
-  // Also `optional`, and this is the one that mattered. Moving only the
-  // display face left CLS at 768 untouched at 0.5984: the shift was the
-  // standfirst re-wrapping when Inter Tight swapped in, which moved
-  // everything below it by one line.
-  display: "optional",
-  variable: "--font-inter-tight",
-  // `optional` gives the browser about 100ms to have the font, so a face that
-  // is not preloaded will essentially never make the window and every first
-  // visit would render in the fallback. Preloading it is what makes
-  // `optional` a real choice rather than a way of switching the font off.
-  preload: true,
+  // Preloaded and same-origin, it almost always makes the window.
   adjustFontFallback: true,
 });
 
-export const fontUtility = Martian_Mono({
-  subsets: ["latin"],
+/**
+ * Satoshi is not on Google Fonts, so it is vendored: public/fonts, served
+ * same-origin, which is also what the CSP's `font-src 'self'` requires.
+ *
+ * One variable file rather than three statics. Regular, Medium and Bold as
+ * separate cuts are 81KB; the variable face covers 300-900 in 42KB and gives
+ * every weight in between. The licence (Fontshare Font Licence, free for
+ * commercial use) ships next to it as public/fonts/Satoshi-LICENSE.txt and
+ * has to stay there.
+ */
+export const fontBody = localFont({
+  src: [{ path: "../public/fonts/Satoshi-Variable.woff2", weight: "300 900", style: "normal" }],
   display: "optional",
-  variable: "--font-martian",
+  variable: "--font-satoshi",
+  // Also `optional`, and this is the one that mattered on the previous build:
+  // moving only the display face left CLS at 768 untouched, because the shift
+  // was the standfirst re-wrapping. `optional` needs a preload to ever win
+  // its ~100ms window, so this face gets one too.
+  preload: true,
+  // Vendored faces have no metrics in next/font's table, so the fallback
+  // adjustment has to name the family it is adjusting from.
+  adjustFontFallback: "Arial",
+});
+
+export const fontUtility = Geist_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "optional",
+  variable: "--font-geist-mono",
   // The one face still not preloaded. It sets short spec labels in fixed-width
-  // type, so a fallback swap moves nothing — and a third preload would take
-  // bandwidth from the two faces that do shift the page.
+  // type at 11-13px, so a fallback swap moves nothing — and a third preload
+  // would take bandwidth from the two faces that do shift the page.
   preload: false,
   adjustFontFallback: true,
 });

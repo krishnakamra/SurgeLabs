@@ -41,7 +41,7 @@ export function Services() {
 
                   <h2
                     data-reveal
-                    className="mt-8 font-display text-2xl font-extrabold text-fg"
+                    className="mt-8 font-display text-2xl font-normal text-fg"
                   >
                     {service.name}
                   </h2>
@@ -56,7 +56,7 @@ export function Services() {
                         key={capability}
                         className="flex gap-3 text-sm text-fg-muted"
                       >
-                        <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-rule-strong" />
+                        <span aria-hidden="true" className="mt-[0.7em] h-[var(--hairline)] w-3 shrink-0 bg-rule-strong" />
                         <span>{capability}</span>
                       </li>
                     ))}
@@ -64,7 +64,7 @@ export function Services() {
 
                   <p
                     data-reveal
-                    className="mt-10 border-t border-rule pt-6 font-utility text-2xs uppercase tracking-utility text-fg-faint"
+                    className="mt-10 border-t-[length:var(--hairline)] border-rule pt-6 font-utility text-2xs uppercase tracking-utility text-fg-faint"
                   >
                     {service.spec}
                   </p>

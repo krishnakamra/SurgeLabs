@@ -1,14 +1,15 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { MARK_PATH, MARK_SIZE, STACK_GAP } from "@/lib/brand/mark";
+import { FOIL_STOPS, MARK_PATH, MARK_SIZE, STACK_GAP } from "@/lib/brand/mark";
 import { WORDMARK_SCALE, WORDMARK_TEXT, WORDMARK_TRACKING } from "@/lib/brand/wordmark";
 
 export const runtime = "nodejs";
 
-const INK = "#0C0C0E";
-const STOCK = "#EDEDE8";
-const MAGENTA = "#E6007E";
-const FAINT = "#7C7C86";
+const INK = "#0A0A0B";
+const STOCK = "#EFEDE8";
+const GOLD = "#C8A24A";
+const GOLD_HI = "#E8CE84";
+const FAINT = "#8A887F";
 
 /**
  * Satori renders ttf, otf and woff — not woff2. Google Fonts serves woff2 to
@@ -25,7 +26,10 @@ async function loadDisplayFont(): Promise<ArrayBuffer | null> {
   if (displayFont !== undefined) return displayFont;
   try {
     const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap",
+      // opsz 96 and weight 400: the display cut of the Didone, which is the
+      // whole reason for the face. Satori has no variable-font support, so
+      // the axis has to be pinned in the request rather than set in CSS.
+      "https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@96,400&display=swap",
       { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 6.1)" } },
     ).then((response) => response.text());
 
@@ -41,7 +45,7 @@ async function loadDisplayFont(): Promise<ArrayBuffer | null> {
 function CropMark({ corner }: { corner: "tl" | "tr" | "bl" | "br" }) {
   const v = corner[0] === "t" ? { top: 40 } : { bottom: 40 };
   const h = corner[1] === "l" ? { left: 40 } : { right: 40 };
-  const arm = { position: "absolute" as const, background: STOCK, opacity: 0.45 };
+  const arm = { position: "absolute" as const, background: GOLD, opacity: 0.55 };
   return (
     <div style={{ position: "absolute", ...v, ...h, width: 44, height: 44, display: "flex" }}>
       <div style={{ ...arm, ...(corner[0] === "t" ? { top: 0 } : { bottom: 0 }), ...(corner[1] === "l" ? { left: 0 } : { right: 0 }), width: 28, height: 1 }} />
@@ -77,8 +81,20 @@ function StackedLockup({ hasFont, size = 64 }: { hasFont: boolean; size?: number
         gap: Math.round(size * STACK_GAP),
       }}
     >
-      <svg width={size} height={size} viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`} fill={STOCK}>
-        <path d={MARK_PATH} />
+      {/* Foil, baked. A static card cannot follow a pointer, so the highlight
+          sits at 50% — the same place --foil-pos starts on the site, so the
+          card and the masthead agree about where the light is. */}
+      <svg width={size} height={size} viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`}>
+        <defs>
+          <linearGradient id="foil" x1="0" y1="0" x2="1" y2="0.18">
+            <stop offset="0%" stopColor={FOIL_STOPS.lo} />
+            <stop offset="28%" stopColor={FOIL_STOPS.lo} />
+            <stop offset="50%" stopColor={GOLD_HI} />
+            <stop offset="72%" stopColor={FOIL_STOPS.lo} />
+            <stop offset="100%" stopColor={FOIL_STOPS.lo} />
+          </linearGradient>
+        </defs>
+        <path d={MARK_PATH} fill="url(#foil)" />
       </svg>
       <div
         style={{
@@ -86,9 +102,9 @@ function StackedLockup({ hasFont, size = 64 }: { hasFont: boolean; size?: number
           fontSize: wordSize,
           lineHeight: 1,
           letterSpacing: wordSize * WORDMARK_TRACKING,
-          color: STOCK,
-          fontWeight: 800,
-          fontFamily: hasFont ? "Bricolage" : "sans-serif",
+          color: GOLD,
+          fontWeight: 400,
+          fontFamily: hasFont ? "Bodoni" : "serif",
         }}
       >
         {WORDMARK_TEXT}
@@ -118,7 +134,7 @@ export async function GET(request: NextRequest) {
           background: INK,
           padding: "72px 80px",
           position: "relative",
-          fontFamily: font ? "Bricolage" : "sans-serif",
+          fontFamily: font ? "Bodoni" : "serif",
         }}
       >
         <CropMark corner="tl" />
@@ -127,7 +143,7 @@ export async function GET(request: NextRequest) {
         <CropMark corner="br" />
 
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ width: 10, height: 10, borderRadius: 10, background: MAGENTA, display: "flex" }} />
+          <div style={{ width: 28, height: 1, background: GOLD, display: "flex" }} />
           <div style={{ fontSize: 22, letterSpacing: 4, color: FAINT, textTransform: "uppercase", fontFamily: "sans-serif" }}>
             {eyebrow}
           </div>
@@ -137,10 +153,13 @@ export async function GET(request: NextRequest) {
           style={{
             display: "flex",
             fontSize: size,
-            lineHeight: 1.02,
-            letterSpacing: -2.4,
+            lineHeight: 1.05,
+            // -0.02em, resolved against the rendered size. Satori wants px.
+            letterSpacing: size * -0.02,
             color: STOCK,
-            fontWeight: 800,
+            // 400. Bolding a Didone thickens the hairline faster than the
+            // stem and throws away the contrast that makes it look like this.
+            fontWeight: 400,
             maxWidth: 1000,
           }}
         >
@@ -158,7 +177,7 @@ export async function GET(request: NextRequest) {
     {
       width: 1200,
       height: 630,
-      ...(font ? { fonts: [{ name: "Bricolage", data: font, weight: 800, style: "normal" as const }] } : {}),
+      ...(font ? { fonts: [{ name: "Bodoni", data: font, weight: 400, style: "normal" as const }] } : {}),
     },
   );
 }

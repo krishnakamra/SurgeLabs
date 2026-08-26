@@ -29,7 +29,7 @@ export function Split() {
         The split
       </Eyebrow>
 
-      <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
+      <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
         Five vendors is five chances to be off brand.
       </h2>
       <p className="mt-6 max-w-[58ch] text-fg-muted">

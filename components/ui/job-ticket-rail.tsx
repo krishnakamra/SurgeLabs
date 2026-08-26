@@ -89,7 +89,7 @@ export function JobTicketRail({ className }: { className?: string }) {
       data-surface={active?.surface ?? "ink"}
       className={cn(
         "fixed inset-y-0 left-0 z-40 hidden w-[var(--rail-w)] rail:flex",
-        "flex-col items-center justify-between border-r border-rule bg-surface text-fg",
+        "flex-col items-center justify-between border-r-[length:var(--hairline)] border-rule bg-surface text-fg",
         "py-5 transition-colors duration-[var(--dur-run)] ease-press",
         className,
       )}
@@ -123,7 +123,7 @@ export function JobTicketRail({ className }: { className?: string }) {
           const isActive = index === activeIndex;
           const bar = cn(
             "block transition-all duration-[var(--dur-snap)] ease-press",
-            isActive ? "h-[2px] w-6 bg-accent" : "h-px w-3 bg-rule-strong",
+            isActive ? "h-[2px] w-6 bg-accent" : "h-[var(--hairline)] w-3 bg-rule-strong",
           );
 
           if (!ticket.id) {

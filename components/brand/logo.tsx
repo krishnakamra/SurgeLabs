@@ -61,12 +61,29 @@ export type LogoProps = {
    */
   collapse?: "xs" | "sm";
   /**
+   * Strike the lockup in foil rather than flat ink. The gradient is static
+   * until a <FoilField> ancestor starts driving --foil-pos; both states are
+   * finished, so this is safe with no JS.
+   *
+   * Allowed on the logo lockup, primary CTAs and the foil section, and
+   * nowhere else — see the FOIL block in globals.css for why.
+   */
+  foil?: boolean;
+  /**
    * Accessible name. Pass null when a parent already names the control and
    * this would double it up.
    */
   title?: string | null;
   className?: string;
 };
+
+/**
+ * The mark as a CSS mask, built from MARK_PATH so it cannot drift from the
+ * <svg> beside it. Used only by the foil variant: a gradient cannot be
+ * clipped to an SVG path the way background-clip clips it to glyphs, so the
+ * foil version paints the gradient on a box and masks it to this shape.
+ */
+const MARK_MASK = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${MARK_SIZE} ${MARK_SIZE}'%3E%3Cpath d='${MARK_PATH}' fill='%23000'/%3E%3C/svg%3E")`;
 
 /** Below this the mark is hidden by CSS, so the DOM stays single. */
 const COLLAPSE: Record<NonNullable<LogoProps["collapse"]>, string> = {
@@ -115,14 +132,26 @@ const COLLAPSE: Record<NonNullable<LogoProps["collapse"]>, string> = {
    _WORD_SPACING, _OPSZ and _NUDGE from lib/brand/wordmark.ts. They describe
    live type and will mean nothing once there is none.
    ══════════════════════════════════════════════════════════════════════════ */
-function Wordmark({ variant, className }: { variant: "horizontal" | "stacked"; className?: string }) {
+function Wordmark({
+  variant,
+  foil,
+  className,
+}: {
+  variant: "horizontal" | "stacked";
+  foil?: boolean;
+  className?: string;
+}) {
   return (
     <span
+      data-foil={foil ? "text" : undefined}
       className={cn("block", className)}
       style={
         {
           fontFamily: "var(--font-display)",
-          fontWeight: 800,
+          // 400, like every other piece of display type here. A bolded Didone
+          // loses the stem-to-hairline contrast that is the entire reason
+          // this face sets the identity.
+          fontWeight: 400,
           fontSize: `calc(var(--logo-size, 32px) * ${WORDMARK_SCALE[variant]})`,
           lineHeight: 1,
           letterSpacing: `${WORDMARK_TRACKING}em`,
@@ -147,14 +176,27 @@ function Wordmark({ variant, className }: { variant: "horizontal" | "stacked"; c
 }
 
 /** The S. One filled polygon, currentColor, never a stroke. */
-function Mark() {
+function Mark({ foil }: { foil?: boolean }) {
+  const box = { width: "var(--logo-size, 32px)", height: "var(--logo-size, 32px)" };
+
+  if (foil) {
+    return (
+      <span
+        aria-hidden="true"
+        data-foil="mark"
+        className="block shrink-0"
+        style={{ ...box, "--foil-mask": MARK_MASK } as CSSProperties}
+      />
+    );
+  }
+
   return (
     <svg
       viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`}
       aria-hidden="true"
       focusable="false"
       className="block shrink-0"
-      style={{ width: "var(--logo-size, 32px)", height: "var(--logo-size, 32px)" }}
+      style={box}
       fill="currentColor"
     >
       <path d={MARK_PATH} />
@@ -167,6 +209,7 @@ export function Logo({
   size,
   surface,
   collapse,
+  foil = false,
   title = "Surge Labs",
   className,
 }: LogoProps) {
@@ -191,7 +234,7 @@ export function Logo({
         style={sized as CSSProperties}
         className={cn("inline-block align-middle text-current", className)}
       >
-        <Mark />
+        <Mark foil={foil} />
       </span>
     );
   }
@@ -205,9 +248,10 @@ export function Logo({
         style={lockup(STACK_GAP)}
         className={cn("inline-flex flex-col items-center text-current", className)}
       >
-        <Mark />
+        <Mark foil={foil} />
         <Wordmark
           variant="stacked"
+          foil={foil}
           className={cn(collapse && COLLAPSE[collapse])}
         />
       </span>
@@ -222,8 +266,8 @@ export function Logo({
       style={lockup(LOCKUP_GAP)}
       className={cn("inline-flex items-center text-current", className)}
     >
-      <Mark />
-      <Wordmark variant="horizontal" className={cn(collapse && COLLAPSE[collapse])} />
+      <Mark foil={foil} />
+      <Wordmark variant="horizontal" foil={foil} className={cn(collapse && COLLAPSE[collapse])} />
     </span>
   );
 }

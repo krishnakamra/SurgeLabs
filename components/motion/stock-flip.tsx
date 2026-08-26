@@ -78,7 +78,7 @@ export function StockFlip({
       <div
         ref={edge}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-full border-b border-accent opacity-0"
+        className="pointer-events-none absolute inset-x-0 top-0 h-full border-b-[length:var(--hairline)] border-accent opacity-0"
       />
     </div>
   );

@@ -83,7 +83,7 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
                     "mt-[0.6em] block shrink-0 transition-all duration-[var(--dur-snap)] ease-press",
                     isActive
                       ? "h-[2px] w-6 bg-accent"
-                      : "h-px w-3 bg-rule-strong group-hover:w-5",
+                      : "h-[var(--hairline)] w-3 bg-rule-strong group-hover:w-5",
                   )}
                 />
                 <span className="min-w-0">{entry.text}</span>

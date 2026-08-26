@@ -73,10 +73,10 @@ export default function ServiceAreasPage() {
           <div className="mt-8">
             <Eyebrow spec={`${localPages.length} PAGES · ${live.length} CITIES`}>Service areas</Eyebrow>
           </div>
-          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-extrabold text-fg">
+          <h1 className="mt-10 max-w-[18ch] font-display text-3xl font-normal text-fg">
             {getPageSeo("/service-areas")!.h1}
           </h1>
-          <p className="mt-6 max-w-[34ch] font-display text-xl font-bold text-fg-muted">
+          <p className="mt-6 max-w-[34ch] font-display text-xl font-medium text-fg-muted">
             Where we work, and what we have written about it.
           </p>
           <p className="mt-10 max-w-[58ch] text-md text-fg-muted">
@@ -101,21 +101,21 @@ export default function ServiceAreasPage() {
             >
               <div className="grid gap-x-gutter gap-y-8 lg:grid-cols-12">
                 <div className="lg:col-span-4">
-                  <h2 className="font-display text-2xl font-extrabold text-fg">{city.name}</h2>
+                  <h2 className="font-display text-2xl font-normal text-fg">{city.name}</h2>
                   <p className={`${SPEC} mt-4 text-fg-faint`}>{city.region}</p>
                 </div>
 
                 <nav aria-label={`Services in ${city.name}`} className="lg:col-span-8">
-                  <ul className="grid border-t border-rule sm:grid-cols-2 sm:gap-x-gutter">
+                  <ul className="grid border-t-[length:var(--hairline)] border-rule sm:grid-cols-2 sm:gap-x-gutter">
                     {pages.map((page) => {
                       const service = getLocalService(page.service)!;
                       return (
-                        <li key={page.service} className="border-b border-rule">
+                        <li key={page.service} className="border-b-[length:var(--hairline)] border-rule">
                           <Link
                             href={`/${page.service}/${page.city}`}
                             className="block py-4 text-fg-muted transition-colors hover:text-fg"
                           >
-                            <span className="font-display text-base font-bold">
+                            <span className="font-display text-base font-medium">
                               {service.name} in {city.name}
                             </span>
                             <span className={`${SPEC} mt-1 block text-fg-faint`}>{service.blurb}</span>
@@ -138,7 +138,7 @@ export default function ServiceAreasPage() {
           ticket={{ number: "99", label: "ALSO DELIVERING", spec: "NO PAGE YET" }}
         >
           <Eyebrow spec="DELIVERED, NOT YET WRITTEN ABOUT">Also delivering to</Eyebrow>
-          <h2 className="mt-6 max-w-[26ch] font-display text-xl font-extrabold text-fg">
+          <h2 className="mt-6 max-w-[26ch] font-display text-xl font-normal text-fg">
             We deliver here too. There is just no page yet.
           </h2>
           <p className="mt-6 max-w-[58ch] text-fg-muted">
@@ -147,7 +147,7 @@ export default function ServiceAreasPage() {
             page with the city name swapped in would be worse than having none. Call and ask; the
             answer is yes.
           </p>
-          <ul className="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-8">
+          <ul className="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t-[length:var(--hairline)] border-rule pt-8">
             {covered.map((city) => (
               <li key={city.slug} className={`${SPEC} text-fg-muted`}>
                 {city.name}

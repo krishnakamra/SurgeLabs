@@ -17,7 +17,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
         // min-w-0: grid and flex children default to min-width:auto, which
         // lets a single long word set at display size ("Storefront" at 60px)
         // widen the whole panel past a phone viewport.
-        "flex min-w-0 flex-col border bg-surface-raised",
+        "flex min-w-0 flex-col border-[length:var(--hairline)] bg-surface-raised",
         // Panels sit inside a viewport-height track on desktop, so a long
         // ticket scrolls inside its own box rather than off the sheet.
         "motion-ready:lg:mr-gutter motion-ready:lg:min-h-0",
@@ -25,12 +25,12 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
       )}
     >
       {/* Ticket header: number left, price large on the right. */}
-      <header className="flex flex-col gap-6 border-b border-rule p-8 sm:flex-row sm:items-start sm:justify-between">
+      <header className="flex flex-col gap-6 border-b-[length:var(--hairline)] border-rule p-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <p className={cn(SPEC, "text-fg-faint")}>
             Ticket {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </p>
-          <h2 className="mt-5 font-display text-xl leading-none font-extrabold text-fg sm:text-2xl">
+          <h2 className="mt-5 font-display text-xl leading-none font-normal text-fg sm:text-2xl">
             {pkg.name}
           </h2>
           <p className="mt-4 max-w-[34ch] text-sm text-fg-muted">{pkg.tagline}</p>
@@ -48,7 +48,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
       </header>
 
       {/* Spec rows. */}
-      <dl className="divide-y divide-rule border-b border-rule">
+      <dl className="divide-y divide-rule border-b-[length:var(--hairline)] border-rule">
         {[
           { term: "Best for", detail: pkg.bestFor },
           { term: "Turnaround", detail: pkg.turnaround },
@@ -82,7 +82,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
               <ul className="mt-4 space-y-2.5">
                 {group.items.map((item) => (
                   <li key={item} className="flex gap-3 text-sm text-fg-muted">
-                    <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-rule-strong" />
+                    <span aria-hidden="true" className="mt-[0.7em] h-[var(--hairline)] w-3 shrink-0 bg-rule-strong" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -92,14 +92,14 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
         </div>
 
         {pkg.addOns.length > 0 ? (
-          <div className="mt-10 border-t border-rule pt-6">
+          <div className="mt-10 border-t-[length:var(--hairline)] border-rule pt-6">
             <p className={cn(SPEC, "text-fg-faint")}>Often added</p>
             <p className="mt-3 text-sm text-fg-muted">{pkg.addOns.join(" · ")}</p>
           </div>
         ) : null}
       </div>
 
-      <footer className="border-t border-rule p-8">
+      <footer className="border-t-[length:var(--hairline)] border-rule p-8">
         <Button
           href={`/quote?package=${pkg.slug}`}
           variant={pkg.badge ? "primary" : "outline"}
