@@ -184,25 +184,33 @@ points at. Change a number in `mark.ts` and re-run; **do not hand-edit a
 generated file**, or the favicon and the letterhead become different logos.
 
 The running site does not load any of those files. It renders
-`components/brand/logo.tsx`, which inlines the same path so it can take
-`currentColor` from whatever `[data-surface]` section it lands in — the ink
-version and the stock version are the same call with no variant to choose.
-Three lockups: `horizontal` (default, the masthead), `stacked` (footer, OG
-card), `mark` (favicon, masthead under 480px, loading state).
+`components/brand/logo.tsx`, which inlines the same paths so they can take
+`currentColor` and the accent token from whatever `[data-surface]` section
+they land in — the ink version and the stock version are the same call with no
+variant to choose. Three lockups: `horizontal` (the wordmark, default),
+`stacked` (*Surge* over *Labs* — footer, OG card), `mark` (favicon, masthead
+under 480px, loading state).
+
+**Height drives every lockup.** Set a height and let width follow; sizing an
+8.32:1 wordmark by width squashes it.
 
 **`/brand` is the spec page** — every variant on both surfaces at real sizes,
 clear space, minimum sizes and misuse, all rendered by the component itself so
 the page cannot drift from the site. `noindex`, and it is the thing to send a
 client who asks for brand guidelines.
 
-**⚠️ The wordmark is a placeholder.** Until the client supplies drawn artwork,
-"SURGE LABS" is live type in the display face, tuned in
-`lib/brand/wordmark.ts` — positive tracking where the rest of the site runs
-negative, and a pinned optical size where the rest of the site leaves it
-automatic. The four-step swap for real artwork is commented above the
-`Wordmark` function in `components/brand/logo.tsx`. Until then the two lockup
-SVGs in the handoff pack carry `<text>` rather than outlines and are not safe
-to send to a printer; the mark files have no type in them and are.
+**The artwork is the client's file, unaltered.** Every path in
+`lib/brand/mark.ts` is byte-identical to the supplied SVG — deliberately left
+as the exporter wrote it, because a tidied path is a different logo. Only the
+colour changed: the file arrived two-tone in `#F9F9FA` and `#325FAC`, and both
+were replaced by tokens so the artwork inherits its surface.
+
+**The mark is the wordmark's own S.** The supplied file is a wordmark only, at
+8.32:1 — it cannot be a favicon. The first glyph is lifted unaltered rather
+than paired with an invented symbol, and it proofs cleanly at 16px. For the
+same reason there is no mark-plus-wordmark lockup: the wordmark opens with the
+S, so setting them side by side would print the letter twice. The stacked
+lockup splits the wordmark onto two lines instead.
 
 The rasteriser, PNG encoder and ICO container behind the favicon set are in
 `scripts/lib/raster.mjs` — about 150 lines and no dependency, because the mark

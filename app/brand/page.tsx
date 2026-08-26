@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import { Logo } from "@/components/brand";
 import { Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import {
-  BAR,
   CLEAR_SPACE,
-  MARK_BAR,
-  MARK_GAP,
-  MARK_SIZE,
+  MARK_ASPECT,
+  MARK_H,
+  MARK_W,
   MINIMUM_SIZE,
   PLATE_COLOR,
   SURFACE_COLOR,
+  WORDMARK_ASPECT,
+  WORDMARK_H,
+  WORDMARK_W,
   type LogoVariant,
 } from "@/lib/brand/mark";
-import { WORDMARK_OPSZ, WORDMARK_TRACKING } from "@/lib/brand/wordmark";
 
 export const metadata: Metadata = {
   title: "Brand — Surge Labs",
@@ -272,13 +273,13 @@ export default function BrandPage() {
         surface="stock"
         id="sec-03"
         padding="lg"
-        ticket={{ number: "03", label: "CONSTRUCTION", spec: `${MARK_SIZE}-UNIT GRID` }}
+        ticket={{ number: "03", label: "CONSTRUCTION", spec: "SUPPLIED ARTWORK" }}
       >
-        <Eyebrow number="03" spec="THE BAR IS THE UNIT">
+        <Eyebrow number="03" spec="UNALTERED PATHS">
           Construction
         </Eyebrow>
         <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-normal text-fg">
-          One stroke weight, and everything measured against it.
+          Their artwork, and the two numbers that govern it.
         </h2>
 
         <div className="mt-12 grid items-start gap-gutter lg:grid-cols-2">
@@ -288,12 +289,36 @@ export default function BrandPage() {
 
           <dl className="grid gap-x-gutter gap-y-6 sm:grid-cols-2">
             {[
-              { term: "Grid", value: `${MARK_SIZE} × ${MARK_SIZE}`, note: "The mark fills its box edge to edge." },
-              { term: "Bar", value: `${MARK_BAR} units`, note: "The stroke weight. The unit everything else is a multiple of." },
-              { term: "Counter", value: `${MARK_GAP} units`, note: "0.79 of the bar — looser than the display face would set it, so a 16px favicon stays an S." },
-              { term: "Terminals", value: "45°", note: "The K screen angle, and the only diagonal in the system." },
-              { term: "Symmetry", value: "180°", note: "Rotationally symmetrical about its centre. It sets the same way upside down." },
-              { term: "Drawn as", value: "One filled path", note: "No strokes. A stroke would need re-weighting at every size; a filled outline is the same shape at 16px and on a wall." },
+              {
+                term: "Wordmark",
+                value: `${WORDMARK_W} × ${WORDMARK_H}`,
+                note: `Supplied artwork, unaltered. ${WORDMARK_ASPECT.toFixed(2)}:1 — long, so height drives every layout and width follows.`,
+              },
+              {
+                term: "Mark",
+                value: `${MARK_W} × ${MARK_H}`,
+                note: `The wordmark's own S, lifted unaltered and cropped to its bounding box. ${MARK_ASPECT.toFixed(2)}:1 — wider than tall, never square.`,
+              },
+              {
+                term: "Colour",
+                value: "Two tokens",
+                note: "Surge takes currentColor, Labs takes the accent. The supplied blue and near-white are gone; the two-tone structure is not.",
+              },
+              {
+                term: "Drawn as",
+                value: "Filled paths",
+                note: "No strokes anywhere. A stroke would need re-weighting at every size; filled outlines are the same shape at 16px and on a wall.",
+              },
+              {
+                term: "Stacked",
+                value: "Two lines",
+                note: "Surge over Labs, sharing a baseline grid — not a mark above a wordmark, because the wordmark's first glyph IS the mark.",
+              },
+              {
+                term: "Smallest",
+                value: `${MINIMUM_SIZE.mark.screen}px`,
+                note: "The mark at favicon size. Proofed at 16, 24, 32 and 48 before it was adopted — heavy strokes, wide apertures, nothing that closes up.",
+              },
             ].map((row) => (
               <div key={row.term}>
                 <dt className={`${SPEC} text-fg-faint`}>{row.term}</dt>
@@ -305,19 +330,18 @@ export default function BrandPage() {
         </div>
 
         <div className="mt-14 border-t-[length:var(--hairline)] border-rule pt-10">
-          <h3 className={`${SPEC} text-fg-faint`}>The wordmark is a placeholder</h3>
+          <h3 className={`${SPEC} text-fg-faint`}>This is the real artwork</h3>
           <p className="mt-4 max-w-[62ch] text-sm text-fg-muted">
-            Until drawn artwork arrives, &ldquo;SURGE LABS&rdquo; is live type in Bodoni
-            Moda at 400, tracked <strong className="text-fg">+{WORDMARK_TRACKING}em</strong>{" "}
-            with the optical size pinned at <strong className="text-fg">{WORDMARK_OPSZ}</strong>.
-            Positive tracking, where every headline on this site runs negative: Didone caps need
-            air around the hairlines or they fill in under the die. Pinned optical size, where the rest of the
-            site leaves it automatic: a wordmark that redraws itself between a phone masthead and a
-            trade-show banner is not a wordmark.
+            Every path in the logo is the supplied file, byte for byte. Nothing has been redrawn,
+            re-spaced or re-traced, and the paths in{" "}
+            <code className={`${SPEC} text-accent-text`}>lib/brand/mark.ts</code> are deliberately
+            left as the exporter wrote them — a tidied path is a different logo.
           </p>
           <p className="mt-4 max-w-[62ch] text-sm text-fg-muted">
-            It is tuned to read as deliberate, and it is still type. The mark is not — that is
-            geometry, and it is final.
+            One thing did change: the colour. The file arrived two-tone, in a near-white and a mid
+            blue. The structure is kept — Surge in the foreground, Labs in the accent — but both
+            literal values are replaced by tokens, because a fixed near-white cannot sit on paper
+            and the blue has no place in a gold-and-ink system.
           </p>
         </div>
       </SectionFrame>
@@ -329,17 +353,18 @@ export default function BrandPage() {
         padding="lg"
         ticket={{ number: "04", label: "CLEAR SPACE", spec: "1 BAR" }}
       >
-        <Eyebrow number="04" spec={`${Math.round(BAR * 1000) / 10}% OF HEIGHT`}>
+        <Eyebrow number="04" spec={`${Math.round(CLEAR_SPACE * 100)}% OF HEIGHT`}>
           Clear space
         </Eyebrow>
         <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-normal text-fg">
-          Clear space is the bar.
+          A quarter of the height, on every side.
         </h2>
         <p className="mt-6 max-w-[60ch] text-fg-muted">
-          One bar on all four sides — the stroke weight of the S, which is {MARK_BAR}/{MARK_SIZE} of
-          the mark&rsquo;s height. Nothing sets inside it: no type, no rule, no image edge, no other
-          logo, no trim. It scales with the logo, so there is one rule rather than a table of
-          millimetres.
+          Measured off the artwork&rsquo;s height, which is the one dimension all three lockups
+          share — the wordmark is 8.32:1 and the mark is 1.36:1, so a rule based on width would
+          mean something different for each. Nothing sets inside it: no type, no rule, no image
+          edge, no other logo, no trim. It scales with the logo, so there is one rule rather than a
+          table of millimetres.
         </p>
 
         <div className="mt-12 grid gap-gutter md:grid-cols-2">

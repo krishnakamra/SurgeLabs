@@ -20,26 +20,27 @@ an email signature, a supplier's artwork portal.
 
 ---
 
-## ⚠️ The wordmark is a placeholder
+## The artwork is the supplied file
 
-There is no drawn wordmark yet. Until the client supplies one, **"SURGE LABS"
-is live text in Bodoni Moda**, tuned in `lib/brand/wordmark.ts` so it
-sets as a wordmark rather than as a heading — positive tracking, pinned
-optical size, a tightened word space.
+Every path in these files is the client's own logo, byte for byte. Nothing has
+been redrawn, re-traced or re-spaced. The paths in `lib/brand/mark.ts` are
+deliberately left exactly as the exporter wrote them — a tidied path is a
+different logo.
 
-Two consequences, and both matter before you send these to anyone:
+**One thing changed: the colour.** The file arrived two-tone, in `#F9F9FA` and
+`#325FAC`. The structure is kept — *Surge* in the foreground, *Labs* in the
+accent — but both literal values were replaced, because a fixed near-white
+cannot sit on paper and the blue has no place in a gold-and-ink system.
 
-1. **The lockup SVGs in this folder carry `<text>`, not outlines.** Opened on a
-   machine without Bodoni Moda installed — which is most machines —
-   they fall back to Arial Black and the spacing will be wrong. They are safe
-   to look at and not yet safe to hand to a printer.
-2. **The mark SVGs are final in the sense that matters**: pure geometry, no
-   type, no font dependency. `surge-labs-mark-*.svg` can go to a vinyl plotter
-   today.
+**The mark is the wordmark's own S.** The supplied file is a wordmark only, at
+8.32:1, which cannot be a favicon, a phone masthead or a loading state. Rather
+than pair it with an invented symbol, the first glyph is lifted unaltered. It
+proofs cleanly at 16px — heavy strokes, wide apertures, no counter fine enough
+to close up.
 
-`components/brand/logo.tsx` has the four-step swap for real artwork above the
-`Wordmark` function. Re-run `npm run gen:brand` afterwards and this caveat
-stops being true.
+**There is no mark-plus-wordmark lockup**, because the wordmark opens with the
+S. Setting them side by side would print the letter twice. The stacked lockup
+splits the wordmark onto two lines instead.
 
 ---
 
@@ -47,9 +48,9 @@ stops being true.
 
 | File | Use |
 |---|---|
-| `surge-labs-horizontal-{ink,stock}.svg` | Default lockup. Anything wider than it is tall. |
-| `surge-labs-stacked-{ink,stock}.svg` | Square and tall spaces — footers, social avatars, the OG card. |
-| `surge-labs-mark-{ink,stock}.svg` | The S alone. Favicons, stamps, embroidery, anywhere under 24px. |
+| `surge-labs-horizontal-{ink,stock}.svg` | The wordmark as supplied. The default. 8.32:1. |
+| `surge-labs-stacked-{ink,stock}.svg` | *Surge* over *Labs*. Square and tall spaces — footers, avatars, the OG card. |
+| `surge-labs-mark-{ink,stock}.svg` | The S alone. Favicons, stamps, embroidery, anywhere the wordmark will not fit. |
 | `icon-192.png`, `icon-512.png` | Web app manifest, `purpose: any`. |
 | `icon-maskable-512.png` | Web app manifest, `purpose: maskable`. The mark is pulled in to clear Android's safe zone. |
 
@@ -68,9 +69,14 @@ The full spec, rendered at real sizes on both surfaces, is at **`/brand`** on
 the site. It is a working page, `noindex`, and it is the thing to send a client
 who asks for brand guidelines.
 
-- **Clear space is the bar** — the stroke weight of the S, which is 14/64 of the
-  mark's height. Nothing sets inside it.
-- **Minimum sizes**: horizontal 24px / 10mm · stacked 32px / 12mm · mark 16px / 6mm.
+- **Clear space is a quarter of the artwork's height**, on all four sides.
+  Height, not width — the wordmark is 8.32:1 and the mark is 1.36:1, so a
+  width-based rule would mean something different for each. Nothing sets
+  inside it.
+- **Minimum sizes**: horizontal 18px tall (≈150px wide) · stacked 30px ·
+  mark 16px.
+- **Height drives everything.** Set a height and let the width follow. Sizing
+  by width squashes an 8.32:1 wordmark the moment the container changes.
 - **One colour, or foil.** The logo is `--color-fg` on whatever it sits on.
   It may also be struck in foil — a gold gradient that moves with the light —
   on the masthead, a primary CTA and the foil section, and nowhere else. The

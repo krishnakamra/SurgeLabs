@@ -1,42 +1,48 @@
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/cn";
 import {
-  LOCKUP_GAP,
-  MARK_PATH,
-  MARK_SIZE,
-  STACK_GAP,
+  CLEAR_SPACE,
+  LABS_D,
+  LABS_DX,
+  MARK_ASPECT,
+  MARK_D,
+  MARK_VIEWBOX,
+  STACK_LEADING,
+  STACK_VIEWBOX,
+  SURGE_D,
+  WORDMARK_ASPECT,
+  WORDMARK_VIEWBOX,
   type LogoVariant,
 } from "@/lib/brand/mark";
-import {
-  WORDMARK_NUDGE,
-  WORDMARK_OPSZ,
-  WORDMARK_SCALE,
-  WORDMARK_TEXT,
-  WORDMARK_TRACKING,
-  WORDMARK_WORD_SPACING,
-} from "@/lib/brand/wordmark";
 
 /**
  * THE LOGO SLOT.
  *
- * Three lockups, one geometry (lib/brand/mark.ts), no colour of its own.
+ * Three lockups, one set of paths (lib/brand/mark.ts), no colour of its own.
  *
- *   horizontal   mark + wordmark, side by side. The default, and the header.
- *   stacked      mark over wordmark, centred. Footer and the OG card.
+ *   horizontal   the wordmark as supplied. The default, and the header.
+ *   stacked      "Surge" over "Labs". Footer, OG card, square spaces.
  *   mark         the S alone. Favicon, phone headers, loading states.
  *
- * COLOUR IS NOT A PROP. The mark is filled with currentColor and the wordmark
- * is ordinary text, so both take --color-fg from whichever [data-surface]
+ * There is no mark-plus-wordmark lockup, and that is deliberate: the client's
+ * wordmark opens with the S, and the S is the mark, so setting them side by
+ * side would print the letter twice.
+ *
+ * COLOUR IS NOT A PROP. "Surge" is filled with currentColor and "Labs" with
+ * the accent token, so both take their value from whichever [data-surface]
  * section they are sitting inside. Drop the same call into an ink section and
  * a stock section and you get the ink version and the stock version, with
- * byte-identical markup and no variant to pick. That is the same contract
- * every other component in this system honours — if this one needed a
- * `dark:` variant, the token system would have failed.
+ * byte-identical markup and no variant to pick.
  *
- * SIZE IS ONE NUMBER: the mark's height. Everything else — wordmark size,
- * gaps, clear space — is a multiple of the bar, resolved in calc() off
- * --logo-size. Pass `size` for a fixed logo, or leave it off and set
- * --logo-size from a class when it needs to change at a breakpoint:
+ * The supplied artwork was two-tone — near-white and a mid blue. The
+ * two-tone STRUCTURE is kept, because it is the design; the two literal
+ * colours are not, because a fixed near-white cannot sit on paper and the
+ * blue has no place in a gold-and-ink system. See the note in mark.ts.
+ *
+ * SIZE IS ONE NUMBER: the mark's height, or for the lockups the height of
+ * their own box. Everything else is derived. Pass `size` for a fixed logo, or
+ * leave it off and set --logo-size from a class when it needs to change at a
+ * breakpoint:
  *
  *   <Logo size={32} />
  *   <Logo className="[--logo-size:26px] sm:[--logo-size:32px]" />
@@ -45,28 +51,27 @@ import {
 export type LogoProps = {
   variant?: LogoVariant;
   /**
-   * Mark height in px. Omit to inherit --logo-size from CSS, which is how the
-   * header steps 26 → 32 without re-rendering anything.
+   * Height in px of the mark, or of the lockup's box. Omit to inherit
+   * --logo-size from CSS, which is how the header steps 26 → 32 without
+   * re-rendering anything.
    */
   size?: number;
   /**
    * Force a surface rather than inheriting the section's. Only for artwork
-   * sitting on a fixed-colour plate — a magenta panel, a photograph — where
+   * sitting on a fixed-colour plate — a gold panel, a photograph — where
    * there is no [data-surface] to ask.
    */
   surface?: "ink" | "stock";
   /**
-   * Drop the wordmark below this width, leaving the mark. `xs` is 480px.
-   * The accessible name is unaffected — it lives on the root, not the type.
+   * Drop to the mark alone below this width. `xs` is 480px. The accessible
+   * name is unaffected — it lives on the root, not the artwork.
    */
   collapse?: "xs" | "sm";
   /**
-   * Strike the lockup in foil rather than flat ink. The gradient is static
-   * until a <FoilField> ancestor starts driving --foil-pos; both states are
-   * finished, so this is safe with no JS.
-   *
-   * Allowed on the logo lockup, primary CTAs and the foil section, and
-   * nowhere else — see the FOIL block in globals.css for why.
+   * Strike the logo in foil rather than flat ink. Static until a <FoilField>
+   * ancestor starts driving --foil-pos; both states are finished, so this is
+   * safe with no JS. Allowed on the masthead lockup, primary CTAs and the
+   * foil section, and nowhere else.
    */
   foil?: boolean;
   /**
@@ -78,129 +83,159 @@ export type LogoProps = {
 };
 
 /**
- * The mark as a CSS mask, built from MARK_PATH so it cannot drift from the
- * <svg> beside it. Used only by the foil variant: a gradient cannot be
- * clipped to an SVG path the way background-clip clips it to glyphs, so the
- * foil version paints the gradient on a box and masks it to this shape.
+ * The mark as a CSS mask, built from MARK_D so it cannot drift from the <svg>
+ * beside it. Used only by the foil variant: a gradient cannot be clipped to
+ * an SVG path the way background-clip clips it to glyphs, so the foil version
+ * paints the gradient on a box and masks it to this shape.
  */
-const MARK_MASK = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${MARK_SIZE} ${MARK_SIZE}'%3E%3Cpath d='${MARK_PATH}' fill='%23000'/%3E%3C/svg%3E")`;
+const MARK_MASK =
+  `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='${MARK_VIEWBOX}'%3E%3Cpath d='${MARK_D}' fill='%23000'/%3E%3C/svg%3E")`;
 
-/** Below this the mark is hidden by CSS, so the DOM stays single. */
-const COLLAPSE: Record<NonNullable<LogoProps["collapse"]>, string> = {
-  xs: "hidden xs:inline-block",
-  sm: "hidden sm:inline-block",
-};
+/**
+ * The foil gradient, as an SVG def.
+ *
+ * The CSS foil (globals.css) clips a moving gradient with a mask, which works
+ * for the mark because the mark is one shape. It cannot do a two-tone
+ * wordmark: only "Labs" should be metal, and masking half an <svg> from
+ * outside it is not a thing CSS can express.
+ *
+ * So the lockups carry their own gradient, and it is STILL — the three stops
+ * are the same, but the highlight does not track the pointer. That is an
+ * honest limitation rather than a shortcut: SVG gradient stop offsets cannot
+ * be driven by a custom property, and the transform trick that would fake it
+ * is not reliable across browsers. The mark keeps the moving version, and it
+ * is the one in the masthead that the pointer actually crosses.
+ *
+ * A fixed id is safe here: every instance emits an identical def, so a
+ * duplicate resolves to the same gradient.
+ */
+const FOIL_ID = "sl-foil";
 
-/* ══════════════════════════════════════════════════════════════════════════
-   ⚠️  PLACEHOLDER WORDMARK — THE SLOT. REPLACE THIS FUNCTION.
-   ──────────────────────────────────────────────────────────────────────────
-   Until the client supplies drawn artwork, "SURGE LABS" is live type in the
-   display face, tuned in lib/brand/wordmark.ts so it sets as a wordmark and
-   not as a small heading. Read that file before touching these numbers.
-
-   WHEN THE REAL SVG ARRIVES — four steps, all of them here:
-
-     1. Put the artwork at public/brand/surge-labs-wordmark.svg. Outlines,
-        not text. viewBox tight to the letterforms — no padding, or every
-        gap in every lockup is silently wrong.
-
-     2. Replace the <span> below with the artwork's <path>, inlined:
-
-          <svg
-            viewBox="0 0 {W} {H}"
-            aria-hidden="true"
-            focusable="false"
-            style={{ height: `calc(var(--logo-size, 32px) * ${scale})`, width: "auto" }}
-            fill="currentColor"
-          >
-            <path d="…" />
-          </svg>
-
-        Inline, not <img src>: an <img> cannot inherit currentColor, and the
-        surface flip is the whole point of this component.
-
-     3. Set WORDMARK_ASPECT in lib/brand/wordmark.ts to W / H, and re-check
-        WORDMARK_SCALE — it is expressed against the mark's height, and drawn
-        letterforms almost never have the same cap height as the live face.
-
-     4. `npm run gen:brand`. The static SVGs in public/brand are exported
-        from this same geometry and carry live <text> until you do — that is
-        the one thing in the handoff pack that is not yet final artwork, and
-        public/brand/README.md says so out loud.
-
-   Then delete this comment block, and delete WORDMARK_TEXT, _TRACKING,
-   _WORD_SPACING, _OPSZ and _NUDGE from lib/brand/wordmark.ts. They describe
-   live type and will mean nothing once there is none.
-   ══════════════════════════════════════════════════════════════════════════ */
-function Wordmark({
-  variant,
-  foil,
-  className,
-}: {
-  variant: "horizontal" | "stacked";
-  foil?: boolean;
-  className?: string;
-}) {
+function FoilDef() {
   return (
-    <span
-      data-foil={foil ? "text" : undefined}
-      className={cn("block", className)}
-      style={
-        {
-          fontFamily: "var(--font-display)",
-          // 400, like every other piece of display type here. A bolded Didone
-          // loses the stem-to-hairline contrast that is the entire reason
-          // this face sets the identity.
-          fontWeight: 400,
-          fontSize: `calc(var(--logo-size, 32px) * ${WORDMARK_SCALE[variant]})`,
-          lineHeight: 1,
-          letterSpacing: `${WORDMARK_TRACKING}em`,
-          wordSpacing: `${WORDMARK_WORD_SPACING}em`,
-          // Pinned, not auto. A wordmark that redraws itself between the
-          // header and the banner is not a wordmark — see wordmark.ts.
-          fontOpticalSizing: "none",
-          fontVariationSettings: `"opsz" ${WORDMARK_OPSZ}`,
-          // Tracking adds a trailing advance after the final S. Pull it back
-          // so the lockup's right edge is the letterform, not the sidebearing
-          // — otherwise the clear space on the right is quietly 0.055em wider
-          // than the clear space on the left.
-          marginRight: `-${WORDMARK_TRACKING}em`,
-          ...(WORDMARK_NUDGE ? { transform: `translateY(${WORDMARK_NUDGE}em)` } : {}),
-          whiteSpace: "nowrap",
-        } as CSSProperties
-      }
-    >
-      {WORDMARK_TEXT}
-    </span>
+    <defs>
+      <linearGradient id={FOIL_ID} x1="0" y1="0" x2="1" y2="0.35">
+        <stop offset="0%" stopColor="var(--color-gold-lo)" />
+        <stop offset="28%" stopColor="var(--color-gold-lo)" />
+        <stop offset="50%" stopColor="var(--color-gold-hi)" />
+        <stop offset="72%" stopColor="var(--color-gold-lo)" />
+        <stop offset="100%" stopColor="var(--color-gold-lo)" />
+      </linearGradient>
+    </defs>
   );
 }
 
-/** The S. One filled polygon, currentColor, never a stroke. */
-function Mark({ foil }: { foil?: boolean }) {
-  const box = { width: "var(--logo-size, 32px)", height: "var(--logo-size, 32px)" };
+/** What fills the "Labs" half: flat accent, or foil. */
+const labsFill = (foil?: boolean) => (foil ? `url(#${FOIL_ID})` : "var(--color-accent-text)");
 
-  if (foil) {
-    return (
-      <span
-        aria-hidden="true"
-        data-foil="mark"
-        className="block shrink-0"
-        style={{ ...box, "--foil-mask": MARK_MASK } as CSSProperties}
-      />
-    );
-  }
+const COLLAPSE: Record<NonNullable<LogoProps["collapse"]>, string> = {
+  xs: "hidden xs:block",
+  sm: "hidden sm:block",
+};
 
+/** Shown when `collapse` hides the lockup. Same artwork, mark only. */
+const COLLAPSE_MARK: Record<NonNullable<LogoProps["collapse"]>, string> = {
+  xs: "block xs:hidden",
+  sm: "block sm:hidden",
+};
+
+/* ── The three pieces of artwork ─────────────────────────────────────────
+   Every path below is the client's, unaltered. `fill` is the only thing this
+   file decides. */
+
+function Mark({ style, className }: { style?: CSSProperties; className?: string }) {
   return (
     <svg
-      viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`}
+      viewBox={MARK_VIEWBOX}
       aria-hidden="true"
       focusable="false"
-      className="block shrink-0"
-      style={box}
+      className={cn("block shrink-0", className)}
+      style={style}
       fill="currentColor"
     >
-      <path d={MARK_PATH} />
+      <path d={MARK_D} />
     </svg>
+  );
+}
+
+function Wordmark({
+  style,
+  className,
+  foil,
+}: {
+  style?: CSSProperties;
+  className?: string;
+  foil?: boolean;
+}) {
+  return (
+    <svg
+      viewBox={WORDMARK_VIEWBOX}
+      aria-hidden="true"
+      focusable="false"
+      className={cn("block shrink-0", className)}
+      style={style}
+    >
+      {foil ? <FoilDef /> : null}
+      {/* "Surge" takes the foreground; "Labs" takes the accent — or foil.
+          Two fills, both tokens, so the pair flips with the surface. */}
+      <g fill="currentColor">
+        {SURGE_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+      <g fill={labsFill(foil)}>
+        {LABS_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+function Stacked({
+  style,
+  className,
+  foil,
+}: {
+  style?: CSSProperties;
+  className?: string;
+  foil?: boolean;
+}) {
+  return (
+    <svg
+      viewBox={STACK_VIEWBOX}
+      aria-hidden="true"
+      focusable="false"
+      className={cn("block shrink-0", className)}
+      style={style}
+    >
+      {foil ? <FoilDef /> : null}
+      <g fill="currentColor">
+        {SURGE_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+      {/* Line two: pulled to the origin, centred under line one, dropped by
+          one leading. The transform is layout, not artwork — the paths are
+          untouched. */}
+      <g fill={labsFill(foil)} transform={`translate(${LABS_DX} ${STACK_LEADING})`}>
+        {LABS_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/** Foil is a masked gradient, so it can only carry one shape: the mark. */
+function FoilMark({ style, className }: { style?: CSSProperties; className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      data-foil="mark"
+      className={cn("block shrink-0", className)}
+      style={{ ...style, "--foil-mask": MARK_MASK } as CSSProperties}
+    />
   );
 }
 
@@ -214,60 +249,56 @@ export function Logo({
   className,
 }: LogoProps) {
   // role="img" + a name on the root is what lets `collapse` work: the
-  // wordmark can leave the accessibility tree with the rest of the lockup
-  // and the logo still announces itself, in the header and at 400px alike.
+  // wordmark can leave the accessibility tree with the rest of the lockup and
+  // the logo still announces itself, in the header and at 400px alike.
   const naming = title ? ({ role: "img", "aria-label": title } as const) : {};
-
   const sized = size ? { "--logo-size": `${size}px` } : {};
+  const root = cn("inline-block align-middle text-current", className);
 
-  // The gaps are multiples of the bar, resolved off --logo-size — so they
-  // track the logo at any size and there is no second scale to keep in step.
-  const lockup = (ratio: number) =>
-    ({ ...sized, gap: `calc(var(--logo-size, 32px) * ${ratio})` }) as CSSProperties;
+  // Height is the driver; width follows from the artwork's own aspect. Set
+  // the other way round and an 8.32:1 wordmark decides the layout.
+  const box = (aspect: number): CSSProperties => ({
+    height: "var(--logo-size, 32px)",
+    width: `calc(var(--logo-size, 32px) * ${aspect})`,
+  });
 
   if (variant === "mark") {
+    const style = box(MARK_ASPECT);
     return (
-      <span
-        {...naming}
-        data-surface={surface}
-        data-logo="mark"
-        style={sized as CSSProperties}
-        className={cn("inline-block align-middle text-current", className)}
-      >
-        <Mark foil={foil} />
+      <span {...naming} data-surface={surface} data-logo="mark" style={sized as CSSProperties} className={root}>
+        {foil ? <FoilMark style={style} /> : <Mark style={style} />}
       </span>
     );
   }
 
-  if (variant === "stacked") {
-    return (
-      <span
-        {...naming}
-        data-surface={surface}
-        data-logo="stacked"
-        style={lockup(STACK_GAP)}
-        className={cn("inline-flex flex-col items-center text-current", className)}
-      >
-        <Mark foil={foil} />
-        <Wordmark
-          variant="stacked"
-          foil={foil}
-          className={cn(collapse && COLLAPSE[collapse])}
-        />
-      </span>
-    );
-  }
+  const isStacked = variant === "stacked";
+  const Art = isStacked ? Stacked : Wordmark;
+  const aspect = isStacked ? 846.57 / 306.21 : WORDMARK_ASPECT;
 
   return (
     <span
       {...naming}
       data-surface={surface}
-      data-logo="horizontal"
-      style={lockup(LOCKUP_GAP)}
-      className={cn("inline-flex items-center text-current", className)}
+      data-logo={variant}
+      style={sized as CSSProperties}
+      className={root}
     >
-      <Mark foil={foil} />
-      <Wordmark variant="horizontal" foil={foil} className={cn(collapse && COLLAPSE[collapse])} />
+      <Art style={box(aspect)} foil={foil} className={cn(collapse && COLLAPSE[collapse])} />
+      {/* Below the breakpoint the lockup is replaced by the mark rather than
+          simply hidden — a masthead with no logo in it is worse than a small
+          one. One DOM tree either way; CSS picks. */}
+      {collapse ? (
+        foil ? (
+          <FoilMark style={box(MARK_ASPECT)} className={COLLAPSE_MARK[collapse]} />
+        ) : (
+          <Mark style={box(MARK_ASPECT)} className={COLLAPSE_MARK[collapse]} />
+        )
+      ) : null}
     </span>
   );
+}
+
+/** Clear space in px for a given logo height. Exported for /brand. */
+export function clearSpaceFor(size: number): number {
+  return Math.round(size * CLEAR_SPACE);
 }

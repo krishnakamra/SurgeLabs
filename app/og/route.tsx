@@ -1,7 +1,13 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
-import { FOIL_STOPS, MARK_PATH, MARK_SIZE, STACK_GAP } from "@/lib/brand/mark";
-import { WORDMARK_SCALE, WORDMARK_TEXT, WORDMARK_TRACKING } from "@/lib/brand/wordmark";
+import {
+  FOIL_STOPS,
+  LABS_D,
+  LABS_DX,
+  STACK_LEADING,
+  STACK_VIEWBOX,
+  SURGE_D,
+} from "@/lib/brand/mark";
 
 export const runtime = "nodejs";
 
@@ -55,61 +61,40 @@ function CropMark({ corner }: { corner: "tl" | "tr" | "bl" | "br" }) {
 }
 
 /**
- * The stacked lockup, drawn from the same geometry as everything else
- * (lib/brand/mark.ts) rather than approximated in Satori's subset of CSS.
+ * The stacked lockup, drawn from the client's own paths (lib/brand/mark.ts)
+ * rather than set as live type. Satori renders <path>, so the card carries
+ * the real artwork — not an approximation of it in a font that happens to be
+ * available.
  *
- * This replaced a magenta rule with the words "Surge Labs" under it, which
- * was a stand-in for a logo the build did not have. Satori renders <path>, so
- * the mark here is the mark — not a picture of one.
- *
- * The wordmark is still live text and inherits the placeholder's tuning:
- * positive tracking, 800 weight, the display face when the fetch above
- * succeeded. Satori has no font-variation-settings, so the pinned optical
- * size cannot follow it here; the face is loaded at a single 800 instance and
- * every card gets the same letterforms anyway, which is what pinning it was
- * for. Satori also wants letter-spacing in px, so the em ratio is resolved
- * against the font size rather than passed through.
+ * "Surge" is struck in foil and "Labs" in flat gold. A static card cannot
+ * follow a pointer, so the highlight sits at 50% — the same place --foil-pos
+ * starts on the site, so the card and the masthead agree about where the
+ * light is.
  */
-function StackedLockup({ hasFont, size = 64 }: { hasFont: boolean; size?: number }) {
-  const wordSize = size * WORDMARK_SCALE.stacked;
+function StackedLockup({ width = 360 }: { width?: number }) {
+  const [, , w, h] = STACK_VIEWBOX.split(" ").map(Number) as [number, number, number, number];
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: Math.round(size * STACK_GAP),
-      }}
-    >
-      {/* Foil, baked. A static card cannot follow a pointer, so the highlight
-          sits at 50% — the same place --foil-pos starts on the site, so the
-          card and the masthead agree about where the light is. */}
-      <svg width={size} height={size} viewBox={`0 0 ${MARK_SIZE} ${MARK_SIZE}`}>
-        <defs>
-          <linearGradient id="foil" x1="0" y1="0" x2="1" y2="0.18">
-            <stop offset="0%" stopColor={FOIL_STOPS.lo} />
-            <stop offset="28%" stopColor={FOIL_STOPS.lo} />
-            <stop offset="50%" stopColor={GOLD_HI} />
-            <stop offset="72%" stopColor={FOIL_STOPS.lo} />
-            <stop offset="100%" stopColor={FOIL_STOPS.lo} />
-          </linearGradient>
-        </defs>
-        <path d={MARK_PATH} fill="url(#foil)" />
-      </svg>
-      <div
-        style={{
-          display: "flex",
-          fontSize: wordSize,
-          lineHeight: 1,
-          letterSpacing: wordSize * WORDMARK_TRACKING,
-          color: GOLD,
-          fontWeight: 400,
-          fontFamily: hasFont ? "Bodoni" : "serif",
-        }}
-      >
-        {WORDMARK_TEXT}
-      </div>
-    </div>
+    <svg width={width} height={(width * h) / w} viewBox={STACK_VIEWBOX}>
+      <defs>
+        <linearGradient id="foil" x1="0" y1="0" x2="1" y2="0.18">
+          <stop offset="0%" stopColor={FOIL_STOPS.lo} />
+          <stop offset="28%" stopColor={FOIL_STOPS.lo} />
+          <stop offset="50%" stopColor={GOLD_HI} />
+          <stop offset="72%" stopColor={FOIL_STOPS.lo} />
+          <stop offset="100%" stopColor={FOIL_STOPS.lo} />
+        </linearGradient>
+      </defs>
+      <g fill={STOCK}>
+        {SURGE_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+      <g fill="url(#foil)" transform={`translate(${LABS_DX} ${STACK_LEADING})`}>
+        {LABS_D.map((d) => (
+          <path key={d.slice(0, 24)} d={d} />
+        ))}
+      </g>
+    </svg>
   );
 }
 
@@ -167,7 +152,7 @@ export async function GET(request: NextRequest) {
         </div>
 
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-          <StackedLockup hasFont={Boolean(font)} />
+          <StackedLockup />
           <div style={{ fontSize: 20, letterSpacing: 2.5, color: FAINT, textTransform: "uppercase", fontFamily: "sans-serif" }}>
             Web · Print · Apparel
           </div>

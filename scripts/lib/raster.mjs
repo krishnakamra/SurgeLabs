@@ -55,6 +55,103 @@ export function coverage(poly, size, ss = 8) {
   return out;
 }
 
+/**
+ * Flatten an SVG path's curves into a polygon.
+ *
+ * The old geometric mark was twelve straight edges and needed none of this.
+ * The supplied artwork is a typographic S — all cubic beziers — so the
+ * favicon set has to sample them. 24 segments per curve is well past the
+ * point where more is visible at 48px, let alone 16.
+ *
+ * Handles M/L/H/V/C/S and their relative forms, which is everything Illustrator
+ * emits for this artwork. Arcs and quadratics would need adding if the
+ * artwork ever changes to include them — it throws rather than silently
+ * dropping a command, because a mark missing a segment is worse than a build
+ * that stops.
+ */
+export function flattenPath(d, segments = 24) {
+  const tokens = [...d.matchAll(/([MmLlHhVvCcSsQqTtAaZz])|(-?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)/g)].map(
+    (m) => (m[1] ? { cmd: m[1] } : { num: Number.parseFloat(m[2]) }),
+  );
+
+  const pts = [];
+  let cur = [0, 0];
+  let start = [0, 0];
+  let prevC2 = null;
+  let cmd = null;
+  let i = 0;
+
+  const bezier = (p0, p1, p2, p3) => {
+    for (let k = 1; k <= segments; k++) {
+      const t = k / segments;
+      const mt = 1 - t;
+      pts.push([
+        mt ** 3 * p0[0] + 3 * mt * mt * t * p1[0] + 3 * mt * t * t * p2[0] + t ** 3 * p3[0],
+        mt ** 3 * p0[1] + 3 * mt * mt * t * p1[1] + 3 * mt * t * t * p2[1] + t ** 3 * p3[1],
+      ]);
+    }
+  };
+
+  while (i < tokens.length) {
+    if (tokens[i].cmd) {
+      cmd = tokens[i].cmd;
+      i++;
+      if (cmd === "Z" || cmd === "z") {
+        cur = [...start];
+        pts.push(cur);
+        continue;
+      }
+    }
+    const nums = [];
+    while (i < tokens.length && tokens[i].num !== undefined) nums.push(tokens[i++].num);
+
+    const rel = cmd === cmd.toLowerCase();
+    let type = cmd.toUpperCase();
+    let j = 0;
+    while (j < nums.length) {
+      if (type === "M" || type === "L") {
+        const [x, y] = [nums[j], nums[j + 1]];
+        j += 2;
+        cur = rel ? [cur[0] + x, cur[1] + y] : [x, y];
+        if (type === "M") start = [...cur];
+        pts.push(cur);
+        // A second coordinate pair after M is an implicit lineto.
+        if (type === "M") type = "L";
+      } else if (type === "H") {
+        const x = nums[j++];
+        cur = rel ? [cur[0] + x, cur[1]] : [x, cur[1]];
+        pts.push(cur);
+      } else if (type === "V") {
+        const y = nums[j++];
+        cur = rel ? [cur[0], cur[1] + y] : [cur[0], y];
+        pts.push(cur);
+      } else if (type === "C") {
+        const a = nums.slice(j, j + 6);
+        j += 6;
+        const p1 = rel ? [cur[0] + a[0], cur[1] + a[1]] : [a[0], a[1]];
+        const p2 = rel ? [cur[0] + a[2], cur[1] + a[3]] : [a[2], a[3]];
+        const p3 = rel ? [cur[0] + a[4], cur[1] + a[5]] : [a[4], a[5]];
+        bezier(cur, p1, p2, p3);
+        prevC2 = p2;
+        cur = p3;
+      } else if (type === "S") {
+        const a = nums.slice(j, j + 4);
+        j += 4;
+        const p2 = rel ? [cur[0] + a[0], cur[1] + a[1]] : [a[0], a[1]];
+        const p3 = rel ? [cur[0] + a[2], cur[1] + a[3]] : [a[2], a[3]];
+        // The reflected control point. Without it an S curve kinks visibly.
+        const p1 = prevC2 ? [2 * cur[0] - prevC2[0], 2 * cur[1] - prevC2[1]] : cur;
+        bezier(cur, p1, p2, p3);
+        prevC2 = p2;
+        cur = p3;
+      } else {
+        throw new Error(`flattenPath: unsupported command "${cmd}" — add it rather than skipping it`);
+      }
+    }
+  }
+  return pts;
+}
+
 /** Even-odd crossing test. The mark is a simple polygon, so it agrees with nonzero. */
 function inside(poly, x, y) {
   let hit = false;

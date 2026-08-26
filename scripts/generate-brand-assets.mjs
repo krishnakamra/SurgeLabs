@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
   coverage,
-  fit,
+  flattenPath,
   compose,
   rgb,
   encodePNG,
@@ -27,23 +27,23 @@ import {
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const {
-  MARK_SIZE,
-  MARK_PATH,
-  MARK_POINTS,
-  BAR,
-  LOCKUP_GAP,
-  STACK_GAP,
+  MARK_D,
+  MARK_X,
+  MARK_Y,
+  MARK_W,
+  MARK_H,
+  MARK_ASPECT,
+  SURGE_D,
+  LABS_D,
+  LABS_DX,
+  STACK_LEADING,
+  STACK_VIEWBOX,
+  WORDMARK_W,
+  WORDMARK_H,
+  CLEAR_SPACE,
   SURFACE_COLOR,
   PLATE_COLOR,
 } = await import(join(root, "lib", "brand", "mark.ts"));
-const {
-  WORDMARK_TEXT,
-  WORDMARK_TRACKING,
-  WORDMARK_WORD_SPACING,
-  WORDMARK_OPSZ,
-  WORDMARK_SCALE,
-  WORDMARK_ASPECT,
-} = await import(join(root, "lib", "brand", "wordmark.ts"));
 
 const brandDir = join(root, "public", "brand");
 const appDir = join(root, "app");
@@ -60,10 +60,6 @@ const ICON_SCALE = 0.7;
 
 /** Android's maskable safe zone is the middle 80%, so the mark comes in. */
 const MASKABLE_SCALE = 0.52;
-
-/** Cap height as a fraction of the em, for placing a baseline. Bodoni
-    Moda runs a little shorter than the grotesque this replaced. */
-const CAP_HEIGHT = 0.7;
 
 const round = (n) => Math.round(n * 100) / 100;
 
@@ -107,95 +103,62 @@ function assertWellFormed(svg, name) {
 /* ── SVG export ─────────────────────────────────────────────────────────── */
 
 /**
- * ⚠️  The exported lockups carry the wordmark as live <text>, because there is
- *     no drawn artwork yet and this project has no font engine to convert one
- *     to outlines with. Opened somewhere without Bricolage Grotesque
- *     installed, they fall back. public/brand/README.md says so; when the real
- *     wordmark lands it goes in as a <path> and this stops being true.
+ * A handoff lockup. Clear space is built into the viewBox and filled with the
+ * surface colour, so placing the file as supplied already honours the rule.
+ *
+ * The paths are the client's, unaltered. Only the fills are ours, and they
+ * are flattened to literal hexes here because a flat file has no
+ * [data-surface] to inherit from.
  */
-function wordmarkSVG({ x, y, fontSize, anchor = "start", fill }) {
-  const tracking = round(WORDMARK_TRACKING * fontSize);
-  // text-anchor="middle" centres the ADVANCE, and the advance carries one
-  // trailing letter-space that has no letter after it. Half of it back.
-  const shift = anchor === "middle" ? tracking / 2 : 0;
-  return `  <text
-    x="${round(x + shift)}" y="${round(y)}"
-    font-family="Bodoni Moda, Bodoni MT, Didot, Georgia, serif"
-    font-weight="400"
-    font-size="${round(fontSize)}"
-    font-variation-settings="'opsz' ${WORDMARK_OPSZ}"
-    letter-spacing="${tracking}"
-    word-spacing="${round(WORDMARK_WORD_SPACING * fontSize)}"
-    text-anchor="${anchor}"
-    fill="${fill}"
-  >${WORDMARK_TEXT}</text>`;
-}
-
-/**
- * Live text cannot be measured here, so WORDMARK_ASPECT is an estimate and
- * the exported box carries a little slack. A viewBox a few percent wide is
- * invisible; a viewBox a few percent narrow clips the final S, because an
- * outermost <svg> clips to its viewport. Goes to 1 with real artwork.
- */
-const SLACK = 1.05;
-
 function lockupSVG(variant, surface) {
-  const { fg, bg } = SURFACE_COLOR[surface];
-  const pad = BAR * MARK_SIZE; // clear space: one bar, built in
-  const label = `Surge Labs`;
+  const { fg, accent, bg } = SURFACE_COLOR[surface];
+  const label = "Surge Labs";
 
   let inner;
-  let artW;
-  let artH;
+  let vb;
 
   if (variant === "mark") {
-    artW = MARK_SIZE;
-    artH = MARK_SIZE;
-    inner = `  <path d="${MARK_PATH}" fill="${fg}" transform="translate(${pad} ${pad})"/>`;
+    vb = { x: MARK_X, y: MARK_Y, w: MARK_W, h: MARK_H };
+    inner = `  <path d="${MARK_D}" fill="${fg}"/>`;
   } else if (variant === "horizontal") {
-    const fontSize = WORDMARK_SCALE.horizontal * MARK_SIZE;
-    const gap = LOCKUP_GAP * MARK_SIZE;
-    const wordW = WORDMARK_ASPECT * fontSize * SLACK;
-    artW = MARK_SIZE + gap + wordW;
-    artH = MARK_SIZE;
-    // Baseline placed so the CAPS centre on the mark, not the em box.
-    const baseline = pad + MARK_SIZE / 2 + (CAP_HEIGHT * fontSize) / 2;
+    vb = { x: 0, y: 0, w: WORDMARK_W, h: WORDMARK_H };
     inner = [
-      `  <path d="${MARK_PATH}" fill="${fg}" transform="translate(${pad} ${pad})"/>`,
-      wordmarkSVG({ x: pad + MARK_SIZE + gap, y: baseline, fontSize, fill: fg }),
+      `  <g fill="${fg}">`,
+      ...SURGE_D.map((d) => `    <path d="${d}"/>`),
+      `  </g>`,
+      `  <g fill="${accent}">`,
+      ...LABS_D.map((d) => `    <path d="${d}"/>`),
+      `  </g>`,
     ].join("\n");
   } else {
-    const fontSize = WORDMARK_SCALE.stacked * MARK_SIZE;
-    const gap = STACK_GAP * MARK_SIZE;
-    const wordW = WORDMARK_ASPECT * fontSize * SLACK;
-    const capH = CAP_HEIGHT * fontSize;
-    artW = Math.max(MARK_SIZE, wordW);
-    artH = MARK_SIZE + gap + capH;
+    const [x, y, w, h] = STACK_VIEWBOX.split(" ").map(Number);
+    vb = { x, y, w, h };
     inner = [
-      `  <path d="${MARK_PATH}" fill="${fg}" transform="translate(${round(pad + (artW - MARK_SIZE) / 2)} ${pad})"/>`,
-      wordmarkSVG({
-        x: pad + artW / 2,
-        y: pad + MARK_SIZE + gap + capH,
-        fontSize,
-        anchor: "middle",
-        fill: fg,
-      }),
+      `  <g fill="${fg}">`,
+      ...SURGE_D.map((d) => `    <path d="${d}"/>`),
+      `  </g>`,
+      `  <g fill="${accent}" transform="translate(${round(LABS_DX)} ${STACK_LEADING})">`,
+      ...LABS_D.map((d) => `    <path d="${d}"/>`),
+      `  </g>`,
     ].join("\n");
   }
 
-  const w = round(artW + pad * 2);
-  const h = round(artH + pad * 2);
-
+  // Clear space is a fraction of the artwork's HEIGHT on every side, so a
+  // wide lockup and a tall one get the same optical margin.
+  const pad = round(vb.h * CLEAR_SPACE);
+  const w = round(vb.w + pad * 2);
+  const h = round(vb.h + pad * 2);
   const note = comment(`Generated by scripts/generate-brand-assets.mjs from lib/brand/mark.ts.
        Do not edit: re-run \`npm run gen:brand\`.
-       The ${round(pad)}-unit margin IS the clear space rule, one bar on every
-       side. Place this file as-is and the rule is already honoured.
-       ${variant === "mark" ? "" : "The wordmark is live text, not outlines. See README.md."}`);
+       Artwork is the supplied logo, unaltered. Only the fills are set here.
+       The ${pad}-unit margin IS the clear space rule, a quarter of the
+       artwork's height on every side. Place this file as-is and the rule is
+       already honoured.`);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="${round(vb.x - pad)} ${round(vb.y - pad)} ${w} ${h}" role="img" aria-label="${label}">
   <title>${label}</title>
   ${note}
-  <rect width="${w}" height="${h}" fill="${bg}"/>
+  <rect x="${round(vb.x - pad)}" y="${round(vb.y - pad)}" width="${w}" height="${h}" fill="${bg}"/>
 ${inner}
 </svg>
 `;
@@ -203,29 +166,52 @@ ${inner}
 
 /* ── Icons ──────────────────────────────────────────────────────────────── */
 
-/** The plate icon: a solid accent fill with the S knocked out of it. */
-function plateIcon(size, scale = ICON_SCALE) {
-  const cov = coverage(fit(MARK_POINTS, MARK_SIZE, size, scale), size, 8);
-  return compose(cov, size, rgb(PLATE_COLOR.fill), rgb(PLATE_COLOR.knockout));
+/**
+ * The app icon: a solid accent plate with the S knocked out of it.
+ *
+ * The mark is 1.36:1, so it is fitted by WIDTH inside the square tile and
+ * centred vertically. Fitting by height would run it off both sides.
+ */
+function iconGeometry(scale = ICON_SCALE) {
+  const w = 64 * scale;
+  const h = w / MARK_ASPECT;
+  const k = w / MARK_W;
+  return { w, h, k, dx: (64 - w) / 2, dy: (64 - h) / 2 };
 }
 
-function iconSVG() {
-  const inset = round((MARK_SIZE * (1 - ICON_SCALE)) / 2);
-  const s = round(MARK_SIZE * ICON_SCALE);
+function iconSVG(scale = ICON_SCALE) {
+  const g = iconGeometry(scale);
   const note = comment(`Generated by scripts/generate-brand-assets.mjs. Do not edit.
        The tab icon is the mark KNOCKED OUT of the accent plate, not the bare
-       mark: at 16px a solid fill with a hole in it survives where a figure
-       made of hairlines does not, and a knockout is what this would be on a
-       press anyway. The accent fill over its knockout, ${PLATE_COLOR.fill} under
-       ${PLATE_COLOR.knockout}, at 4.5:1.`);
+       mark: at 16px a solid fill with a hole in it survives where an outline
+       does not, and a knockout is what this would be on a press anyway.
+       ${PLATE_COLOR.fill} under ${PLATE_COLOR.knockout}, at 8.22:1.`);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${MARK_SIZE}" height="${MARK_SIZE}" viewBox="0 0 ${MARK_SIZE} ${MARK_SIZE}" role="img" aria-label="Surge Labs">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Surge Labs">
   <title>Surge Labs</title>
   ${note}
-  <rect width="${MARK_SIZE}" height="${MARK_SIZE}" fill="${PLATE_COLOR.fill}"/>
-  <path d="${MARK_PATH}" fill="${PLATE_COLOR.knockout}" transform="translate(${inset} ${inset}) scale(${round(s / MARK_SIZE)})"/>
+  <rect width="64" height="64" fill="${PLATE_COLOR.fill}"/>
+  <g transform="translate(${round(g.dx)} ${round(g.dy)}) scale(${round(g.k)}) translate(${-MARK_X} ${-MARK_Y})">
+    <path d="${MARK_D}" fill="${PLATE_COLOR.knockout}"/>
+  </g>
 </svg>
 `;
+}
+
+/**
+ * Raster icons, rendered by flattening the mark's curves to a polygon and
+ * sampling it — see scripts/lib/raster.mjs. The S is a single closed contour
+ * with no counter, which is the one case where a single-ring rasteriser is
+ * enough and adding an image dependency would not be.
+ */
+function plateIcon(size, scale = ICON_SCALE) {
+  const g = iconGeometry(scale);
+  const poly = flattenPath(MARK_D).map(([x, y]) => [
+    (x - MARK_X) * g.k * (size / 64) + g.dx * (size / 64),
+    (y - MARK_Y) * g.k * (size / 64) + g.dy * (size / 64),
+  ]);
+  const cov = coverage(poly, size, 8);
+  return compose(cov, size, rgb(PLATE_COLOR.fill), rgb(PLATE_COLOR.knockout));
 }
 
 /* ── Write ──────────────────────────────────────────────────────────────── */
