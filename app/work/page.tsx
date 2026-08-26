@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { getCity, getService, site, work } from "@/content";
+import { imageSrc, workStills } from "@/content/media";
 import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
 import { breadcrumbs, pageGraph, webPage } from "@/lib/seo/schema";
 
@@ -41,16 +43,19 @@ export default function WorkPage() {
           <Eyebrow spec={site.serviceArea}>Recent work</Eyebrow>
           <h1 className="mt-10 max-w-[20ch] font-display text-3xl font-extrabold text-fg">{seo.h1}</h1>
           <p className="mt-10 max-w-[60ch] text-md text-fg-muted">
-            Job tickets rather than a gallery. What came in, what went out, what it was printed on
-            and how long it took — the things you actually need to know before phoning a shop.
+            Every job below was made in our building on Skymark Ave. Each one says what was
+            ordered, what it was printed or stitched on, and how long it took. We do not put a
+            client&rsquo;s name on a page without asking them, so each entry gives the trade and
+            the town instead.
           </p>
         </SectionFrame>
 
-        {/* One sheet per job, alternating beds so the page reads as a stack of
-            tickets rather than a grid of cards. */}
+        {/* One sheet per job, alternating beds so the page reads as a run of
+            sheets coming off the press rather than a grid of cards. */}
         {work.map((item, index) => {
           const city = getCity(item.city);
           const surface = index % 2 === 0 ? "stock" : "ink";
+          const still = workStills[item.slug];
 
           return (
             <SectionFrame
@@ -60,6 +65,18 @@ export default function WorkPage() {
               padding="md"
               ticket={{ number: item.number, label: item.title.toUpperCase().slice(0, 22), spec: city?.name }}
             >
+              {still ? (
+                <div className="relative mb-14 aspect-[3/2] w-full overflow-hidden border-[length:var(--hairline)] border-rule bg-surface-sunken sm:aspect-[21/9]">
+                  <Image
+                    src={imageSrc(still)}
+                    alt={still.alt}
+                    fill
+                    sizes="(max-width: 1440px) 100vw, 1440px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : null}
+
               <div className="grid gap-x-gutter gap-y-12 lg:grid-cols-12">
                 <div className="lg:col-span-7">
                   <p className={`${SPEC} text-fg-faint`}>
@@ -132,10 +149,11 @@ export default function WorkPage() {
             Start a job
           </Eyebrow>
           <h2 className="mt-8 max-w-[20ch] font-display text-2xl font-extrabold text-fg">
-            Yours would get its own ticket.
+            Yours would be next on the list.
           </h2>
           <p className="mt-8 max-w-[58ch] text-md text-fg-muted">
-            Tell us what you need and you get a written quote back within one business day.
+            Tell us what you need — a photo of the old sign is enough to start — and you get a
+            price in writing back within one business day.
           </p>
           <div className="mt-12 flex flex-wrap gap-6">
             <Button href="/quote" size="lg">

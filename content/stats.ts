@@ -20,6 +20,10 @@ export type Stat = {
  *     them is both dishonest and, for review counts specifically, a
  *     misrepresentation Google can penalise.
  *
+ *     Keep the LABELS in plain words. "Services under one roof" was the old
+ *     first line and it told a reader nothing they did not already suspect;
+ *     "Things we make here" says the same thing in words people use.
+ *
  *     To add a real one, add an entry with a `basis` you would be comfortable
  *     being asked to prove. Good candidates once you have the records:
  *
@@ -31,24 +35,24 @@ export type Stat = {
  */
 export const stats: readonly Stat[] = [
   {
-    value: 3,
-    label: "Services under one roof",
-    basis: "Web, print and apparel — all produced in-house",
+    value: 5,
+    label: "Things we make here",
+    basis: "Websites, print, signs, shirts and design — same building, same people",
   },
   {
     value: 1,
-    label: "Invoice, one team",
-    basis: "No subcontracting, no coordination on your side",
+    label: "Bill, however much you order",
+    basis: "Nothing is sent out to another shop, so nothing arrives on a separate invoice",
   },
   {
     value: 24,
     suffix: "h",
-    label: "To a written quote",
-    basis: "Weekdays, on anything we can spec from a brief",
+    label: "To get a price in writing",
+    basis: "Weekdays, on anything we can price from your description",
   },
   {
     value: 0,
-    label: "Minimum on DTF apparel",
-    basis: "One shirt is a real order",
+    label: "Minimum on printed shirts",
+    basis: "One shirt is a real order. Stitched shirts have no minimum either",
   },
 ];

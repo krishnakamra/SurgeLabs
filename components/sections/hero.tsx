@@ -4,12 +4,19 @@ import { Button, CropMarks, Eyebrow } from "@/components/ui";
 import { site } from "@/content";
 import { getPageSeo } from "@/lib/seo/page-seo";
 
+/**
+ * The strip under the fold. Spec codes on their own read as decoration to
+ * anyone who does not already work in print, so each one now says what it
+ * means — the strip still scans like a press control bar, and it also tells
+ * a first-time visitor five true things about the shop.
+ */
 const SPEC_STRIP = [
   "MISSISSAUGA, ON",
-  "EST. IN-HOUSE",
-  "4C PROCESS",
-  "DTF + EMBROIDERY",
-  "NEXT-DAY RUSH",
+  "MADE IN OUR OWN BUILDING",
+  "FULL-COLOUR PRINTING",
+  "SHIRTS PRINTED OR STITCHED",
+  "SAME-DAY RUSH ON STOCK ITEMS",
+  "ONE BILL FOR ALL OF IT",
 ];
 
 /**
@@ -132,18 +139,19 @@ className="absolute inset-0 -z-10 object-cover"
         </RegistrationReveal>
 
         <p className="mt-10 max-w-[54ch] text-md text-fg-muted">
-          Web, SEO, print, signage and custom apparel from one Mississauga shop. One team. One
-          invoice. One brand that actually matches everywhere.
+          We design it, build the website, print the cards and the signs, and stitch the shirts —
+          all in one building in Mississauga. One team, one bill, and the same colours on every
+          one of them.
         </p>
 
         <div className="mt-14 flex flex-wrap items-center gap-6">
           <MagneticCTA>
-            <Button href="/packages" size="lg">
-              See the packages
+            <Button href="/quote" size="lg">
+              Get a price in 24 hours
             </Button>
           </MagneticCTA>
-          <Button href="/quote" size="lg" variant="outline">
-            Get a quote in 24hrs
+          <Button href="/packages" size="lg" variant="outline">
+            See what things cost
           </Button>
         </div>
       </div>

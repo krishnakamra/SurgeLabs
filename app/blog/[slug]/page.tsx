@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -12,6 +13,7 @@ import { CallToAction, SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { site } from "@/content";
+import { categoryStills, imageSrc } from "@/content/media";
 import { categories, getPost, posts, relatedPosts } from "@/content/posts";
 import { extractHeadings } from "@/lib/blog/headings";
 import { buildMetadata } from "@/lib/seo/page-seo";
@@ -126,6 +128,24 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           <div className="mt-8">
             <Byline post={post} />
           </div>
+
+          {/* One header image per category rather than per post. A picture of
+              a guillotine says "this is about print" faster than a heading
+              does, and eight bespoke ones would be eight more things to keep
+              true. `priority` because on an article this is the LCP element. */}
+          {categoryStills[post.category] ? (
+            <div className="relative mt-14 aspect-[16/9] w-full overflow-hidden border-[length:var(--hairline)] border-rule bg-surface-sunken">
+              <Image
+                src={imageSrc(categoryStills[post.category]!)}
+                alt={categoryStills[post.category]!.alt}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 1440px) 100vw, 1440px"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
         </SectionFrame>
 
         <SectionFrame surface="stock" padding="lg" id="article" ticket={{ number: "02", label: "ARTICLE", spec: `${post.wordCount} WORDS` }}>

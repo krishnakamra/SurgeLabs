@@ -94,7 +94,7 @@ export default async function CategoryPage({ params }: { params: Promise<Params>
         <SectionFrame surface="stock" padding="lg" id="articles" ticket={{ number: "02", label: "ARTICLES", spec: "NEWEST FIRST" }}>
           <div className="grid gap-x-gutter gap-y-12 lg:grid-cols-2">
             {items.map((post, index) => (
-              <PostCard key={post.slug} post={post} number={String(index + 1).padStart(2, "0")} />
+              <PostCard key={post.slug} post={post} number={String(index + 1).padStart(2, "0")} image />
             ))}
           </div>
         </SectionFrame>

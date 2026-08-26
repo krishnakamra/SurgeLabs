@@ -24,8 +24,13 @@ export function Industries() {
       </Eyebrow>
 
       <h2 className="mt-6 max-w-[24ch] font-display text-2xl font-extrabold text-fg">
-        We already know what your industry orders.
+        Find your trade. We already know what you order.
       </h2>
+
+      <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
+        These are the actual things people in each trade ask us for, not a guess. If yours is on
+        the list, you can skip explaining the basics on the phone.
+      </p>
 
       <ul className="mt-16 grid border-t-[length:var(--hairline)] border-rule md:grid-cols-2 md:gap-x-gutter">
         {industries.map((industry) => (
@@ -41,7 +46,11 @@ export function Industries() {
               />
               <h3 className="font-display text-lg font-bold text-fg">{industry.name}</h3>
             </div>
-            <p className="mt-3 pl-8 font-utility text-2xs uppercase tracking-utility text-fg-faint transition-colors duration-[var(--dur-snap)] group-hover:text-fg-muted group-focus-visible:text-fg-muted">
+            {/* Sentence case at body size. This line used to be set in
+                uppercase mono at 2xs, which is a spec label — the right
+                treatment for "16PT C2S" and the wrong one for a sentence a
+                customer is meant to read and recognise themselves in. */}
+            <p className="mt-3 pl-8 text-sm text-fg-muted transition-colors duration-[var(--dur-snap)] group-hover:text-fg group-focus-visible:text-fg">
               {industry.orders}
             </p>
           </li>

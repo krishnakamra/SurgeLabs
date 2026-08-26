@@ -353,6 +353,61 @@ export const pageStills = {
 } as const;
 
 /**
+ * One photograph per job on /work and the homepage recap.
+ *
+ * Keyed by the slug in content/work.ts. Every job in that file is described
+ * by sector and city rather than by a client name, and these follow the same
+ * rule: no invented company appears in any of them, because none of them
+ * carries any lettering at all. They show the WORK — vinyl going onto a door,
+ * foil catching the light on a menu card — not a brand that does not exist.
+ *
+ * Replace them with photographs of real jobs as permission to publish those
+ * arrives. That is the point of the note at the top of content/work.ts.
+ */
+export const workStills: Record<string, ImageAsset> = {
+  "hvac-fleet-and-site": shot("work-hvac", "ad3459a1-1b42-4437-b4db-a1307bf5b5e6", "035748", "3:2",
+    "Close-up of two hands applying a cut vinyl graphic to the door of a plain white service van, a felt-edged squeegee pressing the film down and clear transfer tape lifting away from an abstract dark grey geometric shape. Bright overcast daylight, shallow depth of field. No text, no words, no logos, no letters anywhere in the graphic or on the van. Editorial documentary photography, photorealistic",
+    "Hands squeegeeing a cut vinyl graphic onto a white van door, transfer tape peeling back from the film."),
+  "restaurant-foil-menus": shot("work-menus", "40a3f023-ea0b-4939-8004-2eee18803fd5", "035748", "3:2",
+    "Close-up of a stack of dark matte menu cards on a walnut restaurant table, the top card showing a deep gold foil impression of an abstract geometric border catching low warm light, a folded linen napkin and a water glass softly out of focus behind. No text, no words, no logos, no lettering anywhere. Editorial food-and-beverage photography, photorealistic",
+    "A stack of dark matte menu cards on a restaurant table, the top one catching light on a gold foil border."),
+  "trades-crew-apparel": shot("work-crew", "de8e85fb-bf60-4262-a365-f33eb5e01e85", "035748", "3:2",
+    "A neatly folded stack of hi-vis yellow and black work jackets and polo shirts on a matte charcoal bench, each carrying a plain embroidered geometric shape on the left chest, a pair of work gloves beside them. Hard directional light from one side, crisp shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Folded hi-vis jackets and work polos with embroidered left chests, stacked on a bench beside a pair of gloves."),
+  "clinic-signage-programme": shot("work-wayfinding", "a85c9d30-0c01-43db-ad93-43f7b4f263b8", "035748", "3:2",
+    "A run of brushed aluminium and white acrylic wayfinding plates laid out in a row on a matte charcoal surface, each carrying a plain directional arrow and nothing else, small chrome standoff fixings arranged beside them. Hard directional light, crisp geometric shadows, shot straight top-down. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A row of brushed aluminium and acrylic wayfinding plates with directional arrows, laid out beside their standoff fixings."),
+  "law-firm-stationery": shot("work-stationery", "2e507fee-f883-4bdd-b7ae-d89a946c079c", "035748", "3:2",
+    "Flat lay of a stationery set on a dark oak desk: heavy uncoated letterhead sheets, matching envelopes, and a stack of thick uncoated business cards showing a deep blind deboss of an abstract geometric mark, a fountain pen laid diagonally across the corner. Warm low directional light, crisp shadows, shot straight top-down. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A stationery set on a dark oak desk: uncoated letterhead, envelopes and blind-debossed cards with a fountain pen across them."),
+  "retail-shopify-and-packaging": shot("work-retail", "4ffbde93-6973-4bd2-b772-21facf539705", "035748", "3:2",
+    "Flat lay on a pale plaster surface: a kraft retail box closed with a plain round sticker seal, folded tissue paper, a row of blank card hang tags on cotton string, a canvas tote bag, and a phone showing a blank dark product page made only of rectangular placeholder blocks. Soft directional light, shot straight top-down. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "Retail packaging photographed top-down: a sealed kraft box, tissue, hang tags on string, a canvas tote and a phone showing a product page."),
+  "trade-show-package": shot("work-booth", "f6ceb824-8798-446d-affc-524fd94b4cb9", "035748", "3:2",
+    "A compact exhibition stand set up in an empty trade show hall: a fabric backdrop wall in flat dark grey, a fitted table cover, and two furled feather flags on poles, every surface completely blank. Polished concrete floor, even overhead light. No text, no words, no logos, no graphics or lettering anywhere. Editorial architectural photography, photorealistic",
+    "A compact trade show stand in an empty hall: a fabric backdrop, a fitted table cover and two feather flags."),
+  "cafe-opening-kit": shot("work-cafe", "435b3c6c-8ca4-4845-a485-36d3f7b04cfd", "035748", "3:2",
+    "Flat lay on a warm concrete counter: a stack of takeaway coffee cups with plain kraft sleeves, a folded A-frame sign insert, a stack of thick loyalty cards, a folded canvas apron, and a rolled sheet of frosted window vinyl. Morning directional light, crisp shadows, shot straight top-down. No text, no words, no logos, no lettering on any item. Editorial product photography, photorealistic",
+    "A café opening kit photographed top-down: takeaway cups with kraft sleeves, an A-frame insert, loyalty cards, an apron and window vinyl."),
+};
+
+/** One header per blog category, keyed by the slug in content/posts.ts. */
+export const categoryStills: Record<string, ImageAsset> = {
+  print: shot("cat-print", "bbb5efb1-58c8-473d-92dc-7e3fcec6fdac", "035748", "16:9",
+    "Close-up of a guillotine paper cutter blade coming down on a stack of freshly printed sheets on a matte steel bed, a clean paper edge and fine dust catching hard directional light. Matte charcoal and brushed steel. No text, no words, no logos, no lettering. Editorial industrial photography, photorealistic",
+    "A guillotine cutter blade coming down on a stack of freshly printed sheets."),
+  signage: shot("cat-signage", "9a94e94f-6986-4c6b-a397-d659e2e137aa", "035748", "16:9",
+    "A wide-format roll printer mid-print, a length of white vinyl feeding out over the take-up roller carrying a printed abstract grey gradient field, printheads softly out of focus behind. Matte charcoal machinery, hard directional light, crisp shadows. No text, no words, no logos, no lettering. Editorial industrial photography, photorealistic",
+    "A wide-format roll printer mid-print, vinyl feeding out over the take-up roller."),
+  apparel: shot("cat-apparel", "53222ae9-1b61-4ff4-83d8-1938488ad47d", "035748", "16:9",
+    "A heat press closing onto a black t-shirt laid flat on the platen, a sheet of transfer film lifting at one corner to reveal an abstract geometric shape, faint steam and warm directional light. Matte charcoal workshop. No text, no words, no logos, no lettering. Editorial industrial photography, photorealistic",
+    "A heat press closing onto a black t-shirt, transfer film lifting at one corner."),
+  "web-seo": shot("cat-web", "ba76f872-0fab-43b1-bd22-f9391be55eb3", "035748", "16:9",
+    "A laptop and a phone on a matte charcoal desk photographed from a low three-quarter angle, both screens showing blank dark grey wireframe layouts made of rectangular placeholder blocks, a printed colour proof with a CMYK control bar and a printer's loupe beside them. Hard directional light from one side, crisp shadows. No text, no words, no logos, no lettering. Editorial product photography, photorealistic",
+    "A laptop and a phone showing blank page layouts, beside a printed colour proof and a loupe."),
+};
+
+/**
  * Where a component should point an <Image> right now.
  *
  * Once scripts/fetch-media.mjs has run, that is the self-hosted file under
@@ -376,4 +431,6 @@ export const allImages: ImageAsset[] = [
   ...Object.values(packageStills),
   ...Object.values(panelStills),
   ...Object.values(pageStills),
+  ...Object.values(workStills),
+  ...Object.values(categoryStills),
 ];
