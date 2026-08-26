@@ -5,6 +5,7 @@ import {
   Industries,
   PackagesTeaser,
   Proof,
+  RecentWork,
   Services,
   SiteFooter,
   Split,
@@ -38,6 +39,11 @@ export default function HomePage() {
         <Proof />
         <PackagesTeaser />
         <Industries />
+        {/* Testimonials is gated on real, attributed reviews and renders
+            nothing until content/testimonials.ts has them. RecentWork holds
+            the slot in the meantime — see the note in that component. Both
+            can run together once the reviews land. */}
+        <RecentWork />
         <Testimonials />
         <CallToAction />
       </main>

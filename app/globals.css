@@ -421,6 +421,14 @@
   }
 }
 
+/* The mobile menu covers the viewport, so the sheet behind it stops moving.
+   An attribute on the root rather than an inline style: Lenis writes inline
+   overflow on <html> when it stops, and two owners of one property is how
+   scroll gets stuck open. This is set and removed by SiteHeader. */
+html[data-nav-open] {
+  overflow: clip;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    FOIL
    A three-stop gradient — gold-lo, gold-hi, gold-lo — with the highlight

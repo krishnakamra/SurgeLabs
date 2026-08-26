@@ -49,6 +49,18 @@ export const pageKeywords: Record<string, PageKeywords> = {
     primary: "printing mississauga",
     secondary: ["business cards mississauga", "banner printing gta", "signage mississauga"],
   },
+  "/gold-foil-stationery": {
+    primary: "foil business cards mississauga",
+    secondary: ["gold foil printing gta", "letterpress mississauga", "foil stamping toronto"],
+  },
+  "/work": {
+    primary: "our work mississauga",
+    secondary: ["print portfolio gta", "signage projects mississauga", "branding case studies"],
+  },
+  "/about": {
+    primary: "about surge labs mississauga",
+    secondary: ["print shop mississauga", "in-house production gta", "skymark ave mississauga"],
+  },
   "/custom-apparel": {
     primary: "custom apparel mississauga",
     secondary: ["embroidery mississauga", "screen printing gta", "dtf printing mississauga"],

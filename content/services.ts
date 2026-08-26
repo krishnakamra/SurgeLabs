@@ -32,29 +32,32 @@ export type Service = {
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- * ⚠️  OWNER: VERIFY EVERY PRODUCTION SPEC ON THIS PAGE BEFORE LAUNCH
+ * ⚠️  OWNER: THESE SPECS ARE PUBLISHED CLAIMS. KEEP THEM TRUE.
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * The specificity here is deliberate — naming a 13oz scrim banner and a
- * 4mm coroplast sign is what lets these pages rank against shops that have
- * been in the GTA for twenty years. Generic copy will not.
+ * The specificity here is deliberate — naming a 13oz scrim banner and a 4mm
+ * coroplast sign is what lets these pages rank against shops that have been
+ * in the GTA for twenty years. Generic copy will not.
  *
- * But every one of those numbers is a claim about YOUR equipment and YOUR
- * process, and none of them were supplied. They are written to industry
- * standards a shop with this service list would normally run. Read them as
- * a checklist, not as copy:
+ * Every number below was reviewed and confirmed by the owner as matching the
+ * real equipment and process. That confirmation is what makes them safe to
+ * publish, and it is also a standing obligation: this file is the ONLY place
+ * they appear, and the FAQ schema pushes them to Google as answers. A machine
+ * that changes, a stock that gets discontinued or a turnaround that slips has
+ * to be corrected here, not softened elsewhere.
  *
+ * The rule that governs this file: anything you could not honour on a Tuesday
+ * afternoon in February does not belong in it.
+ *
+ * Covered by that confirmation:
  *   · stock weights and finishes         (16pt C2S, soft-touch, spot UV…)
  *   · maximum print widths               (54" roll)
  *   · turnaround days and rush cut-offs  (3–5 days, same-day before 11am)
  *   · minimums                           (24 pieces for screen printing)
  *   · stitch and thread-colour limits    (15 colours, 12,000 stitches)
  *   · accepted file formats and bleeds   (PDF/X, 300dpi, 0.125")
- *   · garment brands carried
  *
- * Anything you cannot honour on a Tuesday afternoon in February should be
- * corrected here, not softened elsewhere — this file is the only place these
- * numbers appear, and the FAQ schema publishes them to Google as answers.
+ * NOT yet covered — see the block above the gold-foil entry below.
  * ═══════════════════════════════════════════════════════════════════════════
  */
 export const services: readonly Service[] = [
@@ -484,6 +487,172 @@ export const services: readonly Service[] = [
         question: "Where are you located?",
         answer:
           "We are at 2800 Skymark Ave in Mississauga, and we deliver across the GTA. Pickup is available whenever it is faster than shipping.",
+      },
+    ],
+  },
+  /**
+   * ═════════════════════════════════════════════════════════════════════════
+   * ⚠️  OWNER: THE FOIL NUMBERS BELOW ARE THE ONE SET NOT YET CONFIRMED.
+   * ═════════════════════════════════════════════════════════════════════════
+   *
+   * Everything that overlaps the print service — 16pt C2S, 18pt uncoated,
+   * 32pt painted edge, 0.125" bleed, PDF/X artwork — is carried over from
+   * specs you have already reviewed, so those are safe.
+   *
+   * These are NOT, because foil has its own equipment and they were never
+   * supplied. They are written to what a shop offering hot-foil stationery
+   * would normally run. Read them as a checklist:
+   *
+   *   · the 250-piece minimum
+   *   · the one-time die charge and who keeps the die
+   *   · the 5×7" maximum stamp area
+   *   · the foil colours actually stocked
+   *   · the 5–7 day lead time and the 10-day letterpress figure
+   *
+   * Correct anything wrong here before this page is indexed — the FAQ schema
+   * publishes it to Google as an answer the business is standing behind.
+   * ═════════════════════════════════════════════════════════════════════════
+   */
+  {
+    slug: "gold-foil-stationery",
+    number: "04",
+    name: "Gold foil",
+    summary: "Hot-foil stamped cards, invitations and stationery, struck in-house.",
+    capabilities: [
+      "Hot foil stamping in gold, rose gold, silver and copper",
+      "Blind deboss and letterpress",
+      "Painted and foiled edges on 32pt stock",
+      "Business cards, invitations and menus",
+      "Certificates, folders and presentation covers",
+      "Die making and artwork preparation",
+    ],
+    spec: "Real metal leaf · 250 minimum · dies kept on file",
+
+    intro: [
+      "Foil is the reason most people find us. A hot-foil stamped card is the one piece of print that still gets handled — someone turns it over, tilts it to the light, and keeps it. That is not a design opinion, it is what the reorder numbers say.",
+      "This is stamping, not printing. A heated magnesium die presses a sheet of real metallic leaf into the stock under pressure, which is why the finish has depth you can feel with a thumbnail and why it cannot be reproduced on a digital press. Everything is struck at Skymark Ave, on the same floor as the business cards and the banners.",
+    ],
+    sections: [
+      {
+        heading: "What foil stamping actually is",
+        body: [
+          "A die is engraved with your artwork, mounted, and brought up to temperature. A roll of foil — a polyester carrier holding a micro-thin layer of metal and an adhesive — passes between the die and the sheet. The press closes, the heat releases the adhesive, and the pressure transfers the metal to the paper and nowhere else.",
+          "Two things follow from that. The first is that foil is opaque: unlike ink, it sits on top of the stock rather than soaking into it, so gold on a black card reads as gold rather than as a muddy yellow. The second is that the die leaves an impression. On a 32pt sheet you can feel the artwork from the back, and that impression is half of what people are responding to when they say a card feels expensive.",
+          "It also means foil has a fixed setup cost and a variable one. The die is made once. After that, every reorder of the same artwork is press time only, which is why the second run of a card costs meaningfully less than the first.",
+        ],
+      },
+      {
+        heading: "Stocks that take foil well",
+        body: [
+          "Foil needs a surface that will hold an impression. A 16pt C2S card takes a clean strike and is the most common choice for a straightforward foiled business card. An 18pt uncoated sheet takes a deeper impression and is what most people actually picture when they think of letterpress and foil work — the tooth of the paper is visible around the metal.",
+          "The 32pt painted-edge stock is two 16pt sheets bonded with a colour running through the middle, cut so that colour shows as a line around the whole card. Paired with a foil stamp on the face it is the heaviest thing we make, and it is the one that gets kept in a wallet rather than a drawer.",
+          "What does not take foil well is anything already coated in a heavy varnish or laminate. If a card is going to be soft-touch laminated and foiled, the foil goes on last, over the laminate — tell us at quote stage, because it changes the die and the order of operations.",
+        ],
+      },
+      {
+        heading: "Where the minimum comes from",
+        body: [
+          "Foil runs from 250 pieces. That is not a policy we picked; it is where the die and the make-ready stop dominating the cost. Below 250 you are paying mostly for setup, and we would rather tell you that than take the order.",
+          "If you need fewer than 250 — twenty invitations, a handful of certificates — the honest answer is usually digital print with a metallic toner, which we also run and which costs a fraction of a foil setup. It is not the same finish and we will not pretend it is, but for a short run it is the right call and we will say so on the phone.",
+          "Above 250 the per-piece cost falls quickly. A thousand foiled cards is not four times the price of two hundred and fifty, because the die is already made and the press is already set.",
+        ],
+      },
+      {
+        heading: "Artwork that stamps cleanly",
+        body: [
+          "Foil is a solid-or-nothing process. There is no such thing as a 40% tint of gold — the metal either transfers or it does not — so gradients, drop shadows and soft edges have to be redrawn as solid shapes before a die can be cut. We do that redraw as part of the job rather than sending your file back.",
+          "Fine detail is where foil jobs go wrong. Hairlines below about 0.5pt and type below roughly 6pt tend to fill in or break up, because the heated foil spreads very slightly under pressure. A Didone typeface with hairline serifs — the sort of thing that looks best in foil — is exactly the case that needs checking before the die is made, and we will proof it at size rather than guess.",
+          "Send vector artwork: PDF, AI or EPS with live vectors and fonts outlined. Everything else on this floor accepts 300dpi raster as a fallback; foil does not, because a die is cut from paths and a raster file has none.",
+        ],
+      },
+      {
+        heading: "Foil, deboss and letterpress together",
+        body: [
+          "The three processes use the same press and the same kind of die, which is why they are usually quoted together. A blind deboss is the die without the foil — the impression only, no colour, which reads as restraint rather than absence. Letterpress is the same idea with ink instead of metal, pressed into the sheet rather than laid onto it.",
+          "The combination people ask for most is a foiled logo with the rest of the card blind debossed or letterpressed in a single colour. Because it is one pass per element, each one adds press time, and a three-process card takes about twice as long on the floor as a straight foil. Worth knowing when you are working back from a launch date.",
+          "Edge painting is the fourth option and is done after trimming. It works on 32pt only, and it is the finish that makes a stack of cards look like a single object.",
+        ],
+      },
+    ],
+    catalogue: [
+      {
+        group: "Stationery",
+        items: [
+          { name: "Foiled business cards", detail: "16pt C2S, 18pt uncoated or 32pt painted edge" },
+          { name: "Letterhead and compliment slips", detail: "Foiled crest or wordmark, matched to the card" },
+          { name: "Invitations and save-the-dates", detail: "Single or double-sided, envelope printing available" },
+          { name: "Menus and table cards", detail: "Foiled headings on uncoated stock" },
+        ],
+      },
+      {
+        group: "Presentation",
+        items: [
+          { name: "Certificates and awards", detail: "Foiled seal or border, blind deboss available" },
+          { name: "Presentation folders", detail: "Foiled cover, printed interior" },
+          { name: "Packaging sleeves and belly bands", detail: "Short-run, foiled on uncoated board" },
+          { name: "Gift and loyalty cards", detail: "32pt with painted edges" },
+        ],
+      },
+      {
+        group: "Finishes",
+        items: [
+          { name: "Foil colours", detail: "Gold, rose gold, silver, copper, matte black, holographic" },
+          { name: "Blind deboss", detail: "Impression only, no foil or ink" },
+          { name: "Letterpress", detail: "One or two colours, pressed into uncoated stock" },
+          { name: "Painted edges", detail: "32pt only, colour matched to the artwork" },
+        ],
+      },
+    ],
+    specs: [
+      { label: "Process", value: "Hot foil stamping — heated die, real metallic leaf" },
+      { label: "Minimum", value: "250 pieces per design" },
+      { label: "Foil colours", value: "Gold, rose gold, silver, copper, matte black, holographic" },
+      { label: "Stocks", value: "16pt C2S, 18pt uncoated, 32pt painted edge" },
+      { label: "Maximum stamp area", value: "5 × 7 inches in a single strike" },
+      { label: "Dies", value: "One-time charge, kept on file for reorders" },
+      { label: "Artwork", value: 'Vector only — PDF, AI or EPS, fonts outlined, 0.125" bleed' },
+      { label: "Turnaround", value: "5–7 business days from proof approval; 10 with letterpress" },
+    ],
+    faqs: [
+      {
+        question: "What is the minimum order for foil business cards?",
+        answer:
+          "250 pieces per design. Below that the die and press setup dominate the cost and you are mostly paying for make-ready rather than cards. For runs under 250 we will usually suggest digital print with metallic toner instead — a different finish, honestly described, at a fraction of the setup.",
+      },
+      {
+        question: "How much does the die cost, and do I pay for it again?",
+        answer:
+          "The die is a one-time charge on the first run and it is quoted as its own line so you can see it. We keep it on file, so a reorder of the same artwork is press time and materials only. If your logo changes, the die changes.",
+      },
+      {
+        question: "Can you foil a gradient or a photograph?",
+        answer:
+          "No. Foil either transfers or it does not, so there is no tint or gradient — a 40% gold does not exist. Artwork with gradients, shadows or soft edges gets redrawn as solid shapes before the die is cut, and we do that redraw as part of the job rather than sending the file back to you.",
+      },
+      {
+        question: "What is the smallest text you can foil?",
+        answer:
+          "Around 6pt, and hairlines below about 0.5pt are the real limit. Heated foil spreads very slightly under pressure, so fine serifs can fill in. We proof fine artwork at actual size before cutting a die rather than finding out on the press.",
+      },
+      {
+        question: "Can I have foil and soft-touch lamination on the same card?",
+        answer:
+          "Yes, and the order matters — the foil goes on after the laminate, not before. Tell us at quote stage so the job is planned that way, because it affects the die and adds a pass.",
+      },
+      {
+        question: "What is the difference between foil, deboss and letterpress?",
+        answer:
+          "Same press, same kind of die. Foil transfers metallic leaf onto the sheet. A blind deboss is the impression with nothing in it. Letterpress presses ink into the sheet rather than laying it on top. They are frequently combined on one card, and each one is a separate pass, so a three-process card takes roughly twice as long on the floor.",
+      },
+      {
+        question: "How long does a foil job take?",
+        answer:
+          "Five to seven business days from proof approval, which includes making the die. Add about three days if the job also includes letterpress. Reorders from an existing die are faster because that step is already done.",
+      },
+      {
+        question: "Do you do painted edges?",
+        answer:
+          "On 32pt stock, yes. The card is two 16pt sheets bonded with a colour through the middle, and the edge is painted after trimming so the colour runs right around the card. Paired with a foil stamp it is the heaviest and most expensive thing we make, and the one people keep.",
       },
     ],
   },

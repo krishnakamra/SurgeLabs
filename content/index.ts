@@ -25,6 +25,7 @@ export {
   type ComparisonRow,
 } from "./packages";
 export { stats, type Stat } from "./stats";
+export { work, getWork, workForService, type WorkItem } from "./work";
 export { testimonials, type Testimonial } from "./testimonials";
 export { industries, type Industry } from "./industries";
 export { cities, getCity, type City } from "./cities";

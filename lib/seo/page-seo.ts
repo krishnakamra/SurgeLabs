@@ -54,6 +54,21 @@ export const pageSeo: Record<string, PageSeo> = {
     description: `Business cards, banners, lawn signs and vehicle lettering, printed in Mississauga. Same-day rush on stocked items. Call ${PHONE}.`,
     h1: "Commercial printing and signage in Mississauga",
   },
+  "/gold-foil-stationery": {
+    title: `Foil Business Cards in Mississauga${SUFFIX}`,
+    description: `Hot-foil stamped business cards, invitations and stationery in Mississauga. Real metal leaf, 250 minimum, dies kept on file. Call ${PHONE}.`,
+    h1: "Gold foil business cards in Mississauga",
+  },
+  "/work": {
+    title: `Our Work in Mississauga — Print & Web${SUFFIX}`,
+    description: `Recent web, print, signage and apparel work from our Mississauga shop. See what we make and what it cost to make it. Call ${PHONE}.`,
+    h1: "Our work, from the Mississauga floor",
+  },
+  "/about": {
+    title: `About Surge Labs, Mississauga${SUFFIX}`,
+    description: `One shop on Skymark Ave doing web, print, signage and apparel in-house. One team, one invoice, no subcontracting. Call ${PHONE}.`,
+    h1: "About Surge Labs, Mississauga",
+  },
   "/custom-apparel": {
     title: `Custom Apparel in Mississauga${SUFFIX}`,
     description: `Embroidery, DTF and screen printing in Mississauga. No minimum on DTF, 24-piece minimum on screen printing. Call ${PHONE} for a quote.`,

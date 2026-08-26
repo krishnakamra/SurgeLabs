@@ -5,5 +5,6 @@ export { Proof } from "./proof";
 export { PackagesTeaser } from "./packages-teaser";
 export { Industries } from "./industries";
 export { Testimonials } from "./testimonials";
+export { RecentWork } from "./recent-work";
 export { CallToAction, SiteFooter } from "./cta-footer";
 export { SiteHeader } from "./site-header";

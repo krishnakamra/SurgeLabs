@@ -3,6 +3,8 @@ import { Logo } from "@/components/brand";
 import { MagneticCTA } from "@/components/motion";
 import { Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
 import { getCity, liveCities, services, site } from "@/content";
+import { liveCategories } from "@/content/posts";
+import { navCta, primaryNav } from "@/lib/navigation";
 
 const LINK =
   "text-sm text-fg-muted underline decoration-1 underline-offset-4 decoration-transparent transition-colors hover:text-fg hover:decoration-mark";
@@ -65,7 +67,7 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-page px-gutter py-20">
         <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
           {/* NAP */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             {/* Second of the two homepage links — the masthead carries the
                 other. Both are here on purpose: without one the front page is
                 an orphan, reachable from nowhere while every route below it
@@ -122,8 +124,9 @@ export function SiteFooter() {
             </dl>
           </div>
 
-          {/* Services */}
-          <nav aria-label="Services" className="lg:col-span-3">
+          {/* Services. Generated from the content layer, so a fifth service
+              appears here the moment it exists. */}
+          <nav aria-label="Services" className="lg:col-span-2">
             <h2 className={HEADING}>Services</h2>
             <ul className="mt-6 space-y-3">
               {services.map((service) => (
@@ -133,14 +136,53 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </nav>
+
+          {/* Company. Everything in the masthead that is not a service, read
+              from the same nav model — see lib/navigation.ts. The route audit
+              compares this against the generated route list, so a page that
+              nothing links to fails the build. */}
+          <nav aria-label="Company" className="lg:col-span-2">
+            <h2 className={HEADING}>Company</h2>
+            <ul className="mt-6 space-y-3">
+              {primaryNav
+                .filter((item) => !item.children)
+                .map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className={LINK}>
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               <li>
-                <Link href="/packages" className={LINK}>
-                  Packages and pricing
+                <Link href={navCta.href} className={LINK}>
+                  {navCta.label}
                 </Link>
               </li>
               <li>
-                <Link href="/quote" className={LINK}>
-                  Get a quote
+                <Link href="/service-areas" className={LINK}>
+                  Service areas
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* Guides. The blog's category routes are generated, so without a
+              link here they would exist in the sitemap and nowhere else. */}
+          <nav aria-label="Guides" className="lg:col-span-2">
+            <h2 className={HEADING}>Guides</h2>
+            <ul className="mt-6 space-y-3">
+              {liveCategories().map((category) => (
+                <li key={category.slug}>
+                  <Link href={`/blog/category/${category.slug}`} className={LINK}>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/blog" className={LINK}>
+                  All guides
                 </Link>
               </li>
             </ul>
@@ -149,9 +191,9 @@ export function SiteFooter() {
           {/* Cities. Only those with live pages are linked — the rest of the
               delivery area is listed on /service-areas, which says plainly
               that we deliver there and have not written a page yet. */}
-          <nav aria-label="Service area" className="lg:col-span-5">
+          <nav aria-label="Service area" className="lg:col-span-3">
             <h2 className={HEADING}>Serving {site.serviceArea}</h2>
-            <ul className="mt-6 grid gap-x-gutter gap-y-3 sm:grid-cols-2">
+            <ul className="mt-6 grid gap-x-gutter gap-y-3 sm:grid-cols-2 lg:grid-cols-1">
               {liveCities().map((slug) => {
                 const city = getCity(slug);
                 if (!city) return null;
