@@ -22,7 +22,7 @@ export function Split() {
     <SectionFrame
       surface="stock"
       id="the-split"
-      padding="lg"
+      padding="md"
       ticket={{ number: "02", label: "THE SPLIT", spec: "REGISTRATION" }}
     >
       <Eyebrow number="02" spec="SCROLL TO REGISTER">
@@ -30,15 +30,18 @@ export function Split() {
       </Eyebrow>
 
       <h2 className="mt-6 max-w-[22ch] font-display text-2xl font-extrabold text-fg">
-        Five vendors is five chances to be off brand.
+        <span className="text-accent-text">Five vendors</span> is five chances to be off brand.
       </h2>
-      <p className="mt-6 max-w-[58ch] text-fg-muted">
-        Every supplier gets your logo slightly wrong. Not enough to complain about — enough that
-        your sign, your shirts and your website are three different companies. Keep scrolling and
-        watch it come into register.
+      <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
+        Your sign guy, your printer, your shirt guy, your web guy and whoever does your SEO. Each
+        one gets your logo a little bit wrong. Not enough that you would phone anyone about it —
+        enough that your van, your shirts and your website look like three different companies.
+      </p>
+      <p className="mt-5 max-w-[58ch] text-md text-fg-muted">
+        We do all five here. Keep scrolling and watch it line up.
       </p>
 
-      <div className="mt-20">
+      <div className="mt-14">
         <SplitPress
           beforeLabel="What most businesses juggle"
           beforeItems={BEFORE}

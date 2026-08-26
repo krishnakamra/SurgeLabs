@@ -31,6 +31,7 @@ const SERVICE_TO_NEED: Record<string, string> = {
   "trade-show-displays": "signage",
   "custom-apparel": "apparel",
   embroidery: "apparel",
+  "graphic-design": "design",
 };
 
 function quoteGraph() {

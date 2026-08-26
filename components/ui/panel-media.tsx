@@ -1,4 +1,5 @@
-import { MEDIA_PRESENT, type VideoAsset } from "@/content/media";
+import Image from "next/image";
+import { imageSrc, MEDIA_PRESENT, type ImageAsset, type VideoAsset } from "@/content/media";
 import { cn } from "@/lib/cn";
 import { HalftoneField } from "./halftone-field";
 import { PressLoop } from "./press-loop";
@@ -8,6 +9,12 @@ import type { Plate } from "@/lib/halftone";
 export type PanelMediaProps = {
   /** Looping footage. Until the files are fetched, the plate below stands in. */
   asset?: VideoAsset;
+  /**
+   * The production still for this panel. Shown whenever the footage is not
+   * available locally, which is most of the time — the loops are heavy and
+   * the still is the thing someone actually needs to see.
+   */
+  still?: ImageAsset;
   plate?: Plate;
   numeral: string;
   className?: string;
@@ -27,7 +34,7 @@ export type PanelMediaProps = {
  * descriptive text for each clip lives on its entry in content/media.ts, for
  * the places where the footage is the content rather than the backdrop.
  */
-export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMediaProps) {
+export function PanelMedia({ asset, still, plate = "m", numeral, className }: PanelMediaProps) {
   // MEDIA_PRESENT is false until scripts/fetch-media.mjs has run, so an
   // asset can be wired up here long before its bytes exist.
   const showLoop = asset && MEDIA_PRESENT;
@@ -40,6 +47,14 @@ export function PanelMedia({ asset, plate = "m", numeral, className }: PanelMedi
     >
       {showLoop ? (
         <PressLoop asset={asset} className="absolute inset-0" sizes="(max-width: 1024px) 100vw, 45vw" />
+      ) : still ? (
+        <Image
+          src={imageSrc(still)}
+          alt={still.alt}
+          fill
+          sizes="(max-width: 1024px) 100vw, 45vw"
+          className="object-cover"
+        />
       ) : (
         <>
           <HalftoneField plate={plate} pitch={8} dot={2} opacity={0.42} seed={17} fade="radial" />

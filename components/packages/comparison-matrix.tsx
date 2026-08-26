@@ -1,4 +1,4 @@
-import { comparisonRows, formatPrice, packages } from "@/content";
+import { comparisonRows, packages, priceLabel } from "@/content";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
@@ -10,7 +10,7 @@ const SPEC = "font-utility text-2xs uppercase tracking-utility";
 export function ComparisonMatrix() {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[52rem] border-collapse text-left">
+      <table className="w-full min-w-[60rem] border-collapse text-left">
         <caption className="sr-only">Package comparison</caption>
         <thead>
           <tr>
@@ -20,8 +20,8 @@ export function ComparisonMatrix() {
             {packages.map((pkg) => (
               <th key={pkg.slug} scope="col" className="pb-5 pr-6 align-bottom">
                 <span className="block font-display text-lg font-bold text-fg">{pkg.name}</span>
-                <span className={`${SPEC} mt-2 block tabular-nums text-accent-text`}>
-                  {formatPrice(pkg.price)}
+                <span className="mt-2 block font-numeral text-md leading-none font-black tabular-nums text-accent-text">
+                  {priceLabel(pkg)}
                 </span>
               </th>
             ))}

@@ -12,7 +12,7 @@ import {
   quoteBranches,
   type QuoteField,
 } from "@/content/quote-form";
-import { formatPrice, packages, site } from "@/content";
+import { packages, priceLabel, site } from "@/content";
 import { cn } from "@/lib/cn";
 import type { QuoteAnswers, QuoteContact } from "@/lib/quote/types";
 
@@ -180,7 +180,7 @@ export function QuoteForm({
                 <div className="mt-10 border-l-2 border-accent bg-surface-raised p-6">
                   <p className={cn(SPEC, "text-fg-faint")}>From the packages page</p>
                   <p className="mt-3 font-display text-lg font-bold text-fg">
-                    {chosenPackage.name} — {formatPrice(chosenPackage.price)}
+                    {chosenPackage.name} — {priceLabel(chosenPackage)}
                   </p>
                   <p className="mt-3 text-sm text-fg-muted">
                     We have attached this package to your ticket. Add anything above that it does not

@@ -11,7 +11,14 @@ export type SplitPressProps = {
   beforeItems: readonly string[];
   afterLabel: string;
   afterItems: readonly string[];
-  /** Scroll distance the columns hold for while the plates come into register. */
+  /**
+   * Scroll distance the columns hold for while the plates come into register.
+   *
+   * This is dead scroll by design — the reader is paying attention to the
+   * plates, not travelling. 90vh was too much of it: five staggered rows
+   * finish resolving well before the hold releases, so the last third was
+   * a locked screen with nothing left happening on it.
+   */
   hold?: string;
   className?: string;
 };
@@ -35,7 +42,7 @@ export function SplitPress({
   beforeItems,
   afterLabel,
   afterItems,
-  hold = "90vh",
+  hold = "55vh",
   className,
 }: SplitPressProps) {
   const root = useRef<HTMLDivElement | null>(null);

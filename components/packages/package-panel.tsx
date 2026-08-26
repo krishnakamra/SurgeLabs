@@ -1,17 +1,21 @@
+import Image from "next/image";
 import { Button } from "@/components/ui";
-import { formatPrice, type Package } from "@/content";
+import { imageSrc, packageStills } from "@/content/media";
+import { priceLabel, type Package } from "@/content";
 import { cn } from "@/lib/cn";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
 
 /** One package, set like a job ticket off the shop floor. */
 export function PackagePanel({ pkg, index, total }: { pkg: Package; index: number; total: number }) {
+  const still = packageStills[pkg.slug];
+
   return (
     <article
       id={pkg.slug}
       data-package-panel
       data-package-name={pkg.name}
-      data-package-price={formatPrice(pkg.price)}
+      data-package-price={priceLabel(pkg)}
       data-package-slug={pkg.slug}
       className={cn(
         // min-w-0: grid and flex children default to min-width:auto, which
@@ -33,19 +37,38 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
           <h2 className="mt-5 font-display text-xl leading-none font-extrabold text-fg sm:text-2xl">
             {pkg.name}
           </h2>
-          <p className="mt-4 max-w-[34ch] text-sm text-fg-muted">{pkg.tagline}</p>
+          <p className="mt-4 max-w-[38ch] text-md text-fg">{pkg.plain}</p>
+          <p className="mt-3 max-w-[38ch] text-sm text-fg-muted">{pkg.tagline}</p>
         </div>
 
         <div className="shrink-0 sm:text-right">
           {pkg.badge ? (
             <p className={cn(SPEC, "mb-4 text-accent-text")}>{pkg.badge}</p>
           ) : null}
-          <p className="font-numeral text-2xl leading-none font-extrabold tabular-nums text-fg sm:text-3xl">
-            {formatPrice(pkg.price)}
+          <p className="font-numeral text-2xl leading-none font-black tabular-nums text-fg sm:text-3xl">
+            {priceLabel(pkg)}
           </p>
-          <p className={cn(SPEC, "mt-3 text-fg-faint")}>CAD</p>
+          <p className={cn(SPEC, "mt-3 text-fg-faint")}>
+            {pkg.price === null ? "Per job, CAD" : "CAD, one-time"}
+          </p>
         </div>
       </header>
+
+      {/* What you are buying, as a photograph. The ticket used to open
+          straight onto a spec table, which is the right thing for someone
+          who already knows what a 16pt card is and the wrong thing for
+          everyone else. */}
+      {still ? (
+        <div className="relative aspect-[3/2] w-full overflow-hidden border-b-[length:var(--hairline)] border-rule bg-surface-sunken">
+          <Image
+            src={imageSrc(still)}
+            alt={still.alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 46rem"
+            className="object-cover"
+          />
+        </div>
+      ) : null}
 
       {/* Spec rows. */}
       <dl className="divide-y divide-rule border-b-[length:var(--hairline)] border-rule">
@@ -90,6 +113,24 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
             </section>
           ))}
         </div>
+
+        {pkg.notIncluded && pkg.notIncluded.length > 0 ? (
+          <section className="mt-10 border-t-[length:var(--hairline)] border-rule pt-6">
+            <h3 className={cn(SPEC, "text-fg-faint")}>Not included</h3>
+            <ul className="mt-4 space-y-2.5">
+              {pkg.notIncluded.map((item) => (
+                <li key={item} className="flex gap-3 text-sm text-fg-muted">
+                  {/* An em dash, not a cross: this is a list of things that
+                      are simply outside the scope, not a list of failures. */}
+                  <span aria-hidden="true" className="shrink-0 font-utility text-2xs leading-[1.9] text-rule-strong">
+                    &mdash;
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {pkg.addOns.length > 0 ? (
           <div className="mt-10 border-t-[length:var(--hairline)] border-rule pt-6">

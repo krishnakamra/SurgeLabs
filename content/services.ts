@@ -9,6 +9,16 @@ export type Service = {
   slug: string;
   /** Display numeral on the homepage panels. */
   number: string;
+  /**
+   * The process colour this service is signed with, on the homepage panel and
+   * on its own page. Three, because these are the only accents that clear 4.5:1
+   * as text on BOTH surfaces — the panels alternate ink and stock, so an
+   * accent that only works on one of them is a contrast failure on the other.
+   *
+   * Print & signage is lime at the owner's request. Neighbouring services
+   * never share a colour, so the run reads as separate plates.
+   */
+  accent: "cyan" | "magenta" | "lime";
   name: string;
   /** One line, plain. Used on the homepage. */
   summary: string;
@@ -65,6 +75,7 @@ export const services: readonly Service[] = [
     slug: "web-design-seo",
     number: "01",
     name: "Web & digital",
+    accent: "cyan",
     summary: "Sites that load fast, rank locally and are built to be edited.",
     capabilities: [
       "Custom web design and development",
@@ -197,6 +208,7 @@ export const services: readonly Service[] = [
     slug: "printing-signage",
     number: "02",
     name: "Print & signage",
+    accent: "lime",
     summary: "Everything from a business card to a vehicle wrap, printed here.",
     capabilities: [
       "Business cards, flyers, brochures, postcards",
@@ -272,6 +284,19 @@ export const services: readonly Service[] = [
           { name: "Letterhead", detail: "70lb bond, matched to your envelopes" },
           { name: "Envelopes", detail: "#10, window or plain" },
           { name: "Stickers and labels", detail: "Die-cut vinyl, roll or sheet" },
+        ],
+      },
+      {
+        group: "Finishing",
+        items: [
+          { name: "Spot UV", detail: "Gloss varnish on chosen areas, raised to the touch" },
+          { name: "Soft-touch lamination", detail: "Matte film with a suede feel, scuff resistant" },
+          { name: "Gloss and matte lamination", detail: "Sealed film, both sides" },
+          { name: "Foil stamping", detail: "Gold, silver, rose gold and copper leaf" },
+          { name: "Painted edges", detail: "Colour through the middle of 32pt stock" },
+          { name: "Die-cutting", detail: "Custom shapes, rounded corners, cut-outs" },
+          { name: "Scoring and folding", detail: "Clean folds on heavy stock, no cracking" },
+          { name: "Perforation and numbering", detail: "Tear-off stubs, sequential tickets" },
         ],
       },
       {
@@ -355,6 +380,7 @@ export const services: readonly Service[] = [
     slug: "custom-apparel",
     number: "03",
     name: "Custom apparel",
+    accent: "magenta",
     summary: "One shirt or five hundred, decorated on site.",
     capabilities: [
       "Embroidery and digitising",
@@ -517,6 +543,7 @@ export const services: readonly Service[] = [
     slug: "gold-foil-stationery",
     number: "04",
     name: "Gold foil",
+    accent: "cyan",
     summary: "Hot-foil stamped cards, invitations and stationery, struck in-house.",
     capabilities: [
       "Hot foil stamping in gold, rose gold, silver and copper",
@@ -653,6 +680,181 @@ export const services: readonly Service[] = [
         question: "Do you do painted edges?",
         answer:
           "On 32pt stock, yes. The card is two 16pt sheets bonded with a colour through the middle, and the edge is painted after trimming so the colour runs right around the card. Paired with a foil stamp it is the heaviest and most expensive thing we make, and the one people keep.",
+      },
+    ],
+  },
+  /**
+   * ═════════════════════════════════════════════════════════════════════════
+   * ⚠️  OWNER: THE DESIGN PRICES AND ROUND COUNTS ARE NOT YET CONFIRMED.
+   * ═════════════════════════════════════════════════════════════════════════
+   *
+   * Everything here that describes a FILE is factual and safe to publish —
+   * what a vector is, which formats you hand over, what a brand sheet
+   * contains, why CMYK and Pantone are listed separately.
+   *
+   * These are NOT. They describe how this shop chooses to work and how it
+   * chooses to charge, and nobody supplied them:
+   *
+   *   · $349 logo design, $749 brand kit, $75 redraw, $95 layout
+   *   · three directions on a logo, two rounds of changes after that
+   *   · 5–7 business days for a logo, 2–3 weeks for a brand kit
+   *
+   * The four prices must stay in step with content/packages.ts — they are
+   * quoted in both places. Correct them here and there before this page is
+   * indexed: the FAQ schema publishes them to Google as answers the business
+   * is standing behind.
+   * ═════════════════════════════════════════════════════════════════════════
+   */
+  {
+    slug: "graphic-design",
+    number: "05",
+    name: "Design & branding",
+    accent: "magenta",
+    summary: "Logos, brand kits and artwork built to print properly.",
+    capabilities: [
+      "Logo design",
+      "Old logos redrawn as proper vector files",
+      "Brand kits — colours, fonts and rules",
+      "Business card, flyer and menu layout",
+      "Sign, banner and vehicle artwork",
+      "Social media and presentation templates",
+    ],
+    spec: "Vector files you own · print and screen versions · artwork kept on file",
+
+    intro: [
+      "Most design jobs here start the same way. Someone needs a sign, a card or a shirt, and the only logo they have is a JPG saved off an old business card. It will not print at that size. We redraw it properly, once, and after that it works on anything — a card, a banner, the side of a van, a stitched polo.",
+      "We design in the same building we print in. That sounds like a small thing and it is not. A designer who never stands at a press hands you hairlines too thin to stitch and a blue that turns purple in CMYK. We find that out before we draw it, not after you have paid for two hundred signs.",
+    ],
+    sections: [
+      {
+        heading: "Why your logo has to be a vector file",
+        body: [
+          "There are two kinds of image file, and the difference decides what you can and cannot print.",
+          "A JPG or a PNG is a grid of coloured dots. Enlarge it and the dots get bigger — that is the blurry, stepped edge you see on a stretched logo. A vector file is not dots. It is a set of instructions: this line, this curve, this colour. A vector can be printed at any size and stays sharp, from 8mm on a pen to 8 feet on a banner.",
+          "This is why every printer, sign shop and embroidery house asks you for vector artwork before they will start. If a JPG is all you have, nobody can do the job properly, and the usual result is a slightly soft logo on a sign that cost two thousand dollars.",
+          "We redraw logos from a photo, a screenshot or an old card. It is a fixed job at a fixed price — $75 — and it usually takes one to two days. At the end you own a file that works everywhere, and you never have to have this conversation again.",
+        ],
+      },
+      {
+        heading: "Logo design, start to finish",
+        body: [
+          "It starts with a short conversation. What you do, who buys from you, what you like, and what you cannot stand. Fifteen minutes on the phone is enough. Then we go away and draw.",
+          "You see three directions, not thirty. Thirty options is a way of making the client do the choosing. Three means we made decisions and can tell you why each one is there.",
+          "You pick one, and we change it over two rounds. Nearly every job finishes inside those two rounds. If you want to keep going after that, we charge for the extra time rather than quietly building it into the first number and charging everyone for it.",
+          "A logo takes five to seven business days from that first conversation. Logo design on its own is $349, and that includes the three directions, the two rounds and the full set of files.",
+        ],
+      },
+      {
+        heading: "Brand kits, and when you actually need one",
+        body: [
+          "A logo on its own is not enough to keep things consistent once more than one person is using it. A brand kit is the short document that closes that gap.",
+          "It holds your logo in every version you will need: full colour, one colour, and a white version for dark backgrounds, each laid out both stacked and horizontal. It lists your colours three ways — CMYK for print, HEX for screens, and Pantone for foil and cut vinyl — so the blue on your van is the blue on your website. It names your fonts. It sets the clear space around the logo and the size below which it stops being readable.",
+          "It runs six to ten pages and takes two to three weeks. It is $749.",
+          "You need one when more than one person or more than one supplier touches your artwork — staff posting to social, a printer, a sign shop, a franchise. If you are one person who sends every file yourself, you can skip it for now and buy it later.",
+        ],
+      },
+      {
+        heading: "Layout: the everyday work",
+        body: [
+          "Most of our design work is not logos. It is laying out the thing that gets printed. A business card, a flyer, a takeout menu, a rack card, a lawn sign, a banner, a van door, a trade show wall.",
+          "We set it at the finished size with the right bleed, in CMYK, with the fonts outlined. Those are the technical requirements the press has, and getting them wrong is what turns a job around at the last minute. You approve a full-size PDF proof before anything runs.",
+          "Layout starts at $95 a piece and is quoted per job, because a one-sided flyer and a sixteen-page menu are not the same work.",
+          "If you built something yourself in Canva and it will not print, we fix the file rather than make you start again. That is a small charge, not a redesign, and we tell you which one it is before we start.",
+        ],
+      },
+      {
+        heading: "What you get, and what you own",
+        body: [
+          "At the end of a logo job you get the vector artwork as .ai, .eps, .svg and PDF, plus PNG and JPG for everyday use, in full colour, one colour and white.",
+          "It is yours. We keep a copy on file so a reorder or a new sign starts straight away, but we do not hold your artwork as leverage and there is nothing to renew.",
+          "We do not use AI image generators to make logos. A generated image is a grid of pixels rather than a vector, so it cannot be scaled or separated for print, and who owns it is not settled law in Canada. Neither of those is a risk worth taking on the mark that goes on your building.",
+        ],
+      },
+    ],
+    catalogue: [
+      {
+        group: "Logo and identity",
+        items: [
+          { name: "Logo design", detail: "Three directions, two rounds of changes" },
+          { name: "Logo redraw", detail: "From a photo, screenshot or old business card" },
+          { name: "Brand kit", detail: "6–10 pages: colours, fonts, spacing rules" },
+          { name: "Colour matching", detail: "CMYK, HEX and Pantone for one brand colour" },
+          { name: "Secondary marks", detail: "Monogram, badge, app icon" },
+          { name: "Stored artwork", detail: "Reorders start from the file we already hold" },
+        ],
+      },
+      {
+        group: "Print artwork",
+        items: [
+          { name: "Business card layout", detail: "Front and back, set with bleed" },
+          { name: "Flyer and brochure layout", detail: "Single sheet through tri-fold" },
+          { name: "Menu design", detail: "Dine-in, takeout and A-frame boards" },
+          { name: "Sign and banner artwork", detail: "Set at scale, readable from the road" },
+          { name: "Vehicle artwork", detail: "Laid out to the actual panel measurements" },
+          { name: "Canva file rescue", detail: "We make your own file printable" },
+        ],
+      },
+      {
+        group: "Screen artwork",
+        items: [
+          { name: "Social media templates", detail: "Editable, sized for each platform" },
+          { name: "Email signature", detail: "Built to survive Outlook and Gmail" },
+          { name: "Presentation template", detail: "PowerPoint or Google Slides" },
+          { name: "Web and ad banners", detail: "Every size a campaign asks for" },
+        ],
+      },
+    ],
+    specs: [
+      { label: "Logo design", value: "$349 — three directions, two rounds, full file set" },
+      { label: "Logo redraw", value: "$75 — JPG or photo turned into vector artwork" },
+      { label: "Brand kit", value: "$749 — 6–10 pages, colours, fonts and rules" },
+      { label: "Layout", value: "From $95 a piece, quoted per job" },
+      { label: "Logo turnaround", value: "5–7 business days from the first conversation" },
+      { label: "Brand kit turnaround", value: "2–3 weeks" },
+      { label: "Files you get", value: ".ai, .eps, .svg, PDF, PNG, JPG" },
+      { label: "Colour handover", value: "CMYK for print, HEX for screen, Pantone for foil and vinyl" },
+      { label: "Ownership", value: "Yours outright. No licence, nothing to renew" },
+    ],
+    faqs: [
+      {
+        question: "How much does a logo cost in Mississauga?",
+        answer:
+          "Logo design on its own is $349. That covers a short briefing call, three different directions, two rounds of changes on the one you pick, and the full set of files. A brand kit — colours, fonts and rules written down — is $749. Confirm current pricing on the packages page or by phone.",
+      },
+      {
+        question: "I only have a JPG of my logo. Can you fix it?",
+        answer:
+          "Yes. We redraw it as a proper vector file from whatever you have — a photo, a screenshot, an old business card. It is $75 and takes one to two days. After that the same file prints on a card, a banner, a van or a stitched shirt without going soft.",
+      },
+      {
+        question: "How long does logo design take?",
+        answer:
+          "Five to seven business days from the first conversation, assuming you come back on the concepts within a day or two. A full brand kit takes two to three weeks because it is a document, not a drawing.",
+      },
+      {
+        question: "Do I own the logo when it is finished?",
+        answer:
+          "Yes, outright. You get the vector files as .ai, .eps, .svg and PDF plus PNG and JPG, in full colour, one colour and white. There is no licence and nothing to renew. We keep a copy on file so reorders are fast, not to hold it over you.",
+      },
+      {
+        question: "What is a brand kit and do I actually need one?",
+        answer:
+          "It is a short document that says how your logo is used: every version of the mark, your colours as CMYK, HEX and Pantone, your fonts, and the spacing and minimum sizes. You need one once more than one person or supplier touches your artwork. If you send every file yourself, you can buy it later.",
+      },
+      {
+        question: "Can you design a flyer or a menu if I already have a logo?",
+        answer:
+          "Yes, that is most of our design work. Layout starts at $95 a piece and is quoted per job. We set it at the right size with bleed, in CMYK, with fonts outlined, and you approve a full-size PDF proof before it runs.",
+      },
+      {
+        question: "Do you use AI to make logos?",
+        answer:
+          "No. A generated image is pixels, not a vector, so it cannot be scaled or colour-separated for print, and ownership of purely AI-generated artwork is not settled law in Canada. We draw logos. We do use AI for background work like tidying up a stock photo, and we will tell you when we have.",
+      },
+      {
+        question: "Where are you located?",
+        answer:
+          "2800 Skymark Ave in Mississauga. Design, print, signage and apparel all happen in that one building, so the artwork we draw is the artwork we print. We work with clients across the GTA and take briefings by phone or video.",
       },
     ],
   },

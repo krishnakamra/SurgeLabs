@@ -30,11 +30,17 @@ const AREA_SERVED = cities.map((city) => ({
  * Each package is a Product carrying a single Offer — that is the shape that
  * actually earns a price in the result, since a fixed-price package has one
  * offer, not a range. The AggregateOffer sits once at the top and describes
- * the real span of the list, $899 to $6,999, which is what an AggregateOffer
- * is for.
+ * the real span of the priced tiers, $99 to $1,899. Custom Build is quoted
+ * per job and is deliberately outside that span — see the filter below.
  */
 function pricingSchema() {
-  const prices = packages.map((pkg) => pkg.price);
+  // Only the tiers that carry a published price. AggregateOffer's low/high
+  // describe what is actually purchasable at a stated figure; a quote-only
+  // tier has no price to span, and folding it in as 0 or as the tier below
+  // would misstate the range Google prints in the result.
+  const prices = packages
+    .map((pkg) => pkg.price)
+    .filter((price): price is number => price !== null);
 
   const seo = getPageSeo("/packages")!;
 
@@ -54,7 +60,7 @@ function pricingSchema() {
       "@type": "Service",
       "@id": `${site.url}/packages#catalog`,
       name: "Surge Labs packages",
-      description: "Fixed-price web, print, signage and apparel packages for GTA businesses.",
+      description: "Web, print, signage and apparel packages for GTA businesses, priced on the page from $99.",
       url: `${site.url}/packages`,
       serviceType: "Marketing, print and apparel packages",
       provider: { "@id": BUSINESS_ID },
@@ -64,7 +70,7 @@ function pricingSchema() {
         priceCurrency: "CAD",
         lowPrice: Math.min(...prices),
         highPrice: Math.max(...prices),
-        offerCount: packages.length,
+        offerCount: prices.length,
         availability: "https://schema.org/InStock",
         areaServed: AREA_SERVED,
       },
@@ -81,18 +87,25 @@ function pricingSchema() {
       "@type": "Product",
       "@id": `${site.url}/packages#${pkg.slug}`,
       name: pkg.name,
-      description: `${pkg.tagline} ${pkg.bestFor}`,
+      description: `${pkg.plain} ${pkg.bestFor}`,
       brand: { "@type": "Brand", name: site.name },
       category: "Marketing, print and apparel package",
-      offers: {
-        "@type": "Offer",
-        url: `${site.url}/packages#${pkg.slug}`,
-        price: pkg.price,
-        priceCurrency: "CAD",
-        availability: "https://schema.org/InStock",
-        areaServed: AREA_SERVED,
-        seller: { "@id": BUSINESS_ID },
-      },
+      // A quote-only tier gets no Offer node at all. An Offer whose `price`
+      // is null is invalid, and inventing one — 0, or the tier below — would
+      // publish a figure nobody is going to be charged.
+      ...(pkg.price === null
+        ? {}
+        : {
+            offers: {
+              "@type": "Offer",
+              url: `${site.url}/packages#${pkg.slug}`,
+              price: pkg.price,
+              priceCurrency: "CAD",
+              availability: "https://schema.org/InStock",
+              areaServed: AREA_SERVED,
+              seller: { "@id": BUSINESS_ID },
+            },
+          }),
     })),
     ...monthlyPlans.map((plan) => ({
       "@type": "Product",
@@ -154,9 +167,15 @@ export default function PackagesPage() {
           </p>
 
           <p className="mt-10 max-w-[58ch] text-md text-fg-muted">
-            Four packages that bundle the web, print and apparel work most businesses need at the
-            same time, plus monthly plans for the work that never really finishes. If you only want
-            one thing, the rates for single items are at the bottom.
+            Five ways to start. The first is a hundred dollars and gets you a designed business
+            card in your hand next week. The last is a custom quote for a whole rebrand. In
+            between are the three most people take, which bundle the website, print and apparel
+            work that tends to be needed at the same time.
+          </p>
+
+          <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
+            Underneath the packages are monthly plans, for the search and social work that never
+            really finishes, and a plain list of single-item rates if you only want one thing.
           </p>
 
           <ul className="mt-12 max-w-[58ch] space-y-2.5 border-t-[length:var(--hairline)] border-rule pt-8">
@@ -169,14 +188,14 @@ export default function PackagesPage() {
           </ul>
         </SectionFrame>
 
-        {/* The four packages. Sideways on desktop, stacked everywhere else. */}
+        {/* Every package. Sideways on desktop, stacked everywhere else. */}
         <SectionFrame
           surface="stock"
           id="packages"
           padding="md"
           bleed
           cropMarks={false}
-          ticket={{ number: "02", label: "PACKAGES", spec: "4 TICKETS" }}
+          ticket={{ number: "02", label: "PACKAGES", spec: `${packages.length} TICKETS` }}
           className="bg-surface"
         >
           <div className="mx-auto w-full max-w-page px-gutter motion-ready:lg:hidden">

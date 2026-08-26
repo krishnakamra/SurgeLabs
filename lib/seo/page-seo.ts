@@ -31,7 +31,7 @@ export const pageSeo: Record<string, PageSeo> = {
   },
   "/packages": {
     title: `Packages & Pricing in Mississauga${SUFFIX}`,
-    description: `Web, print and apparel packages from $899, priced on the page. Monthly plans from $399, GTA delivery included. Call ${PHONE}.`,
+    description: `Web, print and apparel packages from $99, priced on the page. Websites $599, monthly plans from $399, GTA delivery included. Call ${PHONE}.`,
     h1: "Packages and pricing in Mississauga",
   },
   "/quote": {
@@ -68,6 +68,11 @@ export const pageSeo: Record<string, PageSeo> = {
     title: `About Surge Labs, Mississauga${SUFFIX}`,
     description: `One shop on Skymark Ave doing web, print, signage and apparel in-house. One team, one invoice, no subcontracting. Call ${PHONE}.`,
     h1: "About Surge Labs, Mississauga",
+  },
+  "/graphic-design": {
+    title: `Graphic Design & Logo Design in Mississauga${SUFFIX}`,
+    description: `Logo design from $349, brand kits from $749, and old logos redrawn as vector files for $75. Mississauga design studio. Call ${PHONE}.`,
+    h1: "Graphic design and logo design in Mississauga",
   },
   "/custom-apparel": {
     title: `Custom Apparel in Mississauga${SUFFIX}`,

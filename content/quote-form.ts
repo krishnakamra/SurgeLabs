@@ -305,6 +305,53 @@ export const quoteBranches: readonly QuoteBranch[] = [
       { kind: "text", id: "wear_sizes", ticket: "SIZES", label: "Size breakdown, if known", placeholder: "5 S, 10 M, 8 L, 2 XL" },
     ],
   },
+
+  {
+    id: "design",
+    label: "Design",
+    hint: "A logo, a brand kit or artwork",
+    ticket: "DSGN",
+    fields: [
+      {
+        kind: "choice",
+        id: "design_type", ticket: "TYPE",
+        label: "What do you need designed?",
+        required: true,
+        multi: true,
+        options: [
+          { value: "New logo", label: "A new logo", hint: "Starting from nothing" },
+          { value: "Logo redraw", label: "Redraw my logo", hint: "I only have a JPG" },
+          { value: "Brand kit", label: "Brand kit", hint: "Colours, fonts and rules written down" },
+          { value: "Print layout", label: "Print layout", hint: "Card, flyer, menu, sign" },
+          { value: "Screen artwork", label: "Screen artwork", hint: "Social, email, slides" },
+        ],
+      },
+      {
+        kind: "choice",
+        id: "design_have", ticket: "HAVE",
+        label: "What artwork do you already have?",
+        options: [
+          { value: "Vector logo", label: "A vector logo", hint: ".ai, .eps, .svg or a live-vector PDF" },
+          { value: "JPG or PNG only", label: "A JPG or PNG only" },
+          { value: "A photo of a sign or card", label: "A photo of an old sign or card" },
+          { value: "Nothing", label: "Nothing yet" },
+        ],
+      },
+      {
+        kind: "choice",
+        id: "design_use", ticket: "USE",
+        label: "Where will it be used?",
+        multi: true,
+        options: [
+          { value: "Print", label: "Print", hint: "Cards, flyers, menus" },
+          { value: "Signage", label: "Signage", hint: "Banners, storefront, vehicles" },
+          { value: "Apparel", label: "Apparel", hint: "Stitched or printed on garments" },
+          { value: "Website and social", label: "Website and social" },
+        ],
+      },
+      { kind: "textarea", id: "design_notes", ticket: "NOTES", label: "Anything you like or want to avoid?", placeholder: "Two competitors whose look you like is more useful than a paragraph." },
+    ],
+  },
 ];
 
 export const deadlineOptions: readonly QuoteOption[] = [

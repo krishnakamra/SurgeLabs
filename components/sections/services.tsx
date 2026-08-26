@@ -2,10 +2,11 @@ import Link from "next/link";
 import { PinnedPanel } from "@/components/motion";
 import { Eyebrow, PanelMedia } from "@/components/ui";
 import { services } from "@/content";
-import { loopForService } from "@/content/media";
+import { loopForService, panelStills } from "@/content/media";
+import { accentDecorationHover, accentPlate, accentText } from "@/lib/accent";
 
 /**
- * Three panels, each holding for 60vh of scroll. The hold is `position:
+ * One panel per service, each holding for 60vh of scroll. The hold is `position:
  * sticky` inside a box that reserves its own distance — see PinnedPanel for
  * why that beats ScrollTrigger's pin here.
  *
@@ -16,12 +17,13 @@ export function Services() {
     <section id="services">
       {services.map((service, index) => {
         const surface = index % 2 === 0 ? "ink" : "stock";
+        const accent = accentText[service.accent];
 
         return (
           <div
             key={service.slug}
             data-surface={surface}
-            data-ticket-number="03"
+            data-ticket-number={service.number}
             data-ticket-label={service.name.toUpperCase()}
             data-ticket-spec={`${index + 1} OF ${services.length}`}
             className="relative isolate bg-surface text-fg"
@@ -32,7 +34,7 @@ export function Services() {
                   <div data-reveal className="flex items-baseline gap-6">
                     <span
                       aria-hidden="true"
-                      className="font-numeral text-3xl leading-[0.8] font-black tabular-nums text-mark"
+                      className={`font-numeral text-3xl leading-[0.8] font-black tabular-nums ${accent}`}
                     >
                       {service.number}
                     </span>
@@ -72,7 +74,7 @@ export function Services() {
                   <p data-reveal className="mt-8">
                     <Link
                       href={`/${service.slug}`}
-                      className="font-utility text-2xs uppercase tracking-utility-tight text-fg underline decoration-1 underline-offset-[7px] decoration-rule-strong transition-colors hover:decoration-mark"
+                      className={`font-utility text-2xs uppercase tracking-utility-tight text-fg underline decoration-1 underline-offset-[7px] decoration-rule-strong transition-colors ${accentDecorationHover[service.accent]}`}
                     >
                       {service.name} in detail
                     </Link>
@@ -82,8 +84,9 @@ export function Services() {
                 <div data-reveal className="lg:col-span-6 lg:col-start-7">
                   <PanelMedia
                     numeral={service.number}
-                    plate={index === 0 ? "c" : index === 1 ? "m" : "k"}
+                    plate={accentPlate[service.accent]}
                     asset={loopForService[service.slug]}
+                    still={panelStills[service.slug]}
                   />
                 </div>
               </div>

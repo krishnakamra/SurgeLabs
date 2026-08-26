@@ -16,6 +16,7 @@ export {
   monthlyPlans,
   alaCarte,
   formatPrice,
+  priceLabel,
   pricingTerms,
   comparisonRows,
   type Package,
