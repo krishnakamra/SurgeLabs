@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MagneticCTA } from "@/components/motion";
 import { CallToAction, SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
+import { PortfolioGrid } from "@/components/portfolio/portfolio-grid";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, PanelMedia, SectionFrame } from "@/components/ui";
 import { cities, serviceProcess, site, type Service } from "@/content";
 import { loopForService } from "@/content/media";
@@ -201,6 +202,19 @@ export function ServicePage({ service, path }: { service: Service; path: string 
             ))}
           </div>
         </SectionFrame>
+
+        {/* Websites are the one vertical with something to show on a screen,
+            so the portfolio sits here and nowhere else. It renders nothing
+            while content/portfolio.ts is empty. */}
+        {service.slug === "web-design-seo" ? (
+          <PortfolioGrid
+            surface="ink"
+            ticketNumber={service.number}
+            heading="Sites we built, live right now."
+            standfirst="Every one of these is a real site you can open. The line under each says exactly what we did on it, because a screenshot on its own implies we did all of it."
+            limit={9}
+          />
+        ) : null}
 
         {/* How it works — numbering is a real sequence here, not decoration. */}
         <SectionFrame

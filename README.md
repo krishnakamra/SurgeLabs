@@ -14,16 +14,17 @@ npm run dev
 
 ## The build gates
 
-Four checks run before every build (`npm run prebuild`). They exist because the failures they catch are all silent ones — a page that ranks for nothing, a lead that vanishes, a thin page that drags the domain down with it.
+Five checks run before every build (`npm run prebuild`). They exist because the failures they catch are all silent ones — a page that ranks for nothing, a lead that vanishes, a thin page that drags the domain down with it.
 
 | Command | Fails when |
 |---|---|
 | `npm run check:local` | A city page is missing its copy, its FAQs, its image, or names a neighbourhood the prose never mentions |
 | `npm run check:seo` | Any page's H1 or `<title>` does not contain its primary keyword, or a title/description is over length |
+| `npm run check:portfolio` | A portfolio entry names a screenshot that is not in `public/` |
 | `npm run check:env` | The code reads an environment variable that `.env.example` does not document |
 | `npm run check:redirects` | A 301 does not resolve to a live page in one hop (needs a running server) |
 
-Two more gates throw at import rather than in a script: `content/posts.ts` rejects a malformed or under-length blog post, and `content/blog-tables.ts` rejects a duplicate table id or a row that does not match its columns.
+Three more gates throw at import rather than in a script: `content/posts.ts` rejects a malformed or under-length blog post, `content/blog-tables.ts` rejects a duplicate table id or a row that does not match its columns, and `content/portfolio.ts` rejects a portfolio entry with no `role` line, a summary too short to say anything, or an `alt` that is just the client's name.
 
 If a gate is in your way, the answer is almost always to fix the content, not the gate. They were each added after the thing they check went wrong.
 
@@ -90,6 +91,22 @@ ogImage: null                             # null generates one from the title
 6. **The keyword gate applies.** Both the H1 and the meta title must contain `keywords[0]`, matched by subsequence — "Custom web design and SEO in Mississauga" satisfies "web design mississauga". Run `npm run check:seo`.
 
 Adding a new category means adding it to `categories` in `content/posts.ts` **and** to `lib/seo/blog-seo.ts`, which throws if copy is missing. Reading time, the table of contents, related posts, the `Article` schema and the sitemap entry are all derived — there is nothing else to update.
+
+---
+
+## How to add a website to the portfolio
+
+Full instructions, including the prompt to hand to another Claude session, are in **[docs/PORTFOLIO.md](docs/PORTFOLIO.md)**. The short version:
+
+1. Append an entry to `content/portfolio.ts`. The validator runs at import, so a malformed entry fails the build rather than rendering badly.
+2. `npm run shots` screenshots every live site that does not already have a capture — 1440 × 1080 at 2×, scrolled first so lazy-loaded images are there.
+3. `npm run check:portfolio` confirms every named file exists. `CHECK_PORTFOLIO_URLS=1` also checks the sites are still live; run that by hand every few months, not on every build.
+
+The gallery renders nothing while the list is empty, so `/work` and `/web-design-seo` simply do not carry a portfolio section until there is one.
+
+The field that matters is `role`, and it is required. It is published under the client's name and it says exactly what we did on that site — "Design and build", or "Local SEO and Core Web Vitals only — site built elsewhere". A screenshot implies authorship on its own; that line is the only thing correcting it.
+
+Only publish sites we built, and get written permission first. A live public website is not consent to be used as a reference.
 
 ---
 

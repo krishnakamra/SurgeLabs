@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PortfolioGrid } from "@/components/portfolio/portfolio-grid";
 import { SiteFooter } from "@/components/sections";
 import { Schema } from "@/components/seo/schema";
 import { Breadcrumbs, Button, Eyebrow, HalftoneField, SectionFrame } from "@/components/ui";
@@ -49,6 +50,15 @@ export default function WorkPage() {
             the town instead.
           </p>
         </SectionFrame>
+
+        {/* The website portfolio, if there is one. Renders nothing while
+            content/portfolio.ts is empty — see docs/PORTFOLIO.md. */}
+        <PortfolioGrid
+          surface="stock"
+          ticketNumber="01"
+          heading="Websites, live right now."
+          standfirst="Open any of them. The line under each says exactly what we did on it — some we designed and built, some we rebuilt, and on a few we only did the search work."
+        />
 
         {/* One sheet per job, alternating beds so the page reads as a run of
             sheets coming off the press rather than a grid of cards. */}

@@ -11,12 +11,14 @@
     "check:local": "node --experimental-strip-types --import ./scripts/register.mjs scripts/check-local-pages.mjs",
     "gen:local-images": "node --experimental-strip-types --import ./scripts/register.mjs scripts/generate-local-images.mjs",
     "gen:brand": "node --experimental-strip-types --import ./scripts/register.mjs scripts/generate-brand-assets.mjs",
-    "prebuild": "npm run check:local && npm run check:seo && npm run check:routes && npm run check:env",
+    "prebuild": "npm run check:local && npm run check:portfolio && npm run check:seo && npm run check:routes && npm run check:env",
     "check:seo": "node --conditions=react-server --experimental-strip-types --import ./scripts/register.mjs scripts/check-seo.mjs",
     "check:routes": "node --conditions=react-server --experimental-strip-types --import ./scripts/register.mjs scripts/check-routes.mjs",
     "check:redirects": "node --conditions=react-server --experimental-strip-types --import ./scripts/register.mjs scripts/check-redirects.mjs",
     "check:env": "node scripts/check-env-docs.mjs",
-    "verify:live": "node --conditions=react-server --experimental-strip-types --import ./scripts/register.mjs scripts/verify-live.mjs"
+    "verify:live": "node --conditions=react-server --experimental-strip-types --import ./scripts/register.mjs scripts/verify-live.mjs",
+    "shots": "node --experimental-strip-types --import ./scripts/register.mjs scripts/capture-portfolio.mjs",
+    "check:portfolio": "node --experimental-strip-types --import ./scripts/register.mjs scripts/check-portfolio.mjs"
   },
   "dependencies": {
     "clsx": "2.1.1",
