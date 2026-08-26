@@ -39,6 +39,11 @@ export const categories = {
     name: "Web & SEO",
     blurb: "What a site should cost, and how a local business gets found after it launches.",
   },
+  industries: {
+    slug: "industries",
+    name: "By industry",
+    blurb: "What each trade actually orders, what it costs, and the order to buy it in.",
+  },
 } as const;
 
 export type CategorySlug = keyof typeof categories;

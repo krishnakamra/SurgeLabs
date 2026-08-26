@@ -14,7 +14,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: "Surge Labs",
   description:
-    "Full-service agency in Mississauga, Ontario. Web and digital, print and signage, custom apparel — all in-house.",
+    "Full-service agency in Mississauga, Ontario. Design, web, print and signage, custom apparel — all in-house.",
+  alternates: {
+    types: {
+      // Discovery hint for /llms.txt. The convention says the file lives at
+      // the root and that is where it is; this only means a crawler that
+      // reads the head does not have to guess that it exists.
+      "text/plain": [{ url: "/llms.txt", title: "Surge Labs, in plain text" }],
+    },
+  },
 };
 
 export const viewport: Viewport = {

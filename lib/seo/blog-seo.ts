@@ -34,6 +34,12 @@ const copy: Record<string, PageSeo> = {
       "What a small business website costs and how local search actually works. Web and SEO guides for trades and businesses across the GTA.",
     h1: "Web and SEO guides for GTA businesses",
   },
+  industries: {
+    title: "Marketing Guides by Industry | Surge Labs",
+    description:
+      "What each trade actually orders, what it costs and the order to buy it in. Marketing guides by industry for Mississauga and GTA businesses.",
+    h1: "Marketing guides by industry, for GTA businesses",
+  },
 };
 
 export function categorySeo(category: Category): PageSeo {

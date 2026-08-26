@@ -2,8 +2,39 @@ import type { MetadataRoute } from "next";
 import { site } from "@/content";
 
 export default function robots(): MetadataRoute.Robots {
+  // Crawlers that feed answer engines rather than a search index. They are
+  // already covered by the `*` rule below — this block is not what lets them
+  // in, it is a statement of intent, so that a future default or a copied
+  // robots.txt from somewhere else does not quietly lock the business out of
+  // the place a growing share of its customers now start.
+  //
+  // Being crawlable is a precondition, not a strategy. What actually decides
+  // whether an assistant names this shop is /llms.txt, the FAQ schema on the
+  // service pages, and the fact that every price on the site agrees with
+  // every other copy of itself.
+  const ANSWER_ENGINES = [
+    "GPTBot",
+    "OAI-SearchBot",
+    "ChatGPT-User",
+    "ClaudeBot",
+    "Claude-User",
+    "Claude-SearchBot",
+    "Google-Extended",
+    "PerplexityBot",
+    "Perplexity-User",
+    "Applebot-Extended",
+    "Bingbot",
+    "cohere-ai",
+    "meta-externalagent",
+  ];
+
   return {
     rules: [
+      ...ANSWER_ENGINES.map((userAgent) => ({
+        userAgent,
+        allow: ["/", "/brand/"],
+        disallow: ["/styleguide", "/styleguide/", "/brand$"],
+      })),
       {
         userAgent: "*",
         // /brand/ is explicitly allowed and it matters: the handoff SVGs and
