@@ -74,7 +74,16 @@ export async function submitQuote(form: FormData): Promise<QuoteResult> {
 
   if (needs.length === 0) return { ok: false, error: "Tell us what you need first." };
   if (!contact.name) return { ok: false, error: "We need a name to put on the ticket." };
-  if (!looksLikeEmail(contact.email)) return { ok: false, error: "That email address does not look right." };
+  // Either route is enough. Requiring an email used to be the rule, and on a
+  // page reached from an ad it is the rule that loses the lead — a lot of
+  // people will give a phone number and will not type an address on a phone.
+  // An unreachable submission is the only thing worth rejecting here.
+  if (!contact.email && !contact.phone) {
+    return { ok: false, error: "Leave a phone number or an email so we can send the quote back." };
+  }
+  if (contact.email && !looksLikeEmail(contact.email)) {
+    return { ok: false, error: "That email address does not look right." };
+  }
 
   // ── Attachment ────────────────────────────────────────────────────
   const file = form.get("artwork");

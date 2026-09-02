@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { isBareRoute } from "@/lib/navigation";
 import type { Surface } from "./section-frame";
 import { RegistrationTarget } from "./press-marks";
 
@@ -34,6 +35,9 @@ type Ticket = {
  */
 export function JobTicketRail({ className }: { className?: string }) {
   const pathname = usePathname();
+
+  // Landing pages carry no chrome at all. See BARE_ROUTES.
+  const bare = isBareRoute(pathname);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const intersecting = useRef<Set<number>>(new Set());
@@ -72,10 +76,15 @@ export function JobTicketRail({ className }: { className?: string }) {
     );
 
     for (const node of nodes) observer.observe(node);
+
     return () => observer.disconnect();
   }, [pathname]);
 
   const active = tickets[activeIndex];
+
+  // Landing pages carry no chrome at all. After the hooks, never before —
+  // an early return above them changes the hook order between renders.
+  if (bare) return null;
 
   return (
     <aside

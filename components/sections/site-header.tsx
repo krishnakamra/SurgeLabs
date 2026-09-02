@@ -8,7 +8,7 @@ import { FoilField } from "@/components/motion";
 import { Button } from "@/components/ui";
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
-import { navCta, primaryNav, type NavItem } from "@/lib/navigation";
+import { isBareRoute, navCta, primaryNav, type NavItem } from "@/lib/navigation";
 
 /**
  * The masthead. Rendered once in app/layout.tsx, so every route has it.
@@ -341,6 +341,9 @@ function MobileMenu({ pathname }: { pathname: string }) {
 
 export function SiteHeader() {
   const pathname = usePathname();
+
+  // Landing pages render their own minimal masthead. See BARE_ROUTES.
+  if (isBareRoute(pathname)) return null;
 
   return (
     <header

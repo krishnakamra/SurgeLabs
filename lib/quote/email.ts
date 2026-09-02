@@ -68,20 +68,29 @@ export async function sendQuoteEmails(
     const internal = await resend.emails.send({
       from: FROM,
       to: [TO],
-      replyTo: contact.email,
+      // No email means the only way back is the phone number, which the
+      // ticket carries. Resend rejects an empty replyTo outright, so leave
+      // the field off rather than sending a blank one.
+      ...(contact.email ? { replyTo: contact.email } : {}),
       subject: `${submission.reference} — ${submission.needs.join(", ")} — ${contact.business || contact.name}`,
       text: ticketText(submission),
       html: wrap(
         `${contact.business || contact.name} wants a quote`,
         `Submitted ${new Date(submission.submittedAt).toLocaleString("en-CA", { timeZone: "America/Toronto" })}. Reply to this email to reach them directly.`,
         submission,
-        `Reply-to is set to ${escapeHtml(contact.email)}.`,
+        contact.email
+          ? `Reply-to is set to ${escapeHtml(contact.email)}.`
+          : `No email address given — call ${escapeHtml(contact.phone)} to reply.`,
       ),
       ...(attachment
         ? { attachments: [{ filename: attachment.filename, content: attachment.content }] }
         : {}),
     });
     if (internal.error) return { ok: false, error: internal.error.message };
+
+    // Nothing to confirm to. The lead is stored and the shop has been
+    // emailed, which is what "ok" means here.
+    if (!contact.email) return { ok: true };
 
     const confirmation = await resend.emails.send({
       from: FROM,

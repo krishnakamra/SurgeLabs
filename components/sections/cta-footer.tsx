@@ -222,8 +222,15 @@ export function SiteFooter() {
           <p className="font-utility text-2xs uppercase tracking-utility text-fg-faint">
             © {new Date().getFullYear()} {site.name} — {address.locality}, {address.region}
           </p>
-          <p className="font-utility text-2xs uppercase tracking-utility text-fg-faint">
-            Web · Print · Apparel, all in-house
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-2 font-utility text-2xs uppercase tracking-utility text-fg-faint">
+            <Link
+              href="/privacy"
+              className="underline decoration-[length:var(--hairline)] underline-offset-4 transition-colors hover:text-fg hover:decoration-mark"
+            >
+              Privacy
+            </Link>
+            <span aria-hidden="true" className="text-rule-strong">·</span>
+            <span>Design · Web · Print · Apparel, all in-house</span>
           </p>
         </div>
       </div>

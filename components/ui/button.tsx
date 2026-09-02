@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type ButtonVariant = "primary" | "outline" | "ghost";
+export type ButtonVariant = "primary" | "solid" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
 
 /**
@@ -43,6 +43,19 @@ const VARIANT: Record<ButtonVariant, string> = {
   outline: [
     "border-[length:var(--hairline)] border-rule-strong bg-transparent text-fg",
     "hover:border-fg hover:bg-fg hover:text-surface",
+  ].join(" "),
+  // Filled at rest. The one place the house style yields: on /start the
+  // visitor arrived from an ad, has never seen this brand, and is deciding in
+  // about a second whether there is a button on the screen. A hairline that
+  // floods on hover is the right answer everywhere someone is already reading
+  // the site, and the wrong one for cold paid traffic — hover is not a thing
+  // on the phone most of that traffic is holding.
+  //
+  // White on --color-accent is 4.50:1, so it clears AA at this size.
+  solid: [
+    "border-[length:var(--hairline)] border-accent bg-accent text-accent-fg",
+    "hover:border-accent-hover hover:bg-accent-hover hover:text-accent-hover-fg",
+    "focus-visible:border-accent-hover focus-visible:bg-accent-hover focus-visible:text-accent-hover-fg",
   ].join(" "),
   // Underlined type. The underline is where the mark colour lands.
   ghost:

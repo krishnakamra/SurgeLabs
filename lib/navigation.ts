@@ -93,6 +93,22 @@ export const primaryNav: readonly NavItem[] = [
   },
 ];
 
+/**
+ * Routes that render without the masthead or the job-ticket rail.
+ *
+ * Paid traffic lands on /start with one thing to do, and every link out of
+ * that page is a way to not do it. A landing page with a full site nav on it
+ * is a landing page that leaks — the visitor goes browsing, and the click you
+ * paid for is spent.
+ *
+ * The logo is still on the page and still links home; it is just not a menu.
+ */
+export const BARE_ROUTES = new Set(["/start"]);
+
+export function isBareRoute(pathname: string): boolean {
+  return BARE_ROUTES.has(pathname);
+}
+
 /** The one gold action. Kept out of primaryNav so it cannot be reordered into it. */
 export const navCta: NavLink = { label: "Get a quote", href: "/quote" };
 

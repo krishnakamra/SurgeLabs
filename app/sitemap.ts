@@ -27,6 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
     { url: `${site.url}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.8 },
+    // Indexable and low priority. A privacy policy nobody can find is not
+    // notice, and it is the page a Meta ad review looks for.
+    { url: `${site.url}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // The gallery categories are commercial pages, not an archive: someone

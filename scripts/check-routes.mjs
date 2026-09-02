@@ -29,7 +29,10 @@ const { primaryNav, navCta } = await import(join(root, "lib", "navigation.ts"));
    Static routes come from the app directory rather than a hand-kept list, so
    a new folder with a page.tsx in it is audited whether or not anyone
    remembered to register it. */
-const IGNORED = new Set(["styleguide", "brand"]); // noindex working tools
+// noindex by design: the styleguide and brand sheet are working tools, and
+// /start is a paid-traffic landing page reached from an ad rather than from
+// the site. All three carry robots meta; none of them should be in the nav.
+const IGNORED = new Set(["styleguide", "brand", "start"]);
 const dynamic = /^\[.+\]$/;
 
 function staticRoutes(dir = join(root, "app"), prefix = "") {
@@ -84,6 +87,8 @@ const chrome = [
   ]),
   navCta.href,
   "/service-areas",
+  // Footer bottom bar, on every page that renders SiteFooter.
+  "/privacy",
   "/blog",
   ...liveCategories().map((c) => `/blog/category/${c.slug}`),
   ...services.map((s) => `/${s.slug}`),
