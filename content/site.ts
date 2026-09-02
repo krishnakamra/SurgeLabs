@@ -19,11 +19,12 @@ export const site = {
     streetAddress: "2800 Skymark Ave",
     locality: "Mississauga",
     region: "ON",
-    // ⚠️  Still needed: the postal code, and the unit/suite number if the
-    //     Google Business Profile carries one. Deliberately not guessed —
-    //     2800 Skymark Ave is a multi-tenant complex, so a wrong unit is
-    //     worse than none. Copy both from GBP exactly.
-    postalCode: "",
+    // Supplied by the owner, 2026-08-26.
+    // ⚠️  Still open: the unit/suite number, if the Google Business Profile
+    //     carries one. 2800 Skymark Ave is a multi-tenant complex, so a wrong
+    //     unit is worse than none — copy it from GBP exactly, and make sure
+    //     the format here matches GBP character for character.
+    postalCode: "L4W 5A6",
     country: "CA",
   },
 
