@@ -19,3 +19,6 @@ next-env.d.ts
 
 # Working directory for scripts/fetch-media.mjs.
 .media-cache/
+
+# The rendered ad previews are committed (see ads/), but the scratch HTML is not.
+ads/preview.html

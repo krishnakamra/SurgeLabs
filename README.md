@@ -94,6 +94,23 @@ Adding a new category means adding it to `categories` in `content/posts.ts` **an
 
 ---
 
+## Making the price ad
+
+```bash
+npm i -D playwright && npx playwright install chromium   # first time only
+npm run ad
+```
+
+Renders `ads/surge-labs-prices-{square,story,wide}.png` — 1080×1080 for a feed post, 1080×1920 for a story, 1200×628 for a link ad or an email header. All at 2× so the type survives a platform re-encoding it.
+
+The prices are read out of `content/packages.ts` at render time, so **the ad cannot disagree with the website**. Change a price there, re-run this, send the new file.
+
+It is composed as HTML and rendered by a real browser rather than described to an image model, for two reasons. Image models garble text, and this card carries four prices, a phone number and a URL — an ad with a wrong price on it is a price representation you did not intend to make. And the logo is the client's own artwork: `scripts/make-ad.mjs` uses the real vector from `public/brand/`, never a generated one.
+
+Copy lives at the top of `scripts/make-ad.mjs` (`COPY`) and the layout in `scripts/ad/template.mjs`. Each format sets its own type scale — the wide card is the short one, so it runs at 0.6.
+
+---
+
 ## How to add a product to a work gallery
 
 `/work` is six product galleries — websites, business cards, print material, signs and vehicles, apparel, design and branding — plus the case-study list underneath. The Work dropdown, the sitemap, the keyword gate and the route audit all read from `content/gallery.ts`, so adding a category or an item lights it up everywhere.
