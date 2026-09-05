@@ -2,7 +2,7 @@
  * Generated media registry.
  *
  * Every asset on this page was produced through the Higgsfield MCP server on
- * 2026-08-24. The `jobId` on each entry is the authoritative handle: it can be
+ * 2026-08-26. The `jobId` on each entry is the authoritative handle: it can be
  * replayed to fetch the original, and the `model` + `prompt` beside it are the
  * exact inputs, so any asset can be regenerated or varied without guesswork.
  *
@@ -17,6 +17,14 @@
  *     that runs, PressLoop falls back to its poster, and the poster falls back
  *     to the existing generated plate. Nothing on the site breaks in the
  *     meantime; it just has no footage.
+ *
+ *     The URLs were also WRONG until 2026-09-05: they were built with the
+ *     date 20260824 when every file is stamped 20260826, so the CDN answered
+ *     AccessDenied to all seventy of them and the earlier 403s read as an
+ *     egress-policy problem when they were partly this. The date now comes
+ *     from the generation records (show_generation_by_ids), which is the only
+ *     place it is authoritative. If a fetch 403s again, check there first
+ *     before blaming the network.
  *
  * ⚠️  NOT FOR BRANDMARKS. No logo or wordmark was generated here and none
  *     should be. That stays with the client's own design work.
@@ -119,8 +127,8 @@ function video(
     aspect,
     seconds,
     alt,
-    remoteUrl: `${CDN}/hf_20260824_${stamp}_${jobId}.mp4`,
-    remotePosterUrl: `${CDN}/hf_20260824_${posterStamp}_${posterJobId}.png`,
+    remoteUrl: `${CDN}/hf_20260826_${stamp}_${jobId}.mp4`,
+    remotePosterUrl: `${CDN}/hf_20260826_${posterStamp}_${posterJobId}.png`,
     localMp4: `/media/${dir}/${id}.mp4`,
     localWebm: `/media/${dir}/${id}.webm`,
     localPoster: `/media/${dir}/${id}.jpg`,
@@ -201,7 +209,7 @@ function still(
     alt,
     width,
     height,
-    remoteUrl: `${CDN}/hf_20260824_${stamp}_${jobId}.png`,
+    remoteUrl: `${CDN}/hf_20260826_${stamp}_${jobId}.png`,
     localPath: `/media/stills/${id}.jpg`,
   };
 }
