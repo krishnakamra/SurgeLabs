@@ -9,8 +9,8 @@ import { galleryStills, panelStills, packageStills, type ImageAsset } from "./me
  * themselves, each one a page of the actual product, and the case studies sit
  * underneath as supporting evidence rather than as the whole page.
  *
- * ⚠️  PRICES HERE MUST AGREE WITH content/packages.ts (alaCarte) AND
- *     content/services.ts. They are the same numbers written in a third
+ * ⚠️  THESE ARE STARTING PRICES, and they MUST AGREE WITH content/packages.ts
+ *     (alaCarte) AND content/services.ts. They are the same numbers written in a third
  *     place, which is a real risk — a customer who finds $79 on one page and
  *     $89 on another believes neither. Change one, change all three.
  *     Everything marked "Quoted" is quoted because it genuinely varies, not
@@ -173,7 +173,7 @@ export const galleryCategories: readonly GalleryCategory[] = [
       "Drawn here, in the building that prints it. Which is why the hairlines are thick enough to stitch and the blue does not turn purple in CMYK.",
     metaTitle: "Logo & Graphic Design, Mississauga",
     description:
-      "Logo design from $349, redraws from $75 and brand kits from $749, drawn in the same building that prints them. Call 905-598-3960.",
+      "Logo design from $199, redraws from $45 and brand kits from $399, drawn in the same building that prints them. Call 905-598-3960.",
     keywords: {
       primary: "logo design mississauga",
       secondary: ["brand kit mississauga", "vector logo redraw gta", "graphic design toronto"],
@@ -191,7 +191,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "16pt matte",
     blurb: "The everyday card. Thick enough to feel like one, cheap enough to reorder without thinking about it.",
     spec: "16pt C2S · matte lamination · printed both sides",
-    price: "$79 per 500",
+    price: "from $79 per 500",
   },
   {
     slug: "cards-spot-uv",
@@ -241,7 +241,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Flyers",
     blurb: "The cheapest way to say something to a whole street. Gloss for photographs, uncoated if people will write on it.",
     spec: "8.5×11 · 100lb gloss, matte or uncoated text",
-    price: "$189 per 1,000",
+    price: "from $120 per 500",
   },
   {
     slug: "print-brochures",
@@ -291,7 +291,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Vinyl banners",
     blurb: "Hemmed on all four sides with grommets, because an unhemmed banner tears at the first grommet in the first wind.",
     spec: "13oz scrim · 8oz mesh for fences · 54\" seamless, any length",
-    price: "$145 for 3×6 ft",
+    price: "from $145 for 3×6 ft",
   },
   {
     slug: "sign-lawn",
@@ -299,7 +299,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Lawn signs",
     blurb: "The cheapest lead source a trade has. Left on a lawn for the week after a job, it is proof rather than a claim.",
     spec: "4mm coroplast · one or two sides · H-stakes included",
-    price: "$210 per 10",
+    price: "from $210 per 10",
   },
   {
     slug: "sign-aframe",
@@ -315,7 +315,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Trade show kit",
     blurb: "Backdrop, table cover and flags that pack into a car. The retractable cartridge is reusable — reprint the graphic and keep the base.",
     spec: "Retractables 33×81 and 47×81 · feather flags 8, 11 and 14ft · 6ft and 8ft table covers",
-    price: "$265 per feather flag",
+    price: "from $265 per flag",
   },
   {
     slug: "sign-vehicle",
@@ -357,7 +357,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Printed tees",
     blurb: "Under 24 pieces, DTF is almost always cheaper and we will say so. Above it, screen printing wins and keeps winning.",
     spec: "DTF no minimum, up to 13×19in · screen printing from 24 pieces, up to 6 colours",
-    price: "from $18 a piece",
+    price: "from $12 a piece",
   },
   {
     slug: "wear-caps",
@@ -391,7 +391,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Logo design",
     blurb: "You see three directions, not thirty. Thirty options is a way of making the client do the choosing.",
     spec: "Three directions · two rounds of changes · 5–7 business days",
-    price: "$349",
+    price: "from $199",
   },
   {
     slug: "design-vector",
@@ -399,7 +399,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Logo redraw",
     blurb: "If the only file you have is a JPG off an old card, nobody can print it properly. We redraw it once and it works everywhere after that.",
     spec: "From a photo, screenshot or old card · .ai, .eps, .svg and PDF · 1–2 days",
-    price: "$75",
+    price: "from $45",
   },
   {
     slug: "design-brand-kit",
@@ -407,7 +407,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Brand kits",
     blurb: "The short document you hand a printer, a sign shop or a new employee so they get your colours right without phoning you.",
     spec: "6–10 pages · every logo version · CMYK, HEX and Pantone · fonts and spacing · 2–3 weeks",
-    price: "$749",
+    price: "from $399",
   },
   {
     slug: "design-pantone",
@@ -423,7 +423,7 @@ export const galleryItems: readonly GalleryItem[] = [
     title: "Print and screen artwork",
     blurb: "Most of our design work is not logos. It is laying out the thing that gets printed, at the right size, with the right bleed.",
     spec: "Set at finished size · CMYK · 0.125\" bleed · fonts outlined · full-size PDF proof",
-    price: "from $95 a piece",
+    price: "from $65 a piece",
   },
 ];
 

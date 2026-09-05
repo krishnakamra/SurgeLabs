@@ -29,9 +29,9 @@ import { offer, offerDeadline } from "@/content/offer";
  * visitor goes browsing, and the click you paid for is spent.
  */
 export const metadata: Metadata = {
-  title: `Business Cards for $99 in Mississauga | ${site.name}`,
+  title: `1,000 Business Cards for $99 in Mississauga | ${site.name}`,
   description:
-    "Designed and printed: 250 business cards on 16pt matte for $99, delivered across the GTA. Leave a number and we call you back the same day.",
+    "Designed and printed: 1,000 business cards on 16pt matte for $99, delivered across the GTA. Leave a number and we call you back the same day.",
   robots: { index: false, follow: true },
   alternates: { canonical: "/start" },
 };

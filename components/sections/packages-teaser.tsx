@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button, Eyebrow, SectionFrame } from "@/components/ui";
-import { packages, priceLabel } from "@/content";
+import { packages, priceLabel, priceUnit } from "@/content";
 import { cn } from "@/lib/cn";
 
 /**
@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
  * The cards used to be three boxes with a mono price and a truncated feature
  * list, and the owner's complaint about it was exactly right: it did not read
  * as a price list, so nobody could tell at a glance what the difference
- * between $899 and $1,899 actually was. A ladder answers the only two
+ * between one tier and the next actually was. A ladder answers the only two
  * questions this section is asked — what does it cost, and what is it — in
  * that order, and puts the price in the display face rather than the mono one.
  */
@@ -32,8 +32,9 @@ export function PackagesTeaser() {
             Priced on the page, not after a phone call.
           </h2>
           <p className="mt-5 max-w-[52ch] text-md text-fg-muted">
-            Five ways to start, from a hundred dollars to a full rebrand. Every price below is
-            what you pay, in Canadian dollars, delivery across the GTA included.
+            Five ways to start, from a hundred dollars to a full rebrand. Every figure below is a
+            starting price in Canadian dollars, with GTA delivery included — the cards are the one
+            fixed price on the page.
           </p>
         </div>
         <Button href="/packages" variant="outline" size="lg">
@@ -67,7 +68,7 @@ export function PackagesTeaser() {
                 {priceLabel(pkg)}
               </p>
               <p className="mt-2 font-utility text-2xs uppercase tracking-utility text-fg-faint">
-                {pkg.price === null ? "Per job, in CAD" : "One-time, CAD"}
+                {priceUnit(pkg)}
               </p>
 
               <p className="mt-6 flex-1 text-sm text-fg-muted">{pkg.plain}</p>

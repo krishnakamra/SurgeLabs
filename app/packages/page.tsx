@@ -29,9 +29,12 @@ const AREA_SERVED = cities.map((city) => ({
 /**
  * Each package is a Product carrying a single Offer — that is the shape that
  * actually earns a price in the result, since a fixed-price package has one
- * offer, not a range. The AggregateOffer sits once at the top and describes
- * the real span of the priced tiers, $99 to $1,899. Custom Build is quoted
- * per job and is deliberately outside that span — see the filter below.
+ * offer, not a range. Tiers published as a floor ("from $399") carry an
+ * AggregateOffer with lowPrice instead, because Offer.price asserts an exact
+ * amount and a floor is not one.
+ *
+ * The AggregateOffer at the top spans only the tiers that carry a number at
+ * all. Quote-only tiers are deliberately outside it — see the filter below.
  */
 function pricingSchema() {
   // Only the tiers that carry a published price. AggregateOffer's low/high
@@ -60,7 +63,7 @@ function pricingSchema() {
       "@type": "Service",
       "@id": `${site.url}/packages#catalog`,
       name: "Surge Labs packages",
-      description: "Web, print, signage and apparel packages for GTA businesses, priced on the page from $99.",
+      description: "Web, print, signage and apparel packages for GTA businesses. Starting prices on the page from $99.",
       url: `${site.url}/packages`,
       serviceType: "Marketing, print and apparel packages",
       provider: { "@id": BUSINESS_ID },
@@ -90,21 +93,39 @@ function pricingSchema() {
       description: `${pkg.plain} ${pkg.bestFor}`,
       brand: { "@type": "Brand", name: site.name },
       category: "Marketing, print and apparel package",
-      // A quote-only tier gets no Offer node at all. An Offer whose `price`
-      // is null is invalid, and inventing one — 0, or the tier below — would
-      // publish a figure nobody is going to be charged.
+      // Three shapes, because three things are true of these tiers and only
+      // one of them is "the price is X".
+      //
+      //   no number      → no Offer node. An Offer whose `price` is null is
+      //                    invalid, and inventing one would publish a figure
+      //                    nobody is going to be charged.
+      //   a floor        → AggregateOffer with lowPrice and NO highPrice.
+      //                    This is the correct type for "from $399": Offer.price
+      //                    asserts an exact amount, and Google prints it as one.
+      //   a fixed price  → a plain Offer. Only the $99 cards.
       ...(pkg.price === null
         ? {}
         : {
-            offers: {
-              "@type": "Offer",
-              url: `${site.url}/packages#${pkg.slug}`,
-              price: pkg.price,
-              priceCurrency: "CAD",
-              availability: "https://schema.org/InStock",
-              areaServed: AREA_SERVED,
-              seller: { "@id": BUSINESS_ID },
-            },
+            offers: pkg.priceFrom
+              ? {
+                  "@type": "AggregateOffer",
+                  url: `${site.url}/packages#${pkg.slug}`,
+                  lowPrice: pkg.price,
+                  priceCurrency: "CAD",
+                  availability: "https://schema.org/InStock",
+                  areaServed: AREA_SERVED,
+                  offerCount: 1,
+                  seller: { "@id": BUSINESS_ID },
+                }
+              : {
+                  "@type": "Offer",
+                  url: `${site.url}/packages#${pkg.slug}`,
+                  price: pkg.price,
+                  priceCurrency: "CAD",
+                  availability: "https://schema.org/InStock",
+                  areaServed: AREA_SERVED,
+                  seller: { "@id": BUSINESS_ID },
+                },
           }),
     })),
     ...monthlyPlans.map((plan) => ({
@@ -167,15 +188,16 @@ export default function PackagesPage() {
           </p>
 
           <p className="mt-10 max-w-[58ch] text-md text-fg-muted">
-            Five ways to start. The first is a hundred dollars and gets you a designed business
-            card in your hand next week. The last is a custom quote for a whole rebrand. In
-            between are the three most people take, which bundle the website, print and apparel
-            work that tends to be needed at the same time.
+            Five ways to start. The first is a hundred dollars and gets you a thousand designed
+            business cards. The last is a custom quote for a whole rebrand. In between are the
+            three most people take, which bundle the website, print and apparel work that tends
+            to be needed at the same time.
           </p>
 
           <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
-            Underneath the packages are monthly plans, for the search and social work that never
-            really finishes, and a plain list of single-item rates if you only want one thing.
+            Every figure on this page is a starting price except the cards, which are fixed.
+            We quote each job, so what you see is the least a thing costs — send the details and
+            the real number comes back in writing within one business day.
           </p>
 
           <ul className="mt-12 max-w-[58ch] space-y-2.5 border-t-[length:var(--hairline)] border-rule pt-8">

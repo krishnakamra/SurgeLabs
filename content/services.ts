@@ -169,7 +169,7 @@ export const services: readonly Service[] = [
       {
         question: "How much does a website cost in Mississauga?",
         answer:
-          "A website on its own starts at $599. Our Launch Kit is $899 and adds the Google Business Profile setup, packaged logo files and 250 business cards. Larger builds and Shopify stores are quoted from the page count and the number of products.",
+          "A website on its own starts at $399. The Launch Kit adds the Google Business Profile setup, packaged logo files and 1,000 business cards, and is quoted per job. Larger builds and Shopify stores are quoted from the page count and the number of products.",
       },
       {
         question: "How long does it take to build a website?",
@@ -695,7 +695,9 @@ export const services: readonly Service[] = [
    * These are NOT. They describe how this shop chooses to work and how it
    * chooses to charge, and nobody supplied them:
    *
-   *   · $349 logo design, $749 brand kit, $75 redraw, $95 layout
+   *   · $199 logo design, $399 brand kit, $45 redraw, $65 layout — reduced
+   *     on the owner's instruction 2026-08-26 and published as FLOORS, so
+   *     the only way to break one is to charge less. Still his to confirm.
    *   · three directions on a logo, two rounds of changes after that
    *   · 5–7 business days for a logo, 2–3 weeks for a brand kit
    *
@@ -732,7 +734,7 @@ export const services: readonly Service[] = [
           "There are two kinds of image file, and the difference decides what you can and cannot print.",
           "A JPG or a PNG is a grid of coloured dots. Enlarge it and the dots get bigger — that is the blurry, stepped edge you see on a stretched logo. A vector file is not dots. It is a set of instructions: this line, this curve, this colour. A vector can be printed at any size and stays sharp, from 8mm on a pen to 8 feet on a banner.",
           "This is why every printer, sign shop and embroidery house asks you for vector artwork before they will start. If a JPG is all you have, nobody can do the job properly, and the usual result is a slightly soft logo on a sign that cost two thousand dollars.",
-          "We redraw logos from a photo, a screenshot or an old card. It is a fixed job at a fixed price — $75 — and it usually takes one to two days. At the end you own a file that works everywhere, and you never have to have this conversation again.",
+          "We redraw logos from a photo, a screenshot or an old card. It is a fixed job that starts at $45 and usually takes one to two days. At the end you own a file that works everywhere, and you never have to have this conversation again.",
         ],
       },
       {
@@ -741,7 +743,7 @@ export const services: readonly Service[] = [
           "It starts with a short conversation. What you do, who buys from you, what you like, and what you cannot stand. Fifteen minutes on the phone is enough. Then we go away and draw.",
           "You see three directions, not thirty. Thirty options is a way of making the client do the choosing. Three means we made decisions and can tell you why each one is there.",
           "You pick one, and we change it over two rounds. Nearly every job finishes inside those two rounds. If you want to keep going after that, we charge for the extra time rather than quietly building it into the first number and charging everyone for it.",
-          "A logo takes five to seven business days from that first conversation. Logo design on its own is $349, and that includes the three directions, the two rounds and the full set of files.",
+          "A logo takes five to seven business days from that first conversation. Logo design on its own starts at $199, and that includes the three directions, the two rounds and the full set of files.",
         ],
       },
       {
@@ -749,7 +751,7 @@ export const services: readonly Service[] = [
         body: [
           "A logo on its own is not enough to keep things consistent once more than one person is using it. A brand kit is the short document that closes that gap.",
           "It holds your logo in every version you will need: full colour, one colour, and a white version for dark backgrounds, each laid out both stacked and horizontal. It lists your colours three ways — CMYK for print, HEX for screens, and Pantone for foil and cut vinyl — so the blue on your van is the blue on your website. It names your fonts. It sets the clear space around the logo and the size below which it stops being readable.",
-          "It runs six to ten pages and takes two to three weeks. It is $749.",
+          "It runs six to ten pages and takes two to three weeks. It starts at $399.",
           "You need one when more than one person or more than one supplier touches your artwork — staff posting to social, a printer, a sign shop, a franchise. If you are one person who sends every file yourself, you can skip it for now and buy it later.",
         ],
       },
@@ -758,7 +760,7 @@ export const services: readonly Service[] = [
         body: [
           "Most of our design work is not logos. It is laying out the thing that gets printed. A business card, a flyer, a takeout menu, a rack card, a lawn sign, a banner, a van door, a trade show wall.",
           "We set it at the finished size with the right bleed, in CMYK, with the fonts outlined. Those are the technical requirements the press has, and getting them wrong is what turns a job around at the last minute. You approve a full-size PDF proof before anything runs.",
-          "Layout starts at $95 a piece and is quoted per job, because a one-sided flyer and a sixteen-page menu are not the same work.",
+          "Layout starts at $65 a piece and is quoted per job, because a one-sided flyer and a sixteen-page menu are not the same work.",
           "If you built something yourself in Canva and it will not print, we fix the file rather than make you start again. That is a small charge, not a redesign, and we tell you which one it is before we start.",
         ],
       },
@@ -805,10 +807,10 @@ export const services: readonly Service[] = [
       },
     ],
     specs: [
-      { label: "Logo design", value: "$349 — three directions, two rounds, full file set" },
-      { label: "Logo redraw", value: "$75 — JPG or photo turned into vector artwork" },
-      { label: "Brand kit", value: "$749 — 6–10 pages, colours, fonts and rules" },
-      { label: "Layout", value: "From $95 a piece, quoted per job" },
+      { label: "Logo design", value: "From $199 — three directions, two rounds, full file set" },
+      { label: "Logo redraw", value: "From $45 — JPG or photo turned into vector artwork" },
+      { label: "Brand kit", value: "From $399 — 6–10 pages, colours, fonts and rules" },
+      { label: "Layout", value: "From $65 a piece, quoted per job" },
       { label: "Logo turnaround", value: "5–7 business days from the first conversation" },
       { label: "Brand kit turnaround", value: "2–3 weeks" },
       { label: "Files you get", value: ".ai, .eps, .svg, PDF, PNG, JPG" },
@@ -819,12 +821,12 @@ export const services: readonly Service[] = [
       {
         question: "How much does a logo cost in Mississauga?",
         answer:
-          "Logo design on its own is $349. That covers a short briefing call, three different directions, two rounds of changes on the one you pick, and the full set of files. A brand kit — colours, fonts and rules written down — is $749. Confirm current pricing on the packages page or by phone.",
+          "Logo design starts at $199. That covers a short briefing call, three different directions, two rounds of changes on the one you pick, and the full set of files. A brand kit — colours, fonts and rules written down — starts at $399. Every figure on our site is a starting price; you get the real one in writing within a day.",
       },
       {
         question: "I only have a JPG of my logo. Can you fix it?",
         answer:
-          "Yes. We redraw it as a proper vector file from whatever you have — a photo, a screenshot, an old business card. It is $75 and takes one to two days. After that the same file prints on a card, a banner, a van or a stitched shirt without going soft.",
+          "Yes. We redraw it as a proper vector file from whatever you have — a photo, a screenshot, an old business card. It starts at $45 and takes one to two days. After that the same file prints on a card, a banner, a van or a stitched shirt without going soft.",
       },
       {
         question: "How long does logo design take?",
@@ -844,7 +846,7 @@ export const services: readonly Service[] = [
       {
         question: "Can you design a flyer or a menu if I already have a logo?",
         answer:
-          "Yes, that is most of our design work. Layout starts at $95 a piece and is quoted per job. We set it at the right size with bleed, in CMYK, with fonts outlined, and you approve a full-size PDF proof before it runs.",
+          "Yes, that is most of our design work. Layout starts at $65 a piece and is quoted per job. We set it at the right size with bleed, in CMYK, with fonts outlined, and you approve a full-size PDF proof before it runs.",
       },
       {
         question: "Do you use AI to make logos?",

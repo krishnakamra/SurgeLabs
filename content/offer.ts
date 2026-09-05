@@ -54,22 +54,22 @@ export type Offer = {
 
 export const offer: Offer = {
   eyebrow: "Mississauga · one shop, one bill",
-  headline: "Designed business cards, in your hand next week.",
-  sub: "We lay the card out for you and print 250 of them for $99. That is the whole thing — no subscription, no design fee on top.",
+  headline: "1,000 designed business cards for $99.",
+  sub: "We lay the card out for you and print a thousand of them. That is the whole thing — no subscription, no design fee on top, delivered across the GTA.",
   price: 99,
   priceNote: "One-time, in Canadian dollars. Delivery across the GTA included.",
 
   gets: [
     "We design the card — two versions to choose from",
     "One round of changes after you have seen it",
-    "250 cards, 16pt matte, printed both sides",
+    "1,000 cards, 16pt matte, printed both sides",
     "A full-size proof to approve before anything prints",
     "The print-ready file, yours to keep and reorder from",
     "Delivered anywhere in the GTA, or collect in Mississauga",
   ],
 
   notIncluded: [
-    "A logo, if you do not have one. Logo design is $349, and redrawing an old one properly is $75.",
+    "A logo, if you do not have one. Logo design starts at $199, and redrawing an old one properly starts at $45.",
     "Foil, painted edges or spot UV. We quote those on top — call and we will price them.",
   ],
 
@@ -84,7 +84,7 @@ export const offer: Offer = {
     {
       question: "What if I do not have a logo?",
       answer:
-        "That is normal and it does not stop us. We can set a clean typographic card from your business name for the same $99, or draw you a proper logo for $349. If you have an old logo that only exists as a JPG, we redraw it as a vector file for $75 and it prints properly forever after.",
+        "That is normal and it does not stop us. We can set a clean typographic card from your business name for the same $99, or draw you a proper logo from $199. If you have an old logo that only exists as a JPG, we redraw it as a vector file from $45 and it prints properly forever after.",
     },
     {
       question: "How fast can I have them?",
@@ -94,7 +94,7 @@ export const offer: Offer = {
     {
       question: "Is $99 really the whole price?",
       answer:
-        "Yes, for the design, 250 cards on 16pt matte printed both sides, and delivery across the GTA. It is priced low on purpose to win a first job. Foil, painted edges and spot UV cost more and we tell you what before you commit.",
+        "Yes, for the design, 1,000 cards on 16pt matte printed both sides, and delivery across the GTA. It is priced low on purpose to win a first job, and it is the one fixed price we publish — everything else on our site is a starting price. Foil, painted edges and spot UV cost more and we tell you what before you commit.",
     },
     {
       question: "What happens after I send my number?",

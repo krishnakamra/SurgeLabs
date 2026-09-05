@@ -19,6 +19,18 @@ export type Package = {
    * figure the customer remembers and it is not the one they will be charged.
    */
   price: number | null;
+  /**
+   * true → the number is published as a FLOOR ("from $499"), not a price.
+   *
+   * This is the model the owner chose, and it is the honest one for a shop
+   * that quotes each job: a floor is a promise you can always keep, because
+   * the only way to break it is to charge someone less. A fixed price is a
+   * promise that a bad week in February can force you to break.
+   *
+   * Set it false only where the spec is completely nailed down and the number
+   * cannot move — the $99 card offer is the one of those on this site.
+   */
+  priceFrom: boolean;
   priceNote: string;
   badge?: string;
   deliverables: readonly DeliverableGroup[];
@@ -41,41 +53,52 @@ export type Package = {
  * ⚠️  OWNER: WHAT IS REAL HERE AND WHAT IS NOT
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * CONFIRMED BY THE OWNER — safe to publish:
- *   · Launch Kit          $899
- *   · Momentum Kit      $1,899
- *   · Local SEO          $399/mo
- *   · SEO + Social       $799/mo
- *   · Full Growth      $1,499/mo
- *   · Websites starting  $599   (now the Website package, and in ALA_CARTE)
+ * The pricing model is FLOORS, not fixed prices. You quote each job, so the
+ * site publishes the least a thing can cost and quotes the rest. `priceFrom`
+ * on each tier controls that, and `priceLabel()` renders it.
  *
- * DRAFT — NOT SUPPLIED, WRITTEN TO THE DOCUMENTED IN-HOUSE CAPABILITIES:
- *   · the $99 Business Cards package and everything in it
- *   · the design prices quoted here and in content/services.ts
- *       $349 logo · $749 brand kit · $75 redraw · $95 layout
+ * CONFIRMED BY THE OWNER, 2026-08-26:
+ *   · Business Cards       $99   — design + 1,000 cards. FIXED, not a floor.
+ *   · Website         from $399
+ *   · Local SEO            $399/mo
+ *   · SEO + Social         $799/mo
+ *   · Full Growth        $1,499/mo
+ *
+ * NOT CONFIRMED — quote-only until you give a number:
+ *   · Launch Kit    — was $899. Asked; not ticked. `price: null`.
+ *   · Momentum Kit  — was $1,899. Asked; not ticked. `price: null`.
+ *
+ *   Both still describe their scope, which is honest — a quoted package can
+ *   list what is in it. Give either one a floor and it goes live: set
+ *   `price` and leave `priceFrom: true`.
+ *
+ * REDUCED ON INSTRUCTION, STILL A PROPOSAL — the owner said the design prices
+ * were too high and to reduce them, without naming figures. These are the
+ * reduced ones, published as floors so they cannot bite:
+ *   · Logo design    from $199   (was $349)
+ *   · Logo redraw    from  $45   (was  $75)
+ *   · Brand kit      from $399   (was $749)
+ *   · Print layout   from  $65   (was  $95)
+ *   They are quoted in content/services.ts and content/gallery.ts as well.
+ *   Change one, change all three.
+ *
+ * STILL DRAFT — written to the documented in-house capabilities, never
+ * supplied:
  *   · every `deliverables` line, and all the quantities in them
  *   · every `turnaround`, `bestFor`, `tagline`, `plain` and `notIncluded`
- *   · every price in ALA_CARTE except the $599 website
+ *   · every price in ALA_CARTE except the $399 website and the two lines
+ *     the owner priced directly: flyers from $120/500 and tees from $12
  *
- * The $99 tier is an entry offer and it is priced below the sum of its parts
- * on purpose — the design alone is normally $95 of layout. That is a decision
- * to win a first job, not an error, but it IS a decision: it has to be one
- * you are willing to honour every time someone takes it, including the ones
- * who never order anything else.
+ * The $99 tier is the one fixed price on the site and it is deliberately
+ * below the sum of its parts. It has to be a number you are willing to honour
+ * every time someone takes it, including the ones who never order anything
+ * else — 1,000 cards is a real cost even when the design is quick.
  *
  * The deliverables are a scope of work. Publishing a quantity you cannot
- * honour is a contract you did not agree to — a customer who buys the Launch
- * Kit is entitled to the 250 cards this file promises. Read every line and
- * correct the counts, sizes and stocks before this page goes live.
+ * honour is a contract you did not agree to. Read every line.
  *
- * REMOVED, DELIBERATELY: the Storefront Kit at $3,499 and Full Surge at
- * $6,999 no longer carry published prices. Both scopes now sit inside Custom
- * Build and are quoted per job. Nothing about the work changed; what changed
- * is that a $6,999 number on a page turns away the people it is aimed at
- * before they call. `approxValue` and the "bought separately" anchor it fed
- * are gone with them — it was a rough multiple rather than a real sum of the
- * à-la-carte rates, which is exactly the kind of claim the Competition Bureau
- * treats as a deceptive ordinary price representation.
+ * REMOVED EARLIER, STILL REMOVED: the Storefront Kit at $3,499 and Full Surge
+ * at $6,999. Both scopes sit inside Custom Build and are quoted per job.
  * ═══════════════════════════════════════════════════════════════════════════
  */
 export const packages: readonly Package[] = [
@@ -83,8 +106,11 @@ export const packages: readonly Package[] = [
     slug: "business-cards",
     name: "Business Cards",
     tagline: "The cheapest way to start working with us.",
-    plain: "We design your business card and print 250 of them. That is the whole thing.",
+    plain: "We design your business card and print 1,000 of them. That is the whole thing.",
     price: 99,
+    // The one fixed price on the site. The spec is completely nailed down, so
+    // there is nothing for a floor to protect against.
+    priceFrom: false,
     priceNote: "One-time. Paid up front.",
     badge: "Start here",
     bestFor: "Anyone who needs a card in hand next week and does not have one.",
@@ -102,27 +128,28 @@ export const packages: readonly Package[] = [
       {
         group: "PRINT",
         items: [
-          "250 business cards, 16pt matte, printed both sides",
+          "1,000 business cards, 16pt matte, printed both sides",
           "The print-ready file, which is yours to keep and reorder from",
           "Delivered anywhere in the GTA, or collect in Mississauga",
         ],
       },
     ],
     notIncluded: [
-      "A logo. If you do not have one, logo design is $349 and a redraw of an old one is $75.",
+      "A logo. If you do not have one, logo design starts at $199 and redrawing an old one starts at $45.",
       "Foil, painted edges or spot UV. Those are quoted on top — call and we will price them.",
-      "More than 250 cards. Extra cards are cheap once the file exists; ask when you order.",
+      "A second design. This is one card laid out and printed — a second version for a partner or a second location is quoted on top.",
     ],
     addOns: ["Logo design", "Foil or spot UV", "Matching letterhead"],
   },
   {
     slug: "website",
     name: "Website",
-    tagline: "Five pages, live, and it works on a phone.",
+    tagline: "Live, and it works on a phone.",
     plain:
-      "A five-page website we design, build and put online for you. You own it and you can edit it.",
-    price: 599,
-    priceNote: "One-time. 50% to start, the rest when it goes live.",
+      "A website we design, build and put online for you. You own it and you can edit it.",
+    price: 399,
+    priceFrom: true,
+    priceNote: "One-time. 50% to start, the rest when it goes live. Quoted from the page count.",
     bestFor: "A business with no website, or one it would rather people did not see.",
     turnaround: "2–3 weeks from the day you send us your words and photos",
     ctaLabel: "Start the website",
@@ -130,7 +157,7 @@ export const packages: readonly Package[] = [
       {
         group: "WEB",
         items: [
-          "Five pages, designed and built here",
+          "Designed and built here, five pages as standard",
           "Loads fast and reads properly on a phone",
           "A contact form that lands in your real inbox",
           "Your domain connected and the padlock certificate set up",
@@ -152,9 +179,12 @@ export const packages: readonly Package[] = [
     name: "Launch Kit",
     tagline: "Everything you need to open the doors.",
     plain:
-      "The website, plus 250 business cards, plus your logo files sorted out properly for print.",
-    price: 899,
-    priceNote: "One-time. 50% deposit to start.",
+      "The website, plus 1,000 business cards, plus your logo files sorted out properly for print.",
+    // Quote-only: the owner was asked to confirm $899 and did not. A number
+    // here goes straight onto the page, so it stays null until there is one.
+    price: null,
+    priceFrom: true,
+    priceNote: "Quoted per job. Written quote back within one business day.",
     badge: "Most booked",
     bestFor: "A new business that has to exist online and on paper in the same month.",
     turnaround: "2–3 weeks from artwork approval",
@@ -174,10 +204,10 @@ export const packages: readonly Package[] = [
           "A one-page sheet with your colours and fonts written down",
         ],
       },
-      { group: "PRINT", items: ["250 business cards, 16pt matte"] },
+      { group: "PRINT", items: ["1,000 business cards, 16pt matte"] },
     ],
     notIncluded: [
-      "Designing a logo from scratch. If you have no logo at all, add logo design for $349.",
+      "Designing a logo from scratch. If you have no logo at all, logo design starts at $199.",
       "Ongoing SEO or social posting. Those are the monthly plans below.",
       "Signage, flyers or shirts. Those start in the Momentum Kit.",
     ],
@@ -189,8 +219,10 @@ export const packages: readonly Package[] = [
     tagline: "For when the doors are open and the phone needs to ring.",
     plain:
       "Everything in the Launch Kit, plus the flyers, signs and shirts that get you noticed locally.",
-    price: 1899,
-    priceNote: "One-time. 50% deposit to start.",
+    // Quote-only, same reason as the Launch Kit above.
+    price: null,
+    priceFrom: true,
+    priceNote: "Quoted per job. Written quote back within one business day.",
     bestFor: "A business whose website exists but is not bringing any work in.",
     turnaround: "3–4 weeks from artwork approval",
     ctaLabel: "Start the Momentum Kit",
@@ -233,6 +265,7 @@ export const packages: readonly Package[] = [
     plain:
       "You tell us the job. We price exactly that and nothing you are not going to use.",
     price: null,
+    priceFrom: true,
     priceNote: "Quoted per job. Written quote back within one business day.",
     bestFor:
       "Rebrands, second locations, online stores, franchises and trade shows — anything the four above do not fit.",
@@ -340,27 +373,34 @@ export type AddOn = {
 };
 
 /**
- * ⚠️  Only the $599 website is a confirmed rate. Every other line is a DRAFT
- *     written to make the table real; correct them before publishing. The
- *     four design lines must stay in step with content/services.ts, which
- *     quotes the same numbers.
+ * ⚠️  FLOORS, NOT PRICES. Every line here is the least a thing costs, because
+ *     the owner quotes each job. Only the $499 website is a confirmed rate;
+ *     every other number is a DRAFT written to make the table real.
+ *
+ *     The four design lines were reduced on instruction and are still a
+ *     proposal — see the block at the top of this file. They are quoted in
+ *     content/services.ts and content/gallery.ts too. Change one, change all
+ *     three.
+ *
+ *     CONFIRMED directly by the owner: the $399 website, flyers from $120 per
+ *     500 on 100lb gloss text, and printed tees from $12 a piece.
  */
 export const alaCarte: readonly AddOn[] = [
-  { name: "Website", price: "from $599", unit: "per site", confirmed: true },
-  { name: "Extra website page", price: "$89", unit: "per page", confirmed: false },
-  { name: "Logo design", price: "$349", unit: "one-time", confirmed: false },
-  { name: "Logo redraw, JPG to vector", price: "$75", unit: "one-time", confirmed: false },
-  { name: "Brand kit", price: "$749", unit: "one-time", confirmed: false },
-  { name: "Print layout", price: "from $95", unit: "per piece", confirmed: false },
-  { name: "Business cards, 16pt matte", price: "$79", unit: "per 500", confirmed: false },
-  { name: "Flyers, 8.5×11 on 100lb gloss", price: "$189", unit: "per 1,000", confirmed: false },
-  { name: "Coroplast lawn signs with H-stakes", price: "$210", unit: "per 10", confirmed: false },
-  { name: "Vinyl banner, 3×6 ft", price: "$145", unit: "each", confirmed: false },
-  { name: "Feather flag and hardware", price: "$265", unit: "each", confirmed: false },
+  { name: "Website", price: "from $399", unit: "per site", confirmed: true },
+  { name: "Extra website page", price: "from $79", unit: "per page", confirmed: false },
+  { name: "Logo design", price: "from $199", unit: "one-time", confirmed: false },
+  { name: "Logo redraw, JPG to vector", price: "from $45", unit: "one-time", confirmed: false },
+  { name: "Brand kit", price: "from $399", unit: "one-time", confirmed: false },
+  { name: "Print layout", price: "from $65", unit: "per piece", confirmed: false },
+  { name: "Business cards, 16pt matte", price: "from $79", unit: "per 500", confirmed: false },
+  { name: "Flyers, 8.5×11 on 100lb gloss text", price: "from $120", unit: "per 500", confirmed: true },
+  { name: "Coroplast lawn signs with H-stakes", price: "from $210", unit: "per 10", confirmed: false },
+  { name: "Vinyl banner, 3×6 ft", price: "from $145", unit: "each", confirmed: false },
+  { name: "Feather flag and hardware", price: "from $265", unit: "each", confirmed: false },
   { name: "Vehicle lettering", price: "from $180", unit: "per side", confirmed: false },
-  { name: "DTF printed tees, no minimum", price: "from $18", unit: "per piece", confirmed: false },
+  { name: "Printed tees, no minimum", price: "from $12", unit: "per piece", confirmed: true },
   { name: "Embroidered polos", price: "from $28", unit: "per piece", confirmed: false },
-  { name: "Embroidery digitising", price: "$45", unit: "one-time, per logo", confirmed: false },
+  { name: "Embroidery digitising", price: "from $45", unit: "one-time, per logo", confirmed: false },
   { name: "Same-day rush", price: "+35%", unit: "on stocked items", confirmed: false },
 ];
 
@@ -389,10 +429,10 @@ export const comparisonRows: readonly ComparisonRow[] = [
   {
     label: "Business cards",
     values: {
-      "business-cards": "250",
+      "business-cards": "1,000",
       website: "—",
-      "launch-kit": "250",
-      "momentum-kit": "500",
+      "launch-kit": "1,000",
+      "momentum-kit": "1,000",
       "custom-build": "Any quantity",
     },
   },
@@ -419,10 +459,10 @@ export const comparisonRows: readonly ComparisonRow[] = [
   {
     label: "A new logo drawn from scratch",
     values: {
-      "business-cards": "Add $349",
-      website: "Add $349",
-      "launch-kit": "Add $349",
-      "momentum-kit": "Add $349",
+      "business-cards": "From $199",
+      website: "From $199",
+      "launch-kit": "From $199",
+      "momentum-kit": "From $199",
       "custom-build": "Included if you need one",
     },
   },
@@ -503,16 +543,30 @@ export function formatPrice(value: number): string {
 }
 
 /**
- * What goes on the card. A package with no fixed price says so in words
- * rather than borrowing a number from the tier above it.
+ * What goes on the card.
+ *
+ * Three shapes, and the difference between them is a promise:
+ *   "$99"        a fixed price. We charge this.
+ *   "from $499"  a floor. We never charge less; the quote says the rest.
+ *   "Quoted"     no number is published, because none is decided.
+ *
+ * A tier with no price never borrows the number from the tier above it.
  */
-export function priceLabel(pkg: Pick<Package, "price">): string {
-  return pkg.price === null ? "Quoted" : formatPrice(pkg.price);
+export function priceLabel(pkg: Pick<Package, "price" | "priceFrom">): string {
+  if (pkg.price === null) return "Quoted";
+  return pkg.priceFrom ? `from ${formatPrice(pkg.price)}` : formatPrice(pkg.price);
+}
+
+/** The unit line under a price. */
+export function priceUnit(pkg: Pick<Package, "price" | "priceFrom">): string {
+  if (pkg.price === null) return "Per job, in CAD";
+  return pkg.priceFrom ? "Starting price, CAD" : "One-time, CAD";
 }
 
 /** Terms that apply to every package. Shown near the top of /packages. */
 export const pricingTerms = [
-  "Prices are in Canadian dollars and include delivery across the GTA.",
+  "Every price here is a starting price, in Canadian dollars, with delivery across the GTA included. The $99 cards are the one fixed price on the page.",
+  "A starting price is the least a job costs. Send us the details and you get the real number in writing within one business day.",
   "50% deposit to start, the rest on delivery. The $99 cards are paid up front.",
   "The clock starts when you approve the proof, not when you pay the deposit.",
   "Nothing goes to print until you have seen a proof and said yes in writing.",

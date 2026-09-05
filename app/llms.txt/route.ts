@@ -56,7 +56,7 @@ function packageBlock(): string {
         ? `\n  Not included:\n${pkg.notIncluded.map((line) => `  - ${line}`).join("\n")}`
         : "";
       return [
-        `### ${pkg.name} — ${priceLabel(pkg)} CAD`,
+        `### ${pkg.name} — ${pkg.price === null ? "quoted per job" : `${priceLabel(pkg)} CAD`}`,
         pkg.plain,
         `Best for: ${pkg.bestFor}`,
         `Turnaround: ${pkg.turnaround}`,
@@ -130,7 +130,11 @@ ${galleryCategories
 
 ## Packages and published prices (CAD)
 
-All prices are in Canadian dollars and include delivery across the GTA.
+All figures are in Canadian dollars and include delivery across the GTA.
+They are STARTING PRICES, not fixed prices — Surge Labs quotes each job, so
+"from $399" means the least a website costs, and the real number comes back in
+writing within one business day. The one exception is the $99 business card
+package, which is a fixed price for a fixed spec.
 Turnaround starts when the proof is approved, not when the deposit is paid.
 
 ${packageBlock()}

@@ -14,7 +14,7 @@
  *                CMYK; a 4x6 postcard is 4x6. Safe to publish as written.
  *
  *   "confirmed"  Supplied by the owner. Currently only the package and plan
- *                prices in content/packages.ts, plus websites from $599.
+ *                prices in content/packages.ts, plus websites from $399.
  *
  *   "draft"      NOT SUPPLIED. Written to what a GTA shop with this equipment
  *                list would normally run. Every one of these is a claim about

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui";
 import { imageSrc, packageStills } from "@/content/media";
-import { priceLabel, type Package } from "@/content";
+import { priceLabel, priceUnit, type Package } from "@/content";
 import { cn } from "@/lib/cn";
 
 const SPEC = "font-utility text-2xs uppercase tracking-utility";
@@ -48,9 +48,7 @@ export function PackagePanel({ pkg, index, total }: { pkg: Package; index: numbe
           <p className="font-numeral text-2xl leading-none font-black tabular-nums text-fg sm:text-3xl">
             {priceLabel(pkg)}
           </p>
-          <p className={cn(SPEC, "mt-3 text-fg-faint")}>
-            {pkg.price === null ? "Per job, CAD" : "CAD, one-time"}
-          </p>
+          <p className={cn(SPEC, "mt-3 text-fg-faint")}>{priceUnit(pkg)}</p>
         </div>
       </header>
 

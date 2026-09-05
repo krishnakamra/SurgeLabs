@@ -17,6 +17,7 @@ export {
   alaCarte,
   formatPrice,
   priceLabel,
+  priceUnit,
   pricingTerms,
   comparisonRows,
   type Package,
