@@ -228,6 +228,13 @@ function still(
  * pixel dimensions are unverified. scripts/fetch-media.mjs re-encodes to JPEG
  * and is the place to correct them if it ever matters.
  */
+/**
+ * `stamp` is the time part, HHMMSS. `date` is the day, and it defaults to the
+ * run that produced everything on this page — pass it only for a later run.
+ * It is a parameter rather than a constant because assuming one date for the
+ * whole file is exactly the mistake that made all seventy URLs 403 (see the
+ * note at the top). Both halves come from the generation record.
+ */
 function shot(
   id: string,
   jobId: string,
@@ -235,6 +242,7 @@ function shot(
   aspect: Aspect,
   prompt: string,
   alt: string,
+  date = "20260826",
 ): ImageAsset {
   const SIZE: Record<Aspect, readonly [number, number]> = {
     "3:2": [4992, 3328],
@@ -252,7 +260,7 @@ function shot(
     alt,
     width: w,
     height: h,
-    remoteUrl: `${CDN}/hf_20260826_${stamp}_${jobId}.png`,
+    remoteUrl: `${CDN}/hf_${date}_${stamp}_${jobId}.png`,
     localPath: `/media/stills/${id}.jpg`,
   };
 }
@@ -540,6 +548,44 @@ export function imageSrc(asset: ImageAsset): string {
   return MEDIA_PRESENT ? asset.localPath : asset.remoteUrl;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   AD PHOTOGRAPHY
+
+   Shot separately from everything above, and for a different job. The plates
+   in `stills` are deliberately blank stock on a clean charcoal ground —
+   correct for a website that must not imply work it did not do. They read as
+   catalogue photography, and the owner's note on seeing them in an ad was
+   exactly right: "this doesn't look like what we do."
+
+   These four are staged in a working shop instead — a scuffed steel table, a
+   press delivery tray, ink on the bench. Still generated, still blank of any
+   lettering, still not photographs of a job this shop ran. Nothing captions
+   them as one. They exist so the price card has something behind the numbers
+   that looks like a print shop rather than a catalogue.
+
+   Replace them the moment there are real photographs from the floor. That is
+   what PHOTO_DIR on scripts/make-photo-ad.mjs is for.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export const adShots = {
+  cards: shot("ad-cards", "2ce15199-1be8-441c-a7ec-e248f29719e5", "014642", "4:3",
+    "A tight stack of thick 16pt matte business cards resting on a scuffed steel work table in a small commercial print shop, the clean guillotine-cut edge sharp and in focus in the foreground, three more cards fanned out beside the stack, all cards completely blank with a plain deep navy and white colour block design and no lettering. A paper guillotine and stacked cartons slightly out of focus behind. Warm overhead shop lighting mixed with daylight from a bay door, real working environment, mild wear on the table. Shot on a 50mm lens at f/2.8, slight grain. No text, no words, no numbers, no logos, no lettering anywhere.",
+    "A stack of thick matte business cards on a steel work table in a print shop, cut edge sharp in the foreground.",
+    "20260905"),
+  flyers: shot("ad-flyers", "43571594-879a-40a6-8282-61d0d8c94627", "014642", "4:3",
+    "Freshly cut letter-size gloss flyers stacked in a neat block on the delivery tray of a commercial digital press, the top few fanned across the stack so the gloss coating catches the light, printed with plain abstract colour blocks and photo panels but absolutely no lettering. The press housing and control panel visible but out of focus behind. Warm workshop light, real small-business print shop, honest and slightly utilitarian. Shot on a 35mm lens, natural grain. No text, no words, no numbers, no logos, no lettering anywhere.",
+    "Gloss flyers stacked on the delivery tray of a digital press, the top few fanned so the coating catches the light.",
+    "20260905"),
+  tees: shot("ad-tees", "adf249e5-c389-4aba-aa1a-3baccbd06be0", "014642", "4:3",
+    "A stack of folded cotton t-shirts in black, white and heather grey on a worn wooden bench beside a manual screen printing carousel, the top shirt showing a bold flat two-colour abstract geometric print across the chest with the slightly raised plastisol ink texture catching the light. A squeegee and a screen leaning against the bench. Real small apparel shop, warm light, a bit of ink on the bench. Shot on a 50mm lens at f/2.5. No text, no words, no numbers, no logos, no lettering on the shirts or anywhere.",
+    "Folded printed t-shirts on a bench beside a screen printing carousel, the top shirt showing raised plastisol ink.",
+    "20260905"),
+  web: shot("ad-web", "12352c44-4251-48f6-9a02-59fe9affa719", "014642", "4:3",
+    "A laptop and a phone side by side on a matte charcoal desk in a small design studio, both screens showing the same dark clean website layout rendered only as blank rectangular placeholder blocks, thin rules and grey photo panels, with no readable text of any kind. A printed colour proof sheet with a CMYK control bar and a stack of thick matte cards beside them, tying the screen work to the print work. Hard directional light from the left, crisp shadows. Shot on a 35mm lens. No text, no words, no numbers, no logos, no lettering anywhere.",
+    "A laptop and phone showing the same blank website layout, beside a printed colour proof and a stack of cards.",
+    "20260905"),
+} as const;
+
 /** Every asset, for scripts/fetch-media.mjs to walk. */
 export const allVideos: VideoAsset[] = [...Object.values(loops), ...Object.values(reels)];
 export const allImages: ImageAsset[] = [
@@ -550,4 +596,5 @@ export const allImages: ImageAsset[] = [
   ...Object.values(workStills),
   ...Object.values(categoryStills),
   ...Object.values(galleryStills),
+  ...Object.values(adShots),
 ];

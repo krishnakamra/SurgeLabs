@@ -31,6 +31,7 @@
  */
 export const FORMATS = {
   square: { w: 1080, h: 1080, u: 1, cols: 2, label: "Feed post (Instagram, Facebook)" },
+  portrait: { w: 1080, h: 1440, u: 1.04, cols: 2, label: "3:4 — WhatsApp, SMS, Instagram portrait" },
   story: { w: 1080, h: 1920, u: 1.05, cols: 2, label: "Story / Reel cover" },
   wide: {
     w: 1200,

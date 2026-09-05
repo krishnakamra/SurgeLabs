@@ -177,11 +177,29 @@ disk first:
     node scripts/fetch-media.mjs      # downloads them into public/media/stills
     npm run ad:photo                  # writes ads/surge-labs-photo-*.jpg
 
-To use your own photographs instead, drop four files named `g-cards-16pt`,
-`g-print-flyers`, `g-wear-tees` and `panel-web` (`.jpg` or `.png`) in a
-folder and run:
+It renders three sizes into `ads/`: **1080 × 1080** square, **1080 × 1440**
+3:4 (the one to send on WhatsApp or by text), and **1080 × 1920** story.
+
+To use your own photographs instead, drop four files named `ad-cards`,
+`ad-flyers`, `ad-tees` and `ad-web` (`.jpg` or `.png`) in a folder and run:
 
     PHOTO_DIR=/path/to/your/photos npm run ad:photo
 
 Both scripts refuse to run if an offer has been renamed or removed from
 `content/packages.ts`, so a stale price can't slip into an ad.
+
+---
+
+## The four shots already made
+
+Generated 2026-09-05 with the prompts on this page and registered as
+`adShots` in `content/media.ts`, job ids and all — so any of them can be
+re-rolled or varied without retyping a prompt. `node scripts/fetch-media.mjs`
+pulls them down with everything else.
+
+Rendered ads from that set:
+
+- Square 1080 × 1080 — `24ae5b12-07a5-4417-ab98-e72e4801de06`
+- 3:4 1080 × 1440 — `3b0d3ca5-44d7-461b-93be-4ebe319ebec8`
+
+Both on `d2ol7oe51mr4n9.cloudfront.net/user_3HIEeigdQwB131Po1s53Xd8vSx4/<id>.jpg`.

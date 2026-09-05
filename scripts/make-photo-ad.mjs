@@ -45,36 +45,41 @@ const tees = find(alaCarte, "Printed tees, no minimum");
 const strip = (v) => v.replace(/^from\s+/i, "from ");
 
 /* ── The four offers ──────────────────────────────────────────────────────
-   `photo` is a media id from content/media.ts. The captions describe the
-   stock, not a past job: these are staged plates, not photographs of work
-   this shop ran, and nothing here implies otherwise. */
+   `photo` is a media id from `adShots` in content/media.ts — the shop-floor
+   set, not the blank catalogue plates the website uses. The captions describe
+   the stock, not a past job: these are staged shots, not photographs of work
+   this shop ran, and nothing here implies otherwise.
+
+   The specs are short on purpose. At 1080 wide each caption gets about half
+   the card, and a spec that wraps to three lines pushes the price out of the
+   gradient and into the photograph. */
 const offers = [
   {
     key: "cards",
-    photo: "g-cards-16pt",
+    photo: "ad-cards",
     name: "1,000 business cards",
-    spec: "16pt matte, printed both sides. Design included.",
+    spec: "16pt matte, both sides. Design included.",
     price: priceLabel(cards),
   },
   {
     key: "flyers",
-    photo: "g-print-flyers",
+    photo: "ad-flyers",
     name: "500 flyers",
     spec: "8.5 × 11 on 100lb gloss text.",
     price: strip(flyers.price),
   },
   {
     key: "tees",
-    photo: "g-wear-tees",
+    photo: "ad-tees",
     name: "Printed t-shirts",
-    spec: "Full colour, no minimum. One shirt is a real order.",
+    spec: "Full colour, no minimum.",
     price: `${strip(tees.price)} ea`,
   },
   {
     key: "web",
-    photo: "panel-web",
+    photo: "ad-web",
     name: "Websites",
-    spec: "Built, live, works on a phone. You own it.",
+    spec: "Live, works on a phone. You own it.",
     price: strip(website.price),
   },
 ];
