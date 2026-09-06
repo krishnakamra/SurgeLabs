@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # Downloads everything made for social into ./social/ — the two price ads,
-# the four product photographs behind them, and the twelve reels.
+# the four product photographs behind them, twelve process reels and twelve
+# UGC videos.
 #
 #   bash scripts/download-social.sh
 #
@@ -50,5 +51,31 @@ get "$GEN/hf_20260906_003536_6a4a0ded-b189-451b-a04d-6dc2cf026353.mp4" "$OUT/ree
 get "$GEN/hf_20260906_003527_d852d41e-135d-4cb0-9fa2-99ed2eb8e7af.mp4" "$OUT/reels/12-shop-walkthrough.mp4"
 
 echo
-echo "Done. Captions and posting order: docs/REELS.md"
+echo "The twelve UGC videos →  $OUT/ugc"
+mkdir -p "$OUT/ugc"
+# Scripts, hooks and captions: docs/UGC.md
+get "$GEN/hf_20260906_005639_19c731fd-8c65-4208-aa99-b7e979936dc1.mp4" "$OUT/ugc/01-three-week-quote.mp4"
+get "$GEN/hf_20260906_005639_b8f364fc-c13e-45f8-a93b-9ccfef1611f3.mp4" "$OUT/ugc/02-price-nobody-believes.mp4"
+get "$GEN/hf_20260906_005639_9fbbc539-546a-4ffc-9808-79461a0d5f40.mp4" "$OUT/ugc/03-why-your-flyer-feels-cheap.mp4"
+get "$GEN/hf_20260906_005639_d4a25afd-a9d3-4da3-a078-759b48f0ea01.mp4" "$OUT/ugc/04-one-shirt-is-a-real-order.mp4"
+get "$GEN/hf_20260906_005639_b7daa7a8-b0ef-4d7c-8ef6-6fd81b7d9666.mp4" "$OUT/ugc/05-your-logo-is-a-jpeg.mp4"
+get "$GEN/hf_20260906_005600_cbf5aa9c-b72f-42be-af72-13eade51be2f.mp4" "$OUT/ugc/06-the-blank-van.mp4"
+get "$GEN/hf_20260906_005639_6aef74bb-a45d-45cf-b81a-6e559de3d9ff.mp4" "$OUT/ugc/07-how-to-spend-500.mp4"
+get "$GEN/hf_20260906_005639_b6b25365-3375-49d4-9e06-f5fb12661a67.mp4" "$OUT/ugc/08-gold-foil-secret.mp4"
+get "$GEN/hf_20260906_005639_242f23bc-76a6-40de-9267-6309c3b1065b.mp4" "$OUT/ugc/09-the-5000-dollar-website.mp4"
+get "$GEN/hf_20260906_005639_93ac204e-ff65-4722-8659-0e5fb7025d97.mp4" "$OUT/ugc/10-four-oclock-panic.mp4"
+get "$GEN/hf_20260906_005639_ff21d046-ca4d-4c0c-9cc5-93f888e33eaf.mp4" "$OUT/ugc/11-five-vendors.mp4"
+get "$GEN/hf_20260906_005639_30c3f2d9-7ed4-463a-a928-b5ef958ecb7a.mp4" "$OUT/ugc/12-feel-that.mp4"
+
+echo
+echo "The presenter reference stills →  $OUT/ugc"
+# Keep these. Feed either one back as an image reference and the next batch of
+# videos has the same face, which is the whole point of a consistent presenter.
+get "$GEN/hf_20260906_005444_4684dbd0-574c-4bec-8ed1-7ebfe2a652f4.png" "$OUT/ugc/presenter-a-print-shop.png"
+get "$GEN/hf_20260906_005443_94f49d3a-31eb-40d4-a4d5-c449eaa5f159.png" "$OUT/ugc/presenter-b-apparel-shop.png"
+
+echo
+echo "Done."
+echo "  Reels  — captions and posting order: docs/REELS.md"
+echo "  UGC    — scripts, hooks and captions: docs/UGC.md"
 du -sh "$OUT" 2>/dev/null || true

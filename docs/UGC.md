@@ -4,6 +4,12 @@ Vertical, 9:16, 1080p, 10 seconds, one presenter talking straight to camera
 with a real shop behind her. Selfie-framed and handheld, the way the format
 actually looks.
 
+**Get them:** `bash scripts/download-social.sh` — puts all twelve in
+`social/ugc/`, numbered, alongside the process reels and the price ads. The
+two presenter reference stills come down with them: keep those, because
+feeding one back as an image reference is what makes the next batch the same
+face.
+
 ## The one thing to know about the framing
 
 She is the shop, not a customer. Every line is Surge Labs telling you
