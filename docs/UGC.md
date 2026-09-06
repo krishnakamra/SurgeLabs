@@ -186,3 +186,144 @@ Best slots: 11am–1pm and 6–9pm Eastern.
   two seconds or the video is dead.
 - **Don't add a fake review, star rating or client count** to any of these.
   The site refuses to invent those and so should the videos.
+
+---
+
+# Set two — 13 to 24
+
+Same presenter, same shop. These lean harder on advice than on price: the
+first twelve tell people what things cost, these twelve tell them how the
+trade works. That mix is what stops an account reading as a rolling
+advertisement.
+
+## 13 · How not to get ripped off
+
+**Hook:** "Here's how to not get ripped off by a print shop."
+**On-screen:** `ASK THESE TWO THINGS`
+
+> "Here's how to not get ripped off by a print shop. Ask what stock it's on.
+> Ask if it's printed in-house. If they dodge either one, walk."
+
+**Caption:** A broker marks up someone else's press and can't answer either question. Ours is in the building. 905-598-3960
+`#printing #smallbusinesstips #mississauga #gta`
+
+## 14 · No such thing as a quick logo
+
+**Hook:** "Stop asking for a quick logo."
+**On-screen:** `$45, NOT $2,000`
+
+> "Stop asking for a quick logo. There's no such thing. What you actually want
+> is your existing one redrawn properly. That's forty-five dollars."
+
+**Caption:** Nine times out of ten you don't need a rebrand, you need your current mark as a proper vector. $45.
+`#logodesign #branding #smallbusiness #mississauga`
+
+## 15 · The number one flyer mistake
+
+**Hook:** "Number one flyer mistake: you put eight things on it."
+**On-screen:** `ONE OFFER. ONE NUMBER.`
+
+> "Number one flyer mistake: you put eight things on it. Nobody reads eight
+> things. One offer, one phone number, one reason to call."
+
+**Caption:** We'll print whatever you send. We'd rather it worked. 500 on 100lb gloss, $120.
+`#flyers #marketing #smallbusinesstips #mississauga`
+
+## 16 · You don't need 500 shirts
+
+**Hook:** "You do not need five hundred shirts."
+**On-screen:** `ORDER 12 FIRST`
+
+> "You do not need five hundred shirts. Order twelve. See if people actually
+> wear them. Then order five hundred. From twelve dollars each."
+
+**Caption:** No minimum means you can test before you commit. Most shops won't let you.
+`#customtshirts #screenprinting #nominimum #smallbusiness #mississauga`
+
+## 17 · Send the vector
+
+**Hook:** "We keep asking you for the vector file because—"
+**On-screen:** `90px ≠ A BANNER`
+
+> "We keep asking you for the vector file because your logo pulled off a
+> website is ninety pixels wide. On a banner that's a smudge. Send the original."
+
+**Caption:** If you can't find it, we'll redraw it for $45 and you'll never be asked again.
+`#vector #printing #logodesign #smallbusiness #mississauga`
+
+## 18 · What $99 actually gets you
+
+**Hook:** "People ask what ninety-nine dollars actually gets you."
+**On-screen:** `THE WHOLE LIST`
+
+> "People ask what ninety-nine dollars actually gets you. A thousand cards.
+> Sixteen point matte. Printed both sides. Design included. That's the whole list."
+
+**Caption:** No setup fee, no plate fee, no design fee. $99 is $99.
+`#businesscards #printshop #mississauga #smallbusiness`
+
+## 19 · Don't rent your own website
+
+**Hook:** "Don't pay somebody monthly for a website you don't own."
+**On-screen:** `YOU OWN IT`
+
+> "Don't pay somebody monthly for a website you don't own. The day you stop
+> paying, it disappears. Ours start at three ninety-nine and it's yours."
+
+**Caption:** Built, live, handed over. From $399. surgelabs.ca
+`#webdesign #smallbusiness #website #mississauga #gta`
+
+## 20 · The trade show mistake
+
+**Hook:** "Every trade show, same mistake."
+**On-screen:** `BRING SOMETHING THEY KEEP`
+
+> "Every trade show, same mistake. People spend everything on the booth and
+> nothing to hand out. Bring cards. Bring flyers. Bring something they keep."
+
+**Caption:** The booth ends when the show does. The card is in their bag on Monday.
+`#tradeshow #marketing #printing #mississauga #gta`
+
+## 21 · What a card is actually for
+
+**Hook:** "Your business card has one job, and it isn't looking pretty."
+**On-screen:** `THE GLOVEBOX TEST`
+
+> "Your business card has one job, and it isn't looking pretty. It's being
+> findable in a glovebox six months from now. That's why thickness matters."
+
+**Caption:** Thin cards get lost in the pile. 16pt doesn't. 1,000 for $99.
+`#businesscards #16pt #printshop #branding #mississauga`
+
+## 22 · Three things wrong with most vans
+
+**Hook:** "Three things wrong with most vans."
+**On-screen:** `1. SIZE 2. WORDS 3. CITY`
+
+> "Three things wrong with most vans. Phone number's too small. Way too many
+> words. And no city name. Fix those three and it starts working."
+
+**Caption:** Lettering from $180 a side, and we'll lay it out so it reads at 60km/h.
+`#vehiclelettering #signage #trades #contractor #mississauga`
+
+## 23 · The cheapest marketing you're not doing
+
+**Hook:** "Cheapest marketing you're not doing—"
+**On-screen:** `$12 A SHIRT`
+
+> "Cheapest marketing you're not doing: put your logo on what your staff
+> already wears. Twelve dollars a shirt. They advertise all day for free."
+
+**Caption:** Your crew is already out in public. Might as well be branded.
+`#customapparel #workwear #smallbusiness #trades #mississauga`
+
+## 24 · Your first thousand dollars
+
+**Hook:** "If I had your first thousand dollars, here's the split."
+**On-screen:** `THE $1,000 SPLIT`
+
+> "If I had your first thousand dollars, here's the split. Cards. Flyers. A
+> shirt for everyone. A one page website. Then go get customers."
+
+**Caption:** In that order. The website last, because a card in someone's hand beats a page nobody's found yet.
+`#smallbusinesstips #startup #marketing #mississauga #gta`

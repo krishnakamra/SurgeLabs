@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Downloads everything made for social into ./social/ — the two price ads,
-# the four product photographs behind them, twelve process reels and twelve
-# UGC videos.
+# the four product photographs behind them, twelve process reels and
+# twenty-four UGC videos.
 #
 #   bash scripts/download-social.sh
 #
@@ -66,6 +66,23 @@ get "$GEN/hf_20260906_005639_242f23bc-76a6-40de-9267-6309c3b1065b.mp4" "$OUT/ugc
 get "$GEN/hf_20260906_005639_93ac204e-ff65-4722-8659-0e5fb7025d97.mp4" "$OUT/ugc/10-four-oclock-panic.mp4"
 get "$GEN/hf_20260906_005639_ff21d046-ca4d-4c0c-9cc5-93f888e33eaf.mp4" "$OUT/ugc/11-five-vendors.mp4"
 get "$GEN/hf_20260906_005639_30c3f2d9-7ed4-463a-a928-b5ef958ecb7a.mp4" "$OUT/ugc/12-feel-that.mp4"
+
+
+echo
+echo "UGC set two — advice-led →  $OUT/ugc"
+# Scripts, hooks and captions: docs/UGC.md
+get "$GEN/hf_20260906_012344_415ee551-85b1-44d8-9c3d-932164446658.mp4" "$OUT/ugc/13-how-not-to-get-ripped-off.mp4"
+get "$GEN/hf_20260906_012345_c79f13b8-3090-4749-aaea-1312354dcd99.mp4" "$OUT/ugc/14-no-such-thing-quick-logo.mp4"
+get "$GEN/hf_20260906_012345_2e253071-5097-4161-be0b-2a5b1c850df3.mp4" "$OUT/ugc/15-number-one-flyer-mistake.mp4"
+get "$GEN/hf_20260906_012344_928b5bcd-139f-408a-b36d-91da106263ed.mp4" "$OUT/ugc/16-you-dont-need-500-shirts.mp4"
+get "$GEN/hf_20260906_012344_1d260453-2fdc-44f5-8e22-a84fb135f609.mp4" "$OUT/ugc/17-send-the-vector.mp4"
+get "$GEN/hf_20260906_012345_29f1e28d-970d-4652-b46b-9f3301188efc.mp4" "$OUT/ugc/18-what-99-dollars-gets-you.mp4"
+get "$GEN/hf_20260906_012846_5cf8f492-948b-4b1e-9f85-780949a967ab.mp4" "$OUT/ugc/19-dont-rent-your-website.mp4"
+get "$GEN/hf_20260906_012344_abd57b39-1699-434a-861a-afc336c9c7d1.mp4" "$OUT/ugc/20-trade-show-mistake.mp4"
+get "$GEN/hf_20260906_012846_c1ed4b91-3a6d-4410-b63e-290b629d3fef.mp4" "$OUT/ugc/21-the-glovebox-test.mp4"
+get "$GEN/hf_20260906_012846_12afbf4b-c3e6-4ae2-acea-433649aede21.mp4" "$OUT/ugc/22-three-van-mistakes.mp4"
+get "$GEN/hf_20260906_012846_13195935-efb8-4c0b-b09d-ea882c98c599.mp4" "$OUT/ugc/23-cheapest-marketing.mp4"
+get "$GEN/hf_20260906_012846_08d703cd-2738-4d78-973c-357b0bdc0942.mp4" "$OUT/ugc/24-your-first-1000-dollars.mp4"
 
 echo
 echo "The presenter reference stills →  $OUT/ugc"
