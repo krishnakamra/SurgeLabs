@@ -1,0 +1,33 @@
+# Netlify build configuration.
+#
+# The Next.js runtime plugin is what makes the App Router work here: it turns
+# the route handlers and the quote form's server action into Netlify
+# Functions, and serves the statically generated pages from the CDN. Without
+# it Netlify would publish `.next` as a folder of files and every dynamic
+# route would 404.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # The prebuild checks run `node --experimental-strip-types`, which landed in
+  # Node 22.6. On an older Node the build fails before Next is even reached,
+  # with an error that points at the flag rather than the cause — so this is
+  # pinned rather than left to Netlify's default.
+  NODE_VERSION = "22"
+
+  # Netlify fails a build if it finds an environment variable's value in the
+  # output. NEXT_PUBLIC_META_PIXEL_ID is *supposed* to be in the output — that
+  # is what NEXT_PUBLIC_ means, and the pixel cannot fire without it — so the
+  # scanner has to be told it is not a leak. Every other variable stays
+  # scanned; do not widen this.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_META_PIXEL_ID"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Security headers and redirects are NOT set here. They live in
+# next.config.ts, which the plugin honours, so there is one place they can be
+# wrong instead of two. See the CSP note at the top of that file for why the
+# policy is host-restrictive rather than nonce-based.

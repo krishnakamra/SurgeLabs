@@ -289,7 +289,7 @@ Storage runs **before** email, deliberately, so a lead survives an email outage.
 
 ## Deploying
 
-Headers, redirects and image config all live in `next.config.ts` rather than `vercel.json` — Vercel honours the Next config, and splitting them across two files is how they drift apart. `vercel.json` carries only what is genuinely Vercel's.
+Headers, redirects and image config all live in `next.config.ts` rather than in the host's config file — the Netlify Next.js plugin honours the Next config, and splitting them across two files is how they drift apart. `netlify.toml` carries only what is genuinely the host's: the Node version, the build command and the secret-scanner exemption.
 
 Security headers are applied to every route: HSTS, a host-restricted CSP, `nosniff`, `X-Frame-Options: DENY`, a referrer policy and a `Permissions-Policy` that denies every sensor the site does not use. `poweredByHeader` is off.
 

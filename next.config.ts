@@ -128,7 +128,7 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // www to apex. Vercel does this itself once the apex is set as the
+      // www to apex. Most hosts will do this themselves once the apex is set as
       // primary domain, but that is a dashboard setting someone can undo
       // without noticing. This makes it part of the build.
       {

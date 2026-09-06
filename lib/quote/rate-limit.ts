@@ -9,8 +9,9 @@ const MAX_PER_WINDOW = 5;
  * ⚠️  Serverless caveat, stated rather than buried: this is per instance, so
  *     a determined flood spread across cold starts gets through. It is a
  *     speed bump for the ordinary case — a stuck submit button, one bot — and
- *     it costs nothing. If real spam appears, move this to Upstash or
- *     Vercel KV so the counter is shared, and only then consider a captcha.
+ *     it costs nothing. If real spam appears, move this to a shared store —
+ *     Upstash, Netlify Blobs, any Redis — so the counter survives across
+ *     instances, and only then consider a captcha.
  *     The brief's order is right: honeypot, then rate limit, then captcha
  *     only if needed.
  */
