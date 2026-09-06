@@ -3,6 +3,11 @@
 Twelve vertical clips, 9:16, 1080p, 8 seconds, with sound. Built for a brand
 new account with nothing on it yet.
 
+**Get them:** `bash scripts/download-social.sh` — pulls all twelve plus the two
+price ads and the four product photos into `social/`, numbered in posting
+order. Run it on a normal network; the proxy this repo was built behind blocks
+both CloudFront hosts, which is why they are not committed.
+
 ## Why these are all shop-floor, and none of them is a person talking
 
 You asked for UGC with a creator in it. Two reasons this set went a different
