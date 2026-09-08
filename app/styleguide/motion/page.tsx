@@ -45,7 +45,7 @@ export default function MotionStyleguidePage() {
         as="header"
         padding="lg"
         id="sec-motion-00"
-        ticket={{ number: "00", label: "MOTION", spec: "GSAP + LENIS" }}
+        ticket={{ number: "00", label: "MOTION", spec: "GSAP" }}
       >
         <Eyebrow spec="STYLEGUIDE">Motion infrastructure</Eyebrow>
         <h1 className="mt-8 font-display text-4xl font-extrabold text-fg">Press Run</h1>

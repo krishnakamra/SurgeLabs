@@ -31,3 +31,16 @@
 # next.config.ts, which the plugin honours, so there is one place they can be
 # wrong instead of two. See the CSP note at the top of that file for why the
 # policy is host-restrictive rather than nonce-based.
+
+# next/image with a remote source needs the host allowlisted TWICE: once in
+# `images.remotePatterns` in next.config.ts, which is Next's own check, and
+# again here, which is Netlify's image CDN refusing to proxy an arbitrary
+# origin. Miss this one and every remote image fails in production while the
+# local dev server serves them happily — which is exactly what happened on
+# the first deploy: a site with no pictures on it.
+#
+# This is temporary. `node scripts/fetch-media.mjs` downloads all of it into
+# public/media and flips MEDIA_PRESENT, after which every image is same-origin
+# and this block can go.
+[images]
+  remote_images = ["https://d8j0ntlcm91z4\\.cloudfront\\.net/.*"]

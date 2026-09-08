@@ -254,9 +254,11 @@
   /* The arms sit OUTSIDE the trim by gap + len, so the inset has to be at
      least that or they hang past the viewport edge. 6 + 12 = 18px, so 20px
      is the floor here — at 16px the marks overflowed by exactly 2px. */
-  /* Header height. Sections offset their snap position by it, and the
-     sticky header measures itself against it. */
-  --header-h: 4rem;
+  /* Pre-hydration fallback for the masthead height. SiteHeader measures the
+     real bar and overwrites this on mount, so it only has to be close enough
+     that a page loaded straight onto an #anchor is not wrong before the JS
+     lands. Measured at 65px on a 390px viewport. */
+  --header-h: 4.0625rem;
 
   --crop-inset: 1.25rem;
   --crop-gap: 0.375rem;
@@ -445,10 +447,37 @@
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL
+
+   The wheel belongs to the browser. This file declares nothing that touches
+   wheel or trackpad scrolling, and a smooth-scroll library must not be
+   reintroduced — see the note at the top of components/motion/motion-provider.tsx
+   for the measurements that got the last one removed.
+
+   `scroll-behavior: smooth` is safe and is not that: it applies only to
+   anchor jumps and scripted scrolls, never to a wheel gesture. So an in-page
+   link glides and the scroll itself stays native and instant.
+
+   `scroll-padding-top` is not optional. The masthead is `sticky top-0`, so
+   without it every `#anchor` — including the skip link, which is the one a
+   keyboard or screen-reader user depends on — lands underneath the header
+   with its target hidden.
+   ═══════════════════════════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+  /* Plus breathing room. Flush against the header's bottom edge is
+     technically clear and still reads as clipped, because there is no gap
+     between the rule and the cap-height below it. --header-h itself is
+     measured and published by SiteHeader; the CSS value is the fallback
+     before hydration. */
+  scroll-padding-top: calc(var(--header-h) + 0.75rem);
+}
+
 /* The mobile menu covers the viewport, so the sheet behind it stops moving.
-   An attribute on the root rather than an inline style: Lenis writes inline
-   overflow on <html> when it stops, and two owners of one property is how
-   scroll gets stuck open. This is set and removed by SiteHeader. */
+   An attribute on the root rather than an inline style, so there is exactly
+   one owner of `overflow` on <html> — two owners is how a scroll gets stuck
+   locked open. This is set and removed by SiteHeader. */
 html[data-nav-open] {
   overflow: clip;
 }
@@ -664,52 +693,6 @@ html[data-nav-open] {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   LENIS
-   The rules the package ships in lenis.css, inlined so the app keeps one
-   stylesheet — plus the reset that matters most: native smooth scrolling and
-   Lenis both animating the same scroll position fight each other, visibly, on
-   every anchor jump. Lenis wins while it is mounted; without it (no JS,
-   reduced motion) the native behaviour above stands.
-   ═══════════════════════════════════════════════════════════════════════════ */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-/* Belt and braces. Native smooth scrolling is deliberately never declared
-   anywhere in this stylesheet: Lenis *is* the smooth scroll while it is
-   mounted, and the two animating the same scroll position fight visibly on
-   every anchor jump. Worse, the scroll-restoration code that runs on
-   navigation reads the computed value and writes it back as an INLINE style
-   on <html>, which no rule here could then override. Keeping the declared
-   value `auto` is what stops that from ever happening. */
-html.lenis {
-  scroll-behavior: auto;
-}
-
-.lenis:not(.lenis-autoToggle).lenis-stopped {
-  overflow: clip;
-}
-
-.lenis [data-lenis-prevent],
-.lenis [data-lenis-prevent-wheel],
-.lenis [data-lenis-prevent-touch],
-.lenis [data-lenis-prevent-vertical],
-.lenis [data-lenis-prevent-horizontal] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-.lenis.lenis-autoToggle {
-  transition-property: overflow;
-  transition-duration: 1ms;
-  transition-behavior: allow-discrete;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
    PRINT
    The quote spec sheet is meant to be printed and put in a folder, so the
    press-bed palette has to become ink on paper: the ink surface costs a
@@ -787,47 +770,11 @@ html.lenis {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   SECTION SNAP
-   Set by <SectionSnap>, which only mounts on pages that want it and never
-   under reduced motion. Lenis stands down while this is on — see
-   MotionProvider; the two cannot both own the scroll.
-
-   `proximity` is deliberate. Only the hero is a full viewport tall, so
-   mandatory snap would trap a reader inside any section taller than the
-   screen: every attempt to reach the middle gets pulled back to an edge.
-   Proximity snaps when a gesture ends near a boundary and otherwise leaves
-   the reader where they put themselves.
-   ═══════════════════════════════════════════════════════════════════════════ */
-html[data-snap="on"] {
-  scroll-snap-type: y proximity;
-}
-
+/* The sticky header is taller on desktop, and several scroll offsets are
+   measured against it. */
 @media (width >= 40rem) {
   :root {
     --header-h: 5rem;
-  }
-}
-
-html[data-snap="on"] main > section {
-  scroll-snap-align: start;
-  /* The header is sticky, so a section snapped flush to the viewport top
-     would sit underneath it. Offsetting by the header height is also what
-     makes 0 the resting position on load — without it the browser snapped
-     straight to the hero boundary at 81px and the header was gone before
-     the visitor had done anything. */
-  scroll-margin-top: var(--header-h);
-  /* Without this a section taller than the viewport can never satisfy the
-     snap and the browser fights the reader the whole way down it. */
-  scroll-snap-stop: normal;
-}
-
-/* Belt and braces: the media query cannot be relied on alone, because the
-   attribute is set from JS that reads the same query — but if a reader
-   changes the OS setting mid-session, this takes effect without a remount. */
-@media (prefers-reduced-motion: reduce) {
-  html[data-snap="on"] {
-    scroll-snap-type: none;
   }
 }
 

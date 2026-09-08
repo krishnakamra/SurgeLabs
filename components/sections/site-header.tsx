@@ -13,15 +13,16 @@ import { isBareRoute, navCta, primaryNav, type NavItem } from "@/lib/navigation"
 /**
  * The masthead. Rendered once in app/layout.tsx, so every route has it.
  *
- * NOT sticky, and that is a decision rather than an omission. This site
- * already has persistent chrome — the job-ticket rail down the left edge —
- * and a second fixed bar would compete with it. More concretely, PinnedPanel
- * pins the horizontal package track with `sticky top-0`, and a sticky
- * masthead sits on top of it. It would also swallow every in-page anchor the
- * rail links to, since Lenis handles those itself and does not read
- * scroll-padding-top.
+ * Sticky (`sticky top-0`, z-50). An earlier version of this comment claimed
+ * the opposite — that the masthead was deliberately not sticky — while the
+ * element below it had been sticky the whole time. Trust the className.
  *
- * So the logo is printed at the top of the sheet, and the sheet scrolls.
+ * Sticky chrome costs two things and both are paid for elsewhere, so don't
+ * re-litigate them here: PinnedPanel's `sticky top-0` package track sits
+ * under this one and is offset for it, and every in-page anchor is kept out
+ * from under the header by `scroll-padding-top: var(--header-h)` in
+ * globals.css. That padding is load-bearing for the skip link — remove it
+ * and keyboard users land on a heading hidden behind this bar.
  *
  * Ink bed, always — the masthead is the press bed the sheets run through,
  * which is also what themeColor in app/layout.tsx claims the site is.
@@ -158,8 +159,7 @@ function Dropdown({ item, pathname }: { item: NavItem; pathname: string }) {
 /* ── Mobile overlay ───────────────────────────────────────────────────────
    Full screen, ink bed, everything on it. Focus moves into the panel on open
    and back to the toggle on close; Escape closes it; the page behind it stops
-   scrolling via html[data-nav-open] in globals.css, which works whether or
-   not Lenis is running. */
+   scrolling via html[data-nav-open] in globals.css. */
 function MobileMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
   const id = useId();
@@ -341,12 +341,46 @@ function MobileMenu({ pathname }: { pathname: string }) {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const bar = useRef<HTMLElement>(null);
 
-  // Landing pages render their own minimal masthead. See BARE_ROUTES.
+  /* Publish the masthead's REAL height as --header-h, which globals.css uses
+     to keep anchor targets out from under it.
+
+     It used to be a hardcoded `4rem` guess, and the guess was the bug: the
+     bar renders 65px (the 0.5px hairline border rounds up), and taller again
+     once a font swaps or the viewport changes the wordmark's line box. Seven
+     of the eleven homepage headings were landing underneath it. A number
+     written in CSS cannot track a height the content decides, so it is
+     measured here instead and the CSS value is only the pre-hydration
+     fallback.
+
+     Hooks must run on every render, so this sits above the bare-route return
+     below — see the comment there. */
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    const publish = () =>
+      document.documentElement.style.setProperty(
+        "--header-h",
+        `${Math.ceil(el.getBoundingClientRect().height)}px`,
+      );
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--header-h");
+    };
+  }, [pathname]);
+
+  // Landing pages render their own minimal masthead. See BARE_ROUTES. This
+  // returns after the hook above, never before it: an early return that skips
+  // a hook changes the hook order between renders and React throws.
   if (isBareRoute(pathname)) return null;
 
   return (
     <header
+      ref={bar}
       data-surface="ink"
       // z-50 is load-bearing, not decoration. The header and every section
       // below it are `relative isolate` siblings, so without an explicit

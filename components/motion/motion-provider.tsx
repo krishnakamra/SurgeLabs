@@ -1,23 +1,38 @@
 "use client";
 
-import Lenis from "lenis";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { gsap, ScrollTrigger } from "@/lib/motion/gsap";
-import { REDUCED_MOTION_QUERY, prefersReducedMotion } from "@/lib/motion/preferences";
+import { REDUCED_MOTION_QUERY } from "@/lib/motion/preferences";
 
 const RESIZE_DEBOUNCE_MS = 180;
 
 /**
- * Owns the scroll loop: Lenis driven by GSAP's ticker, so smooth scroll and
- * every ScrollTrigger read the same clock. Two rAF loops fighting each other
- * is what makes scrub animations jitter.
+ * Owns the animation clock. Renders nothing; mount once inside <body>.
  *
- * Mount once, directly inside <body>. It renders nothing.
+ * ⚠️  THE SCROLL IS THE BROWSER'S. Do not hand it to a smooth-scroll library
+ *     again.
+ *
+ *     This used to run Lenis at `lerp: 0.12`, driven by the GSAP ticker. It
+ *     was measured on 2026-09-08: a single wheel notch took 950ms to stop
+ *     moving and 452ms to travel 95% of its distance, and it spent the last
+ *     700ms of that crawling the final 30 pixels. Native scroll finishes in
+ *     about one frame. The owner's description was "slow and hard to
+ *     scroll", which is exactly what an exponential ease on every notch
+ *     feels like — and no visitor has the site's aesthetic in mind while
+ *     they are fighting their own trackpad.
+ *
+ *     The reason it looked worth having was scrub smoothness. That argument
+ *     does not hold: ScrollTrigger attaches to native scroll perfectly well
+ *     and every scrubbed effect in components/motion still runs. The library
+ *     bought nothing that survived contact with a real input device.
+ *
+ * What is left here is the parts that were never about hijacking scroll: one
+ * clock for every tween, a refresh when late assets change the measurements,
+ * and stopping the whole thing when the tab is hidden.
  */
 export function MotionProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     // Videos we paused when the tab went away — so returning doesn't start
@@ -27,52 +42,9 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     let lastWidth = window.innerWidth;
     let asleep = false;
 
-    const startLenis = () => {
-      if (lenisRef.current || prefersReducedMotion()) return;
-      // Snapping owns the scroll while it is on — see SectionSnap.
-      if (document.documentElement.dataset.snap === "on") return;
-
-      const lenis = new Lenis({
-        autoRaf: false, // GSAP's ticker drives it, see below
-        lerp: 0.12,
-        smoothWheel: true,
-        // Native momentum on touch. Hijacking it feels broken on a phone.
-        syncTouch: false,
-        touchMultiplier: 1.6,
-        // Routes in-page hash links (the job-ticket rail) through Lenis.
-        anchors: true,
-      });
-
-      lenis.on("scroll", ScrollTrigger.update);
-      lenisRef.current = lenis;
-    };
-
-    const stopLenis = () => {
-      lenisRef.current?.destroy();
-      lenisRef.current = null;
-    };
-
-    // One clock. lagSmoothing(0) stops GSAP from fast-forwarding after a
-    // stalled frame, which would otherwise jump a scrubbed timeline.
-    const tick = (time: number) => lenisRef.current?.raf(time * 1000);
-    gsap.ticker.add(tick);
+    // lagSmoothing(0) stops GSAP from fast-forwarding after a stalled frame,
+    // which would otherwise jump a scrubbed timeline.
     gsap.ticker.lagSmoothing(0);
-
-    // Lenis and CSS scroll-snap cannot both drive the scroll. SectionSnap
-    // sets html[data-snap] on the pages that want snapping; this watches for
-    // it and hands the scroll over, including across client-side navigation
-    // where the attribute appears and disappears without a reload.
-    const syncScrollOwner = () => {
-      if (document.documentElement.dataset.snap === "on") stopLenis();
-      else startLenis();
-    };
-    const snapWatcher = new MutationObserver(syncScrollOwner);
-    snapWatcher.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-snap"],
-    });
-
-    syncScrollOwner();
 
     // ── Refresh triggers ──────────────────────────────────────────────────
     // Fonts land after first paint and reflow every measured start/end.
@@ -90,10 +62,7 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       lastWidth = width;
 
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        lenisRef.current?.resize();
-        ScrollTrigger.refresh();
-      }, RESIZE_DEBOUNCE_MS);
+      resizeTimer = window.setTimeout(() => ScrollTrigger.refresh(), RESIZE_DEBOUNCE_MS);
     };
     window.addEventListener("resize", onResize, { passive: true });
 
@@ -103,10 +72,9 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       asleep = true;
 
       for (const trigger of ScrollTrigger.getAll()) trigger.disable(false, false);
-      lenisRef.current?.stop();
       // Sleeping the ticker halts every tween at once — including looping
       // ones like MarqueeSpec that a hidden tab would otherwise keep paying
-      // for. It also stops Lenis, since its rAF is a ticker callback.
+      // for.
       gsap.ticker.sleep();
 
       for (const video of document.querySelectorAll("video")) {
@@ -122,7 +90,6 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       asleep = false;
 
       gsap.ticker.wake();
-      lenisRef.current?.start();
       for (const trigger of ScrollTrigger.getAll()) trigger.enable(false);
       ScrollTrigger.refresh();
 
@@ -137,8 +104,6 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     const query = window.matchMedia(REDUCED_MOTION_QUERY);
     const onPreferenceChange = () => {
       document.documentElement.dataset.motion = query.matches ? "reduced" : "ready";
-      if (query.matches) stopLenis();
-      else startLenis();
       ScrollTrigger.refresh();
     };
     query.addEventListener("change", onPreferenceChange);
@@ -151,17 +116,14 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("resize", onResize);
       window.clearTimeout(resizeTimer);
-      snapWatcher.disconnect();
-      gsap.ticker.remove(tick);
       gsap.ticker.wake();
-      stopLenis();
     };
   }, []);
 
-  // New route: Next has already reset scroll, so bring Lenis into agreement
-  // and re-measure once the incoming DOM has been painted.
+  // New route: Next has already reset the scroll position itself, so there is
+  // nothing to bring into agreement any more. Just re-measure once the
+  // incoming DOM has been painted.
   useEffect(() => {
-    lenisRef.current?.scrollTo(0, { immediate: true, force: true });
     const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
     return () => cancelAnimationFrame(frame);
   }, [pathname]);

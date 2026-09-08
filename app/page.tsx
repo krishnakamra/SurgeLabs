@@ -11,7 +11,6 @@ import {
   Split,
   Testimonials,
 } from "@/components/sections";
-import { SectionSnap } from "@/components/motion";
 import { Schema } from "@/components/seo/schema";
 import { buildMetadata, getPageSeo } from "@/lib/seo/page-seo";
 import { pageGraph, webPage } from "@/lib/seo/schema";
@@ -33,7 +32,6 @@ export default function HomePage() {
   return (
     <>
       <Schema graph={homeGraph()} />
-      <SectionSnap />
       <main id="main" tabIndex={-1}>
         <Hero />
         <Split />

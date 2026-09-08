@@ -28,5 +28,4 @@ export { StockFlip } from "./stock-flip";
 export type { StockFlipProps } from "./stock-flip";
 
 export { FoilField } from "./foil";
-export { SectionSnap } from "./section-snap";
 export { PressLight } from "./press-light";

@@ -82,7 +82,9 @@ export function QuoteForm({
   const go = (next: number) => {
     setError(null);
     setStep(Math.max(0, Math.min(STEPS.length - 1, next)));
-    // Bring the top of the step into view without fighting Lenis.
+    // Bring the top of the step into view. `scroll-behavior: smooth` on the
+    // root glides this, and `scroll-padding-top` keeps the heading clear of
+    // the sticky masthead — both in globals.css, so nothing to pass here.
     document.getElementById("quote-steps")?.scrollIntoView({ block: "start" });
   };
 
