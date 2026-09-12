@@ -22,3 +22,7 @@ next-env.d.ts
 
 # The rendered ad previews are committed (see ads/), but the scratch HTML is not.
 ads/preview.html
+
+# Rendered card proofs. Regenerate with `node scripts/make-card.mjs` —
+# press-resolution PNGs do not belong in git history.
+cards/
