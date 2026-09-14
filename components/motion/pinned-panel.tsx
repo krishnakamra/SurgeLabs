@@ -98,8 +98,10 @@ export function PinnedPanel({
       <div
         className={cn(
           "flex flex-col justify-center overflow-hidden",
-          // Mobile and tablet: natural height, no pinning, normal rhythm.
-          "py-24",
+          // Mobile and tablet: natural height, no pinning. py-24 here was
+          // doubling up with the section's own padding — 192px per panel,
+          // 960px across the five of them.
+          "py-12 sm:py-16",
           // Desktop: hold still below the masthead for one screen.
           "lg:sticky lg:top-[var(--header-h)] lg:h-[calc(100svh-var(--header-h))] lg:py-0",
           innerClassName,

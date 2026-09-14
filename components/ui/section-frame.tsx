@@ -22,9 +22,16 @@ export type SectionPadding = "none" | "sm" | "md" | "lg";
  */
 const PADDING: Record<SectionPadding, string> = {
   none: "",
-  sm: "py-[clamp(3.5rem,5.6vw,5.6rem)]",
-  md: "py-[clamp(5.6rem,9.8vw,9.8rem)]",
-  lg: "py-[clamp(8.5rem,15.4vw,15.4rem)]",
+  /* The FLOOR is what phones get, always. 5.6vw at 390px is 22px, far below
+     any of these minimums, so the clamp never interpolates on a handset — it
+     pins to the low end and that is the only value a mobile reader ever sees.
+     The floors used to be desktop-sized (56 / 90 / 136px, doubled top and
+     bottom), which put 272px of air around every `lg` section on a 390px
+     screen and was a third of why the homepage ran to 22 screens.
+     The vw term and the ceiling are untouched, so nothing above ~490px moves. */
+  sm: "py-[clamp(2rem,5.6vw,5.6rem)]",
+  md: "py-[clamp(3rem,9.8vw,9.8rem)]",
+  lg: "py-[clamp(4.5rem,15.4vw,15.4rem)]",
 };
 
 export type SectionTicket = {

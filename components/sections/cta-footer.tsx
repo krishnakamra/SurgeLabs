@@ -65,9 +65,13 @@ export function SiteFooter() {
   return (
     <footer data-surface="stock" className="relative isolate bg-surface text-fg">
       <div className="mx-auto w-full max-w-page px-gutter py-20">
-        <div className="grid gap-x-gutter gap-y-14 lg:grid-cols-12">
+        {/* Two columns on a phone, not one. The three link lists are four or
+            five items each — stacked single-file they ran 263px for four
+            words, and the footer came to 2040px for 48 words in total. The
+            wide blocks (address, service area) span both. */}
+        <div className="grid grid-cols-2 gap-x-gutter gap-y-10 lg:grid-cols-12 lg:gap-y-14">
           {/* NAP */}
-          <div className="lg:col-span-3">
+          <div className="col-span-2 lg:col-span-3">
             {/* Second of the two homepage links — the masthead carries the
                 other. Both are here on purpose: without one the front page is
                 an orphan, reachable from nowhere while every route below it
@@ -191,7 +195,7 @@ export function SiteFooter() {
           {/* Cities. Only those with live pages are linked — the rest of the
               delivery area is listed on /service-areas, which says plainly
               that we deliver there and have not written a page yet. */}
-          <nav aria-label="Service area" className="lg:col-span-3">
+          <nav aria-label="Service area" className="col-span-2 lg:col-span-3">
             <h2 className={HEADING}>Serving {site.serviceArea}</h2>
             <ul className="mt-6 grid gap-x-gutter gap-y-3 sm:grid-cols-2 lg:grid-cols-1">
               {liveCities().map((slug) => {
