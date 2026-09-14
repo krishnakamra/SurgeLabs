@@ -80,8 +80,13 @@ export const galleryCategories: readonly GalleryCategory[] = [
     name: "Websites",
     blurb: "Sites we designed and built, live right now",
     h1: "Websites we built in Mississauga and the GTA",
+    // Written for the empty state, because that is the state it is in. The
+    // old line — "Every site below is live and you can open it" — was a
+    // verifiable claim on a page with nothing below it. When portfolio.ts
+    // fills up, PortfolioGrid replaces the interim block and this line should
+    // go back to promising what the reader can then actually click.
     intro:
-      "Every site below is live and you can open it. The line under each one says exactly what we did on it, because some we designed and built and on others we only did the search work.",
+      "We build sites for trades, shops and studios across Mississauga and the GTA. Five-page trade sites, Shopify stores that keep one set of stock, and single-page launches that go live in a week.",
     metaTitle: "Websites We Built in Mississauga",
     description:
       "Live websites we designed and built for Mississauga and GTA businesses. Each one says exactly what we did on it. Call 905-598-3960.",

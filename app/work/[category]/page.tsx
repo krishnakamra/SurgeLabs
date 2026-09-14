@@ -105,30 +105,63 @@ export default async function GalleryCategoryPage({ params }: { params: Promise<
               standfirst="Open any of them. The line under each says exactly what we did on it — some we designed and built, some we rebuilt, and on a few we only did the search work."
             />
           ) : (
+            /* The interim block, shown until portfolio.ts has entries.
+               It describes the THREE SHAPES OF BUILD, not three jobs. That
+               distinction is the whole point: content/work.ts is marked
+               "ILLUSTRATIVE JOBS, NOT A CLIENT LIST", so recasting those
+               entries as portfolio items here would turn placeholder copy
+               into a claim about work that was done for someone. What a shop
+               builds is a fact about the shop and needs nobody's permission;
+               what it built for a named client needs theirs. */
             <SectionFrame
               surface="stock"
-              id="coming"
+              id="what-we-build"
               padding="md"
-              ticket={{ number: "01", label: "WEBSITES", spec: "BEING LOADED" }}
+              ticket={{ number: "01", label: "WEBSITES", spec: "WHAT WE BUILD" }}
             >
-              <h2 className="max-w-[24ch] font-display text-2xl font-extrabold text-fg">
-                The site list is being loaded.
+              <h2 className="max-w-[26ch] font-display text-2xl font-extrabold text-fg">
+                Built here, launched fast, and yours.
               </h2>
               <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
-                We are getting written permission from each client before their site goes on this
-                page, which takes a few days per site. Rather than fill the gap with stock images
-                of websites nobody built, it is empty until they are real.
+                We build sites for trades, shops and studios across Mississauga and the GTA —
+                designed, written and launched in-house, on the same ticket as your cards and
+                signs. You own the site and the domain outright. No monthly fee to keep it online,
+                and no rebuild needed the first time you want to change a price.
               </p>
-              <p className="mt-6 max-w-[58ch] text-md text-fg-muted">
-                In the meantime the web page has what a build includes, what it costs and how long
-                it takes, and you can phone and ask for examples in your trade.
+
+              <ul className="mt-12 max-w-[58ch] space-y-6 border-t-[length:var(--hairline)] border-rule pt-8">
+                <li className="text-md text-fg">
+                  <span className="font-semibold">Five-page trade site.</span>{" "}
+                  <span className="text-fg-muted">
+                    Services, service area, gallery, about, contact — with a tap-to-call number on
+                    every screen and a quote form that reaches a real inbox.
+                  </span>
+                </li>
+                <li className="text-md text-fg">
+                  <span className="font-semibold">Shopify store.</span>{" "}
+                  <span className="text-fg-muted">
+                    One set of stock across the till and the website, so what sells in the shop
+                    stops being available online without anyone retyping it.
+                  </span>
+                </li>
+                <li className="text-md text-fg">
+                  <span className="font-semibold">One-page launch.</span>{" "}
+                  <span className="text-fg-muted">
+                    For a new business that needs to exist online this week: what you do, where
+                    you are, and how to reach you, live in a few days.
+                  </span>
+                </li>
+              </ul>
+
+              <p className="mt-12 max-w-[58ch] text-sm text-fg-faint">
+                Live client sites go up here as each owner confirms in writing that we can show
+                theirs. We would rather this page were short than fill it with work that is not
+                ours — ask on the phone and we will walk you through builds in your trade.
               </p>
-              <div className="mt-12 flex flex-wrap gap-6">
-                <Button href="/web-design-seo" size="lg">
-                  What a website includes
-                </Button>
-                <Button href={site.phoneHref} size="lg" variant="outline">
-                  Call {site.phone}
+
+              <div className="mt-12">
+                <Button href="/quote?service=web-design-seo" size="lg">
+                  Tell us what you need
                 </Button>
               </div>
             </SectionFrame>
