@@ -63,6 +63,11 @@ export const pageSeo: Record<string, PageSeo> = {
     description: `Hot-foil stamped business cards, invitations and stationery in Mississauga. Real metal leaf, 250 minimum, dies kept on file. Call ${PHONE}.`,
     h1: "Gold foil business cards in Mississauga",
   },
+  "/spot-uv-printing": {
+    title: `Spot UV Printing in Mississauga${SUFFIX}`,
+    description: `Raised gloss spot UV over soft-touch lamination, on cards, folders and covers in Mississauga. We build the mask file. Call ${PHONE}.`,
+    h1: "Spot UV printing in Mississauga",
+  },
   "/work": {
     title: `Our Work in Mississauga — Print & Web${SUFFIX}`,
     description: `Everything we make in Mississauga — websites, business cards, print, signs, apparel and design — with recent jobs underneath. Call ${PHONE}.`,

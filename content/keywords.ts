@@ -53,6 +53,10 @@ export const pageKeywords: Record<string, PageKeywords> = {
     primary: "foil business cards mississauga",
     secondary: ["gold foil printing gta", "letterpress mississauga", "foil stamping toronto"],
   },
+  "/spot-uv-printing": {
+    primary: "spot uv printing mississauga",
+    secondary: ["spot uv business cards gta", "raised spot uv toronto", "soft touch lamination mississauga"],
+  },
   "/work": {
     primary: "our work mississauga",
     secondary: ["print portfolio gta", "signage projects mississauga", "branding case studies"],

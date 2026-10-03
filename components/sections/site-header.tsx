@@ -50,6 +50,10 @@ function isCurrent(pathname: string, href: string) {
 function Dropdown({ item, pathname }: { item: NavItem; pathname: string }) {
   const [open, setOpen] = useState(false);
   const id = useId();
+  // Counted rather than hardcoded per menu: the service list is generated
+  // from content/services.ts, so the menu has to lay itself out for whatever
+  // is in there. Compact entries are the menu's footer link, not a service.
+  const twoUp = (item.children ?? []).filter((child) => !child.compact).length > 4;
   const group = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
 
@@ -117,13 +121,31 @@ function Dropdown({ item, pathname }: { item: NavItem; pathname: string }) {
         {/* Capped and scrollable. The Work menu carries seven entries, which
             at the old padding ran past the bottom of a 800px viewport and cut
             the last item in half — a menu whose last item you cannot see is a
-            route nobody reaches. */}
+            route nobody reaches.
+
+            Two columns once there are more than four real entries, which is
+            what adding Spot UV made true of Services. Six entries at roughly
+            158px is about 950px in one column; the cap above turns that into
+            a scrolling hover menu, and the two services below the fold of it
+            were Spot UV and Design & branding — findable only by someone who
+            thinks to scroll a dropdown, which is nobody. */}
         <ul
           data-surface="ink"
-          className="max-h-[min(72vh,34rem)] w-[22rem] overflow-y-auto border-[length:var(--hairline)] border-rule bg-surface p-2"
+          className={cn(
+            "max-h-[min(72vh,34rem)] overflow-y-auto border-[length:var(--hairline)] border-rule bg-surface p-2",
+            twoUp ? "grid w-[28rem] grid-cols-2 gap-x-1" : "w-[22rem]",
+          )}
         >
           {item.children?.map((child) => (
-            <li key={child.href} className={child.compact ? "mt-2 border-t-[length:var(--hairline)] border-rule pt-2" : undefined}>
+            <li
+              key={child.href}
+              className={cn(
+                child.compact && "mt-2 border-t-[length:var(--hairline)] border-rule pt-2",
+                // The trailing "All work" style link is a footer to the menu,
+                // not a third item in the last row.
+                twoUp && child.compact && "col-span-2",
+              )}
+            >
               <Link
                 href={child.href}
                 onClick={() => setOpen(false)}

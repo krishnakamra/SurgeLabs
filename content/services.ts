@@ -67,7 +67,8 @@ export type Service = {
  *   · stitch and thread-colour limits    (15 colours, 12,000 stitches)
  *   · accepted file formats and bleeds   (PDF/X, 300dpi, 0.125")
  *
- * NOT yet covered — see the block above the gold-foil entry below.
+ * NOT yet covered — see the warning block above the gold-foil, spot-UV
+ * and design entries below. Each one lists its own unconfirmed numbers.
  * ═══════════════════════════════════════════════════════════════════════════
  */
 export const services: readonly Service[] = [
@@ -685,6 +686,175 @@ export const services: readonly Service[] = [
   },
   /**
    * ═════════════════════════════════════════════════════════════════════════
+   * ⚠️  OWNER: THE SPOT UV NUMBERS BELOW ARE NOT YET CONFIRMED.
+   * ═════════════════════════════════════════════════════════════════════════
+   *
+   * That you offer spot UV is confirmed — it is in the finishes you reviewed,
+   * it is sold on the business card pages, and it is priced in the blog's
+   * cost table. Everything here describing the PROCESS is factual and safe to
+   * publish: that the varnish is UV-cured, that it needs a second mask file
+   * in 100% K, that it needs a coated or laminated surface to sit on, that it
+   * cannot be written on.
+   *
+   * These are NOT, because a finishing line has its own limits and nobody
+   * supplied them. Read them as a checklist:
+   *
+   *   · the 250-piece minimum
+   *   · the 14 × 20 inch maximum sheet
+   *   · the 0.5pt detail floor and the 0.5mm trap
+   *   · raised (textured) spot UV being offered at all, and at what build
+   *   · the 4–6 day lead time, and 2 days on top for raised
+   *
+   * Correct anything wrong before this page is indexed — the FAQ schema
+   * publishes it to Google as an answer the business is standing behind.
+   * ═════════════════════════════════════════════════════════════════════════
+   */
+  {
+    slug: "spot-uv-printing",
+    number: "05",
+    name: "Spot UV",
+    accent: "lime",
+    summary: "Raised gloss varnish on part of the sheet, against a matte laminate.",
+    capabilities: [
+      "Gloss spot UV over soft-touch and matte lamination",
+      "Raised (textured) spot UV for a finish you can feel",
+      "Business cards, folders, covers and packaging",
+      "Mask file built from your artwork if you have not got one",
+      "Spot UV with foil or painted edges on the same piece",
+      "Proofs on the real stock before the run",
+    ],
+    spec: "Needs a mask file · 250 minimum · coated stock only",
+
+    intro: [
+      "Spot UV is the finish people notice without being able to name. A card comes out of a wallet, it is matte and soft in the hand, and the logo on it is glossy and sits slightly proud of the surface. Nobody says “nice varnish”. They turn it over twice and keep it.",
+      "It is varnish, not ink. A clear coat is laid on selected areas of an already-printed sheet and cured under UV lamps in the same pass, which is why it hardens instantly and why it will not dull or yellow the way an oil-based varnish does. It is the cheapest finish on this floor that changes how an object feels, which is the only reason it is on this page as a service rather than a line on a quote.",
+    ],
+    sections: [
+      {
+        heading: "What spot UV actually is",
+        body: [
+          "The sheet is printed and laminated first. It then runs through the UV coater, which applies a clear photopolymer varnish to the areas you have marked and nowhere else, and passes under a lamp that cures it in a fraction of a second. There is no drying time and no offsetting, so the sheet can be trimmed almost immediately.",
+          "“Spot” means partial. Flood UV coats the whole sheet and is a different, much less interesting thing — it protects, it does not contrast. The entire effect here comes from the boundary between the coated area and the uncoated one, which is why the stock underneath matters as much as the varnish on top.",
+          "It is a separate pass on a separate machine from the press. That is the practical consequence worth knowing: spot UV adds a step to the schedule and a setup to the cost, so it is cheap per piece on a long run and proportionally expensive on a short one.",
+        ],
+      },
+      {
+        heading: "The second file, and why jobs stall without it",
+        body: [
+          "Spot UV needs its own artwork. Not a note saying “gloss on the logo” — a separate layer or page, the same size as the card, with the varnish areas in 100% black and everything else left white. Solid black means varnish. White means none. There is no grey: the coater either lays varnish down or it does not, so a 50% tint is not a half-gloss, it is a misread file.",
+          "This is the single most common reason a spot UV job sits waiting. The print file arrives, the mask does not, and nothing can be scheduled until it does. If you have not got one we build it from your artwork and show it to you before the run, which takes an afternoon rather than a week.",
+          "One detail that catches people: the mask has to be built for the varnish, not copied from the ink. A logo that is knocked out in white on a dark card needs a mask of the logo shape itself, and a hairline that reads fine in ink may need thickening before it will hold varnish. We flag that at proof rather than printing it and hoping.",
+        ],
+      },
+      {
+        heading: "Why it is almost always over soft-touch",
+        body: [
+          "Spot UV on a gloss-laminated card is close to invisible — gloss on gloss, and the only clue is a faint edge under raking light. The finish exists to be a contrast, so it needs a matte surface to sit against.",
+          "Soft-touch lamination is the usual partner and the best one. The card feels like suede, the varnish is hard and bright, and the difference is obvious in the hand before anyone has looked at it properly. Matte lamination is the cheaper version of the same idea and works nearly as well.",
+          "It does not work on uncoated stock. There is nothing for the varnish to sit on, so it sinks into the fibres and cures flat and dull — you pay for a finish and get a slightly darker patch. If you want a tactile mark on uncoated paper, that is a blind deboss or a letterpress hit, and both are on the gold foil page.",
+        ],
+      },
+      {
+        heading: "Flat and raised are two different finishes",
+        body: [
+          "Standard spot UV is flat. It is glossy, it has a visible edge, and you can feel it with a fingernail if you go looking. On a soft-touch card that is usually enough, because the contrast is doing the work.",
+          "Raised spot UV is a thicker build, applied heavier so the varnish stands measurably above the sheet. You feel it immediately rather than finding it — it reads as texture rather than shine. It suits a logo, a monogram, a single rule or a pattern. It does not suit body copy, because thick varnish over small type closes up the counters and the text goes muddy.",
+          "Raised costs more and adds to the schedule. If you are deciding between them, the question is whether the mark is meant to be noticed on sight or discovered in the hand. Both are defensible; only one of them is on the quote twice.",
+        ],
+      },
+      {
+        heading: "What it will not do",
+        body: [
+          "You cannot write on it, and you cannot write on the soft-touch around it either. If the back of the card is where you write appointments or quote numbers, leave that side uncoated and put the spot UV on the face only. We will set the job up that way if you say so.",
+          "Very fine detail is the other limit. Varnish spreads slightly as it is laid down, so hairlines below about half a point and type below roughly 6pt tend to thicken or close up. The fix is normally to redraw the mask rather than abandon the idea, and we will show you the difference at actual size.",
+          "It also will not rescue a weak mark. Spot UV makes a confident shape look deliberate; it makes a cluttered one look cluttered and shiny. If the logo is the problem, the honest answer is the design page, not this one.",
+        ],
+      },
+    ],
+    catalogue: [
+      {
+        group: "Stationery",
+        items: [
+          { name: "Spot UV business cards", detail: "16pt C2S with soft-touch or matte lamination" },
+          { name: "Raised spot UV cards", detail: "Thicker build, logo or pattern only" },
+          { name: "Letterhead and compliment slips", detail: "Varnished crest or wordmark, matched to the card" },
+          { name: "Appointment and loyalty cards", detail: "Face varnished, back left writable" },
+        ],
+      },
+      {
+        group: "Marketing and packaging",
+        items: [
+          { name: "Presentation folders", detail: "Varnished cover, printed interior" },
+          { name: "Brochure and report covers", detail: "Soft-touch laminated, varnished title" },
+          { name: "Packaging sleeves and belly bands", detail: "Short-run, varnished on coated board" },
+          { name: "Menus and table cards", detail: "Wipe-clean laminate with a varnished heading" },
+        ],
+      },
+      {
+        group: "Combinations",
+        items: [
+          { name: "Spot UV over soft-touch", detail: "The pairing this finish exists for" },
+          { name: "Spot UV with foil", detail: "Two passes, foil last — quoted with the foil page" },
+          { name: "Spot UV on painted edge", detail: "32pt stock, colour through the middle" },
+          { name: "Mask file build", detail: "We make it from your artwork and proof it first" },
+        ],
+      },
+    ],
+    specs: [
+      { label: "Process", value: "Partial UV varnish, cured under lamp in the same pass" },
+      { label: "Minimum", value: "250 pieces per design" },
+      { label: "Surface", value: "Coated or laminated only — not uncoated stock" },
+      { label: "Finishes", value: "Flat gloss, or raised for a build you can feel" },
+      { label: "Maximum sheet", value: "14 × 20 inches" },
+      { label: "Detail floor", value: "0.5pt rules, roughly 6pt type" },
+      { label: "Artwork", value: 'Print file plus a mask: 100% K where varnish goes, 0.125" bleed' },
+      { label: "Turnaround", value: "4–6 business days from proof approval; add 2 for raised" },
+    ],
+    faqs: [
+      {
+        question: "What is spot UV printing?",
+        answer:
+          "A clear gloss varnish applied to part of a printed sheet and cured instantly under a UV lamp. The point is the contrast: on a matte or soft-touch laminated card, the varnished areas are glossy and very slightly raised against a surface that is not, so a logo catches the light while the card around it stays flat.",
+      },
+      {
+        question: "Do I need a special file for spot UV?",
+        answer:
+          "Yes, and it is the thing that most often holds a job up. Alongside your print file we need a mask the same size as the piece, with the varnish areas in 100% black and everything else white — solid or nothing, no tints. If you have not got one we build it from your artwork and show it to you before the run.",
+      },
+      {
+        question: "What is the minimum order for spot UV?",
+        answer:
+          "250 pieces per design. Spot UV is a separate pass on a separate machine, so there is a setup to cover whether you order 250 or 5,000. Below 250 you are mostly paying for that setup, and we would rather say so than take the order.",
+      },
+      {
+        question: "What is the difference between spot UV and raised spot UV?",
+        answer:
+          "The build. Standard spot UV is flat and glossy — you see it before you feel it. Raised spot UV is applied heavier so it stands above the sheet and reads as texture. Raised suits a logo, a monogram or a pattern; it does not suit body copy, because thick varnish over small type closes the letters up.",
+      },
+      {
+        question: "Can you put spot UV on uncoated paper?",
+        answer:
+          "No. The varnish needs a sealed surface to sit on. On uncoated stock it soaks into the fibres and cures flat, so you pay for a finish and get a slightly darker patch. For a tactile mark on uncoated paper you want a blind deboss or letterpress instead, both of which we run.",
+      },
+      {
+        question: "Can I have spot UV and foil on the same card?",
+        answer:
+          "Yes, and the order matters — laminate, then varnish, then foil. It is three passes, so it costs more and takes longer than either finish alone, and the artwork needs a mask for the varnish and a separate file for the die. Tell us at quote stage so the job is planned that way rather than replanned halfway through.",
+      },
+      {
+        question: "Can you write on a spot UV card?",
+        answer:
+          "Not on the varnish, and not on soft-touch lamination either — a ballpoint skates off both. If the back of the card is where you write, leave that side unlaminated and put the spot UV on the face only. Say so when you order and we will set it up that way.",
+      },
+      {
+        question: "How much does spot UV add to a business card order?",
+        answer:
+          "It is quoted on top of the card, because it is a separate pass. The blog's business card price table lists soft-touch with spot UV beside plain soft-touch so you can see the gap at every run size, and the gap closes as the run gets longer. For a firm number, send the artwork and the quantity.",
+      },
+    ],
+  },
+  /**
+   * ═════════════════════════════════════════════════════════════════════════
    * ⚠️  OWNER: THE DESIGN PRICES AND ROUND COUNTS ARE NOT YET CONFIRMED.
    * ═════════════════════════════════════════════════════════════════════════
    *
@@ -709,7 +879,7 @@ export const services: readonly Service[] = [
    */
   {
     slug: "graphic-design",
-    number: "05",
+    number: "06",
     name: "Design & branding",
     accent: "magenta",
     summary: "Logos, brand kits and artwork built to print properly.",
