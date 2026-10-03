@@ -61,6 +61,42 @@ ok("Referrer-Policy", !!h.get("referrer-policy"), h.get("referrer-policy") ?? ""
 ok("Permissions-Policy", !!h.get("permissions-policy"));
 ok("x-powered-by is absent", !h.get("x-powered-by"));
 
+// Conversion tracking, which is checked here rather than trusted because
+// every way it breaks breaks quietly. A CSP that forgets a Google host, a
+// thank-you page that 404s, a tag that never reaches the HTML — none of them
+// raise anything a visitor or a build would notice, and all of them end the
+// same way: Ads reporting zero conversions against a campaign that is
+// spending. This section exists because exactly that shipped once: the tag
+// went in and the CSP still named only Facebook.
+console.log("\nconversion tracking:");
+const { GOOGLE_ADS_ID } = await import("../lib/analytics/config.ts");
+const policy = h.get("content-security-policy") ?? "";
+const directive = (name) =>
+  policy.split(";").map((d) => d.trim()).find((d) => d.startsWith(`${name} `)) ?? "";
+
+ok("CSP script-src allows gtag.js", directive("script-src").includes("https://www.googletagmanager.com"));
+ok("CSP script-src allows conversion_async.js", directive("script-src").includes("https://www.googleadservices.com"));
+ok("CSP img-src allows the conversion beacon", directive("img-src").includes("https://googleads.g.doubleclick.net"));
+ok("CSP frame-src allows the beacon's iframe fallback",
+   directive("frame-src").includes("https://googleads.g.doubleclick.net"));
+
+const thanks = await head(`${base}/thank-you`, "manual");
+ok("/thank-you serves 200", thanks.status === 200, `(${thanks.status})`);
+const landing = await head(`${base}/web-design-seo`, "manual");
+ok("/web-design-seo serves 200", landing.status === 200, `(${landing.status})`);
+
+if (!isLocal) {
+  const html = await fetch(`${base}/`).then((r) => r.text()).catch(() => "");
+  ok(`Google tag ${GOOGLE_ADS_ID} is in the page`, html.includes(GOOGLE_ADS_ID));
+  // The tag is gated on NODE_ENV === "production" so developer traffic is not
+  // counted. That gate is also the one way the tag can be absent from a
+  // deploy that otherwise looks perfect, so the id above being present is the
+  // check that it is really on.
+} else {
+  console.log("  – tag in the HTML: only meaningful against a production server");
+  console.log("       analytics is gated on NODE_ENV, so `next dev` never renders it");
+}
+
 console.log("\ncrawl surface:");
 const robots = await fetch(`${base}/robots.txt`).then((r) => r.text()).catch(() => "");
 ok("robots.txt served", robots.includes("Sitemap:"));

@@ -18,11 +18,18 @@
   NODE_VERSION = "22"
 
   # Netlify fails a build if it finds an environment variable's value in the
-  # output. NEXT_PUBLIC_META_PIXEL_ID is *supposed* to be in the output — that
-  # is what NEXT_PUBLIC_ means, and the pixel cannot fire without it — so the
-  # scanner has to be told it is not a leak. Every other variable stays
-  # scanned; do not widen this.
-  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_META_PIXEL_ID"
+  # output. Both of these are *supposed* to be in the output — that is what
+  # NEXT_PUBLIC_ means, and neither the Pixel nor the Google tag can fire
+  # without its id in the page source — so the scanner has to be told they
+  # are not leaks. Every other variable stays scanned; do not widen this.
+  #
+  # The Google Ads key is listed even though the id currently falls back to a
+  # literal in lib/analytics/config.ts and so is invisible to the scanner.
+  # The moment anyone sets NEXT_PUBLIC_GOOGLE_ADS_ID in the Netlify UI — the
+  # documented way to point a staging deploy at a different account — the
+  # build would start failing with a secret-scan error about a value that is
+  # public by design. Cheaper to pre-empt than to debug at the time.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_META_PIXEL_ID,NEXT_PUBLIC_GOOGLE_ADS_ID"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

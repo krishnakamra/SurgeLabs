@@ -22,19 +22,60 @@ import { site } from "./content/site";
  * collector or pull a script from one — every destination has to be named
  * below. That is the threat this site actually has.
  */
+/**
+ * Third-party hosts, grouped by the tag that needs them.
+ *
+ * The Meta Pixel is the simple case: one script host, one pair of beacon
+ * hosts.
+ *
+ * Google Ads needs more hosts than its four-line snippet suggests, because
+ * gtag.js is a loader rather than the tag. `googletagmanager.com` serves
+ * gtag.js, which then pulls `conversion_async.js` from
+ * `googleadservices.com`. The conversion itself is a beacon to
+ * `googleads.g.doubleclick.net`, sent as an image or — when the browser
+ * blocks third-party images — an iframe, which is why `frame-src` can no
+ * longer be `'none'`. `td.doubleclick.net` and `www.google.com` carry the
+ * first-party-conversion and audience pings.
+ *
+ * Getting this list wrong is expensive in a way most CSP mistakes are not,
+ * because the failure is entirely silent. Nothing breaks that a visitor
+ * would notice, the tag is right there in the page source, and Google Ads
+ * simply reports zero conversions while the campaign keeps spending. That is
+ * why every host below is named with the call it serves rather than copied
+ * from a blog post.
+ *
+ * `www.google.ca` sits beside `www.google.com` because the audience ping
+ * follows the visitor's country ccTLD, and those two cover this business's
+ * traffic. An unlisted ccTLD costs a remarketing audience, never a
+ * conversion.
+ */
+const metaScript = "https://connect.facebook.net";
+const metaBeacon = "https://www.facebook.com https://facebook.com";
+const googleScript = "https://www.googletagmanager.com https://www.googleadservices.com";
+const googleBeacon = [
+  "https://googleads.g.doubleclick.net",
+  "https://td.doubleclick.net",
+  "https://stats.g.doubleclick.net",
+  "https://www.google.com",
+  "https://www.google.ca",
+].join(" ");
+const googleFrame = "https://googleads.g.doubleclick.net https://td.doubleclick.net";
+
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' — see above. 'unsafe-eval' is NOT granted.
-  "script-src 'self' 'unsafe-inline' https://connect.facebook.net",
+  `script-src 'self' 'unsafe-inline' ${metaScript} ${googleScript}`,
   // Next injects style tags, and components set style attributes for the
   // registration offsets and panel counts.
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://www.facebook.com https://facebook.com",
+  `img-src 'self' data: blob: ${metaBeacon} ${googleBeacon}`,
   // next/font self-hosts every face, so no font CDN is needed.
   "font-src 'self'",
-  "connect-src 'self' https://connect.facebook.net https://www.facebook.com",
+  `connect-src 'self' ${metaScript} ${metaBeacon} ${googleScript} ${googleBeacon}`,
   "media-src 'self'",
-  "frame-src 'none'",
+  // Was 'none', and would be again but for the Google Ads conversion iframe
+  // fallback described above. Nothing on this site frames anything by design.
+  `frame-src ${googleFrame}`,
   "object-src 'none'",
   "base-uri 'self'",
   // The quote form posts to a server action on this origin and nowhere else.
