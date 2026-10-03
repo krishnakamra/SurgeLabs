@@ -169,7 +169,7 @@ export const services: readonly Service[] = [
       {
         question: "How much does a website cost in Mississauga?",
         answer:
-          "A website on its own starts at $399. The Launch Kit adds the Google Business Profile setup, packaged logo files and 1,000 business cards, and is quoted per job. Larger builds and Shopify stores are quoted from the page count and the number of products.",
+          "It is quoted per job, because a five-page site for a trade and a Shopify store with 400 products are not the same piece of work. We design your homepage free first — you see it, then you get the real number in writing within one business day. The Launch Kit adds the Google Business Profile setup, packaged logo files and 1,000 business cards, and is quoted the same way.",
       },
       {
         question: "How long does it take to build a website?",

@@ -18,3 +18,15 @@ export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "473802398
  */
 export const analyticsEnabled =
   process.env.NODE_ENV === "production" && META_PIXEL_ID.length > 0;
+
+/**
+ * Google Ads conversion ID. Public by definition — it ships in the page
+ * source — so it lives here rather than in a secret, and is still readable
+ * from the environment so a staging deploy can point somewhere else or set it
+ * empty to switch the tag off without a code change.
+ */
+export const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-18491490311";
+
+/** Same production-only rule as the Pixel: dev traffic must not be counted. */
+export const googleAdsEnabled =
+  process.env.NODE_ENV === "production" && GOOGLE_ADS_ID.length > 0;

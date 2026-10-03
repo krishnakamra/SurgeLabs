@@ -45,9 +45,13 @@ export const pageSeo: Record<string, PageSeo> = {
     h1: "Service areas across the GTA",
   },
   "/web-design-seo": {
-    title: `Web Design & SEO in Mississauga${SUFFIX}`,
-    description: `Web design, local SEO and Shopify builds in Mississauga. Five-page sites in 2–3 weeks, you own the code. Call ${PHONE} for a quote.`,
-    h1: "Custom web design and SEO in Mississauga",
+    // The Google Ads destination. Title, description and H1 all lead with the
+    // ad's promise — a landing page whose first line does not repeat the ad
+    // is where the click gets spent, and Google scores the mismatch as poor
+    // landing-page experience, which raises the cost of every click.
+    title: `Free Homepage Design | Web Design Mississauga${SUFFIX}`,
+    description: `Send us your business name and see your new homepage before you pay. Free homepage design, Mississauga. No deposit. Call ${PHONE}.`,
+    h1: "Free homepage design. Web design in Mississauga, shown before you pay.",
   },
   "/printing-signage": {
     title: `Printing & Signage in Mississauga${SUFFIX}`,

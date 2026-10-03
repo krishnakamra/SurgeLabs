@@ -23,6 +23,11 @@ export type Redirect = { from: string; to: string; note: string };
 
 export const redirectMap: Redirect[] = [
   {
+    from: "/quote/sent",
+    to: "/thank-you",
+    note: "Confirmation moved so Google Ads has one conversion URL to count. Query string carries the reference through.",
+  },
+  {
     from: "/digital-web-services",
     to: "/web-design-seo",
     note: "Old combined web page. Split into web + SEO under a keyword-bearing slug.",

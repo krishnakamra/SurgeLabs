@@ -57,7 +57,21 @@ function serviceSchema(service: Service, h1: string) {
   ]);
 }
 
-export function ServicePage({ service, path }: { service: Service; path: string }) {
+export function ServicePage({
+  service,
+  path,
+  hero,
+}: {
+  service: Service;
+  path: string;
+  /**
+   * Replaces the stock service hero. Used by /web-design-seo, which is a paid
+   * ad destination and has to lead with the offer rather than with a service
+   * description. Everything below the hero is unchanged — the page still
+   * ranks on the same body copy.
+   */
+  hero?: React.ReactNode;
+}) {
   // The H1 comes from lib/seo, which is the same string the keyword gate
   // checks — so the headline on screen and the one asserted cannot diverge.
   const seo = getPageSeo(path);
@@ -69,7 +83,8 @@ export function ServicePage({ service, path }: { service: Service; path: string 
     <>
       <Schema graph={serviceSchema(service, h1)} />
       <main id="main" tabIndex={-1}>
-        {/* Hero */}
+        {/* Hero. A page may supply its own — see the `hero` prop. */}
+        {hero ?? (
         <SectionFrame
           surface="ink"
           as="header"
@@ -126,6 +141,7 @@ export function ServicePage({ service, path }: { service: Service; path: string 
             </div>
           </div>
         </SectionFrame>
+        )}
 
         {/* Body copy */}
         <SectionFrame

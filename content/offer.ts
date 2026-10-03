@@ -1,5 +1,6 @@
 /**
- * The paid-traffic offer behind /start.
+ * The paid-traffic offers. /start sells the $99 cards; /web-design-seo
+ * carries the free-homepage offer that the Google Ads campaign points at.
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * ⚠️  OWNER: THE ONE RULE ON THIS FILE.
@@ -27,6 +28,8 @@
  * resets every morning, and nobody has to remember to change it.
  * ═══════════════════════════════════════════════════════════════════════════
  */
+
+import { torontoInstant, torontoWall } from "@/lib/time/toronto";
 
 export type OfferFaq = { question: string; answer: string };
 
@@ -117,4 +120,123 @@ export function offerDeadline(now = new Date()): Date | null {
   const end = new Date(`${offer.endsOn}T23:59:59-05:00`);
   if (Number.isNaN(end.getTime()) || end.getTime() <= now.getTime()) return null;
   return end;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE WEB OFFER — what Google Ads is pointing at.
+   ═══════════════════════════════════════════════════════════════════════════
+
+   The ad says "Free homepage design. Send us your business name and see your
+   new homepage before you pay." The first screen of /web-design-seo now says
+   exactly that, because a landing page that does not repeat the ad's promise
+   in its first sentence is where the click gets spent and nothing happens.
+
+   ⚠️  OWNER — THE TWO NUMBERS BELOW ARE PROMISES, NOT COPY.
+
+   `slotsPerMonth` is a real commitment. It is the honest version of the
+   urgency you asked for: there is a limit because designing a homepage for
+   free costs you a morning, and a limit you actually keep is both true and
+   more persuasive than a fake one. If you will in fact do twelve, set twelve.
+   If you will do as many as come in, set it to null and the scarcity line
+   disappears — the page still works.
+
+   `cadence: "monthly"` means the batch GENUINELY closes at the end of each
+   calendar month and the next one opens. That is what makes the countdown
+   legitimate: it is the same deadline for every visitor, it is not reset per
+   session, it does not restart when someone reloads, and it is a date anyone
+   can check against a calendar.
+
+   What is NOT here, deliberately: a per-visitor timer that starts at 15:00
+   when the page loads, a "4 people are viewing this", and a stock counter
+   that ticks down on its own. Those are the things that get a Google Ads
+   account suspended under the Misrepresentation policy — which costs you the
+   campaign, not just the page — and they are a deceptive practice under the
+   Competition Act on top of it. The urgency below is real and it still bites.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+export type WebOffer = {
+  eyebrow: string;
+  /** Says what the ad says. Change the ad and change this in the same hour. */
+  headline: string;
+  sub: string;
+  /** What they get for nothing, before any money changes hands. */
+  gets: readonly string[];
+  /** The catch, stated first. There is always one and hiding it loses the job. */
+  theCatch: string;
+  reassurance: readonly string[];
+  /**
+   * How many free homepage designs are done per batch, or null for no limit.
+   * A REAL number you will keep. See the block above.
+   */
+  slotsPerMonth: number | null;
+  /** "monthly" runs a real batch that closes at month end. null = no deadline. */
+  cadence: "monthly" | null;
+  faqs: readonly OfferFaq[];
+};
+
+export const webOffer: WebOffer = {
+  eyebrow: "Mississauga · web design",
+  headline: "Free homepage design.",
+  sub: "Send us your business name and see your new homepage before you pay anything. If you do not like it, you walk away and it has cost you nothing.",
+
+  gets: [
+    "A real homepage designed for your business, not a template with your name dropped in",
+    "Your actual colours, your logo, your services on the page",
+    "Shown to you as a working page you can open on your phone",
+    "A written price for the rest of the site, once you have seen it",
+    "No deposit, no card, no call required to get it",
+  ],
+
+  theCatch:
+    "There isn't much of one, and here is the whole of it: we design the homepage free because most people who like it ask us to build the rest. If you take the design and go elsewhere, that is genuinely fine — but we only do a limited number each month, so we ask that you are actually thinking about a new site.",
+
+  reassurance: [
+    "No deposit and no card to see the design.",
+    "You own the code, the domain, the hosting and the analytics. Always.",
+    "We answer the phone ourselves — there is no queue and no menu.",
+    "Built at 2800 Skymark Ave in Mississauga. You can come and sit with us.",
+  ],
+
+  // ⚠️  A REAL COMMITMENT. Set it to what you will actually honour, or null.
+  slotsPerMonth: 10,
+  // ⚠️  Set to null the moment you stop running this as a monthly batch.
+  cadence: "monthly",
+
+  faqs: [
+    {
+      question: "What is the catch with a free homepage design?",
+      answer:
+        "That we hope you like it enough to have us build the rest of the site. You are under no obligation and there is no deposit. We do a limited number each month because each one is a real morning of design work, not a template.",
+    },
+    {
+      question: "How long until I see it?",
+      answer:
+        "Two to three business days from the moment we have your business name and a rough idea of what you do. We will call you once to ask a handful of questions, and that call is normally under ten minutes.",
+    },
+    {
+      question: "What does the full site cost?",
+      answer:
+        "It is quoted per job, because a five-page site for a trade and a Shopify store with 400 products are not the same piece of work. You get the real number in writing within one business day — after you have seen the homepage, not before.",
+    },
+    {
+      question: "Do I own the site?",
+      answer:
+        "Yes, all of it: the domain, the hosting, the code and the analytics stay in your name. We do not hold anything hostage, and moving away from us never costs you the site.",
+    },
+  ],
+};
+
+/**
+ * The end of the current batch, or null when no batch is running.
+ *
+ * End of the calendar month in Toronto. Real, identical for every visitor,
+ * and it cannot silently become a lie — when the month turns over, the next
+ * one genuinely has opened.
+ */
+export function webOfferDeadline(now = new Date()): Date | null {
+  if (webOffer.cadence !== "monthly") return null;
+  const wall = torontoWall(now);
+  // Day 0 of next month is the last day of this one.
+  const lastDay = new Date(Date.UTC(wall.year, wall.month, 0)).getUTCDate();
+  return torontoInstant(wall.year, wall.month, lastDay, 23, 59);
 }

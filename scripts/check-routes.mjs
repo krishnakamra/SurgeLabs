@@ -32,7 +32,11 @@ const { primaryNav, navCta } = await import(join(root, "lib", "navigation.ts"));
 // noindex by design: the styleguide and brand sheet are working tools, and
 // /start is a paid-traffic landing page reached from an ad rather than from
 // the site. All three carry robots meta; none of them should be in the nav.
-const IGNORED = new Set(["styleguide", "brand", "start"]);
+// noindex working tools and paid-traffic endpoints. /thank-you is reached by
+// submitting a form, never by a link — it is the conversion URL Google Ads
+// counts, and linking it from the site would let a crawler fire conversions
+// nobody paid for.
+const IGNORED = new Set(["styleguide", "brand", "start", "thank-you"]);
 const dynamic = /^\[.+\]$/;
 
 function staticRoutes(dir = join(root, "app"), prefix = "") {
@@ -100,7 +104,8 @@ link("/service-areas", ...localPages.map((p) => `/${p.service}/${p.city}`));
 // /blog lists every post; each category page lists its own.
 link("/blog", ...posts.map((p) => `/blog/${p.slug}`));
 // The quote flow ends on its confirmation page.
-link("/quote", "/quote/sent");
+// The quote flow ends on /thank-you, which is deliberately unlinked — see
+// IGNORED above. There is nothing to assert here any more.
 
 /* ── 3. Walk ─────────────────────────────────────────────────────────── */
 const reached = new Set(["/"]);

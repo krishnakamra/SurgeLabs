@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { submitQuote } from "@/app/quote/actions";
 import { Button } from "@/components/ui";
@@ -44,7 +45,46 @@ const NEEDS = [
  * redirect races the Pixel: the conversion event has to fire and reach Meta
  * before the document goes away, and on a slow phone it frequently does not.
  */
-export function LeadForm({ id = "lead-form", compact = false }: { id?: string; compact?: boolean }) {
+export type LeadFormProps = {
+  id?: string;
+  compact?: boolean;
+  /** Which page the lead came from. Lands on the ticket and in the inbox. */
+  source?: string;
+  /** Preselects the "what do you need" option. A `NEEDS` value. */
+  defaultNeed?: string;
+  /** Meta's content_name for the Lead event, so offers are told apart. */
+  conversionName?: string;
+  /** Asks for a business name as the first field. */
+  askBusiness?: boolean;
+  heading?: string;
+  blurb?: string;
+  submitLabel?: string;
+  /**
+   * Navigate here on success instead of showing the panel in place.
+   *
+   * Used by the paid web-design landing page, because Google Ads counts a
+   * conversion when /thank-you loads and an in-place success panel gives it
+   * nothing to count. The Meta Lead event still fires first, and a client-side
+   * route change does not unload the document, so the beacon is not cut off —
+   * the race that made in-place success the default applies to a full
+   * document redirect, not to router.push.
+   */
+  redirectTo?: string;
+};
+
+export function LeadForm({
+  id = "lead-form",
+  compact = false,
+  source = "/start",
+  defaultNeed = "print:cards",
+  conversionName = "Business Cards $99",
+  askBusiness = false,
+  heading = "Leave a number. We'll call you back.",
+  blurb = "Two fields. No deposit, no obligation — the call is where we work out what you need.",
+  submitLabel = "Get my $99 cards started",
+  redirectTo,
+}: LeadFormProps) {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null);
@@ -107,7 +147,7 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
         // The label the visitor actually chose, so the ticket says "cards"
         // rather than only "print".
         form.set("answers", JSON.stringify({ wants: NEEDS.find((n) => n.value === picked)?.label ?? slug }));
-        form.set("source", "/start");
+        form.set("source", source);
 
         startTransition(async () => {
           const result = await submitQuote(form);
@@ -116,7 +156,11 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
             return;
           }
           // Conversion, before anything can navigate away.
-          window.fbq?.("track", "Lead", { content_name: "Business Cards $99" });
+          window.fbq?.("track", "Lead", { content_name: conversionName });
+          if (redirectTo) {
+            router.push(`${redirectTo}?ref=${result.reference}`);
+            return;
+          }
           setDone(result.reference);
         });
       }}
@@ -125,12 +169,8 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
         compact ? "" : "shadow-[0_0_0_1px_var(--color-accent)]",
       )}
     >
-      <p className="font-display text-lg font-extrabold text-fg">
-        Leave a number. We&rsquo;ll call you back.
-      </p>
-      <p className="mt-3 text-sm text-fg-muted">
-        Two fields. No deposit, no obligation — the call is where we work out what you need.
-      </p>
+      <p className="font-display text-lg font-extrabold text-fg">{heading}</p>
+      <p className="mt-3 text-sm text-fg-muted">{blurb}</p>
 
       {/* Honeypot. Off-screen rather than display:none, which some bots skip
           filling in. `overflow-hidden` on a zero-size box means the field can
@@ -142,6 +182,22 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
       </div>
 
       <div className="mt-7 space-y-5">
+        {askBusiness ? (
+          <div>
+            <label className={LABEL} htmlFor={`${id}-business`}>
+              Business name
+            </label>
+            <input
+              id={`${id}-business`}
+              name="business"
+              required
+              autoComplete="organization"
+              placeholder="What it says on the van"
+              className={cn(FIELD, "mt-2.5")}
+            />
+          </div>
+        ) : null}
+
         <div>
           <label className={LABEL} htmlFor={`${id}-name`}>
             Your name
@@ -176,7 +232,7 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
           <label className={LABEL} htmlFor={`${id}-needs`}>
             What do you need? <span className="normal-case tracking-normal">(optional)</span>
           </label>
-          <select id={`${id}-needs`} name="needs" defaultValue="print:cards" className={cn(FIELD, "mt-2.5")}>
+          <select id={`${id}-needs`} name="needs" defaultValue={defaultNeed} className={cn(FIELD, "mt-2.5")}>
             {NEEDS.map((need) => (
               <option key={need.label} value={need.value}>
                 {need.label}
@@ -194,7 +250,7 @@ export function LeadForm({ id = "lead-form", compact = false }: { id?: string; c
 
       <div className="mt-8">
         <Button type="submit" variant="solid" size="lg" className="w-full" disabled={pending}>
-          {pending ? "Sending…" : "Get my $99 cards started"}
+          {pending ? "Sending…" : submitLabel}
         </Button>
       </div>
 

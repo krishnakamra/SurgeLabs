@@ -125,7 +125,9 @@ export function QuoteForm({
       } catch {
         // Private mode, or storage full. The success page copes without it.
       }
-      router.push(`/quote/sent?ref=${result.reference}`);
+      // /thank-you, not /quote/sent: Google Ads counts a lead on that URL
+      // loading. The reference rides along so the confirmation can show it.
+      router.push(`/thank-you?ref=${result.reference}`);
     });
   };
 

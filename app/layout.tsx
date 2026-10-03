@@ -1,10 +1,16 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAds } from "@/components/analytics/google-ads";
 import { MetaPixel } from "@/components/analytics/meta-pixel";
 import { MotionProvider } from "@/components/motion";
 import { SiteHeader } from "@/components/sections";
 import { JobTicketRail, SkipLink } from "@/components/ui";
 import { site } from "@/content";
-import { META_PIXEL_ID, analyticsEnabled } from "@/lib/analytics/config";
+import {
+  GOOGLE_ADS_ID,
+  META_PIXEL_ID,
+  analyticsEnabled,
+  googleAdsEnabled,
+} from "@/lib/analytics/config";
 import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
@@ -58,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </MotionProvider>
         {analyticsEnabled ? <MetaPixel pixelId={META_PIXEL_ID} /> : null}
+        {googleAdsEnabled ? <GoogleAds conversionId={GOOGLE_ADS_ID} /> : null}
       </body>
     </html>
   );
