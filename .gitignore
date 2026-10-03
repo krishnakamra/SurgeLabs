@@ -26,3 +26,8 @@ ads/preview.html
 # Rendered card proofs. Regenerate with `node scripts/make-card.mjs` —
 # press-resolution PNGs do not belong in git history.
 cards/
+
+# Netlify's local project link (just a site id). Written by a deploy from a
+# workstation or a sandbox; it is machine state, not project config — the
+# build settings that matter all live in netlify.toml.
+.netlify/

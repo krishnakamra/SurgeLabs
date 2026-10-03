@@ -109,9 +109,8 @@ export function WebOfferHero({ h1 }: { h1: string }) {
           ) : null}
         </div>
 
-        {/* The form. On the first screen, on every width — it is the only
-            thing this page is for. */}
-        {/* ── 2. The form. The only thing this page is for. ─────────── */}
+        {/* ── 2. The form. On the first screen, on every width — it is the
+               only thing this page is for. ──────────────────────────── */}
         <div className="lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:pl-8">
           <div
             data-surface="stock"
@@ -125,16 +124,18 @@ export function WebOfferHero({ h1 }: { h1: string }) {
               list — one of us calls you, usually the same day.
             </p>
 
+            {/* `bare`, because this panel is already the card and already
+                carries the heading and the reassurance. Letting the form draw
+                its own as well put a card inside a card and said "no deposit,
+                no card" twice in three lines. */}
             <div className="mt-8">
               <LeadForm
                 id="free-homepage"
-                compact
+                bare
                 source="/web-design-seo"
                 defaultNeed="website:site"
                 conversionName="Free homepage design"
                 askBusiness
-                heading="Three fields. That's it."
-                blurb="We'll call once to ask what you do, then design the homepage. No deposit and no card."
                 submitLabel="Design my homepage free"
                 // Lands on /thank-you so Google Ads has a page load to count
                 // as a lead. See the note on the prop.

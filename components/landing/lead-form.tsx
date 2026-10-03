@@ -58,6 +58,17 @@ export type LeadFormProps = {
   askBusiness?: boolean;
   heading?: string;
   blurb?: string;
+  /**
+   * Render the fields alone — no frame, no heading, no blurb.
+   *
+   * For when the form sits inside a panel that already supplies all three, as
+   * it does on the paid landing page. Rendering both produced a card inside a
+   * card with the same promise written twice ("Send us your business name / no
+   * deposit, no card" immediately above "Three fields. That's it / no deposit
+   * and no card"), and spent about 190px of height saying it — which on a
+   * phone is most of the distance between the headline and the first field.
+   */
+  bare?: boolean;
   submitLabel?: string;
   /**
    * Navigate here on success instead of showing the panel in place.
@@ -81,6 +92,7 @@ export function LeadForm({
   askBusiness = false,
   heading = "Leave a number. We'll call you back.",
   blurb = "Two fields. No deposit, no obligation — the call is where we work out what you need.",
+  bare = false,
   submitLabel = "Get my $99 cards started",
   redirectTo,
 }: LeadFormProps) {
@@ -165,12 +177,16 @@ export function LeadForm({
         });
       }}
       className={cn(
-        "border-[length:var(--hairline)] border-rule bg-surface-raised p-7 sm:p-8",
-        compact ? "" : "shadow-[0_0_0_1px_var(--color-accent)]",
+        !bare && "border-[length:var(--hairline)] border-rule bg-surface-raised p-7 sm:p-8",
+        !bare && !compact && "shadow-[0_0_0_1px_var(--color-accent)]",
       )}
     >
-      <p className="font-display text-lg font-extrabold text-fg">{heading}</p>
-      <p className="mt-3 text-sm text-fg-muted">{blurb}</p>
+      {bare ? null : (
+        <>
+          <p className="font-display text-lg font-extrabold text-fg">{heading}</p>
+          <p className="mt-3 text-sm text-fg-muted">{blurb}</p>
+        </>
+      )}
 
       {/* Honeypot. Off-screen rather than display:none, which some bots skip
           filling in. `overflow-hidden` on a zero-size box means the field can
@@ -181,7 +197,7 @@ export function LeadForm({
         <input id={`${id}-company_website`} name="company_website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="mt-7 space-y-5">
+      <div className={cn("space-y-5", !bare && "mt-7")}>
         {askBusiness ? (
           <div>
             <label className={LABEL} htmlFor={`${id}-business`}>
