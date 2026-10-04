@@ -25,68 +25,74 @@ import { site } from "./content/site";
 /**
  * Third-party hosts, grouped by the tag that needs them.
  *
- * The Meta Pixel is the simple case: one script host, one pair of beacon
- * hosts.
+ * The Meta Pixel is the simple case: connect.facebook.net serves the script,
+ * www.facebook.com takes the beacon, and it does not move.
  *
- * Google Ads needs more hosts than its four-line snippet suggests, because
- * gtag.js is a loader rather than the tag. `googletagmanager.com` serves
- * gtag.js, which then pulls `conversion_async.js` from
- * `googleadservices.com`. The conversion itself is a beacon to
- * `googleads.g.doubleclick.net`, sent as an image or — when the browser
- * blocks third-party images — an iframe, which is why `frame-src` can no
- * longer be `'none'`. `td.doubleclick.net` and `www.google.com` carry the
- * first-party-conversion and audience pings.
+ * Google Ads is one list used in four directives, which looks lazy and is
+ * not. gtag.js is a loader, and it chooses its transport and its endpoint at
+ * runtime from consent state, experiment flags and what the browser allows —
+ * the same page load sends the conversion as an image one time and a script
+ * the next, to googleads.g.doubleclick.net one time and
+ * googleadservices.com/ccm/conversion the next. Splitting these hosts by
+ * directive means guessing that mapping correctly for every combination,
+ * forever.
  *
- * Getting this list wrong is expensive in a way most CSP mistakes are not,
- * because the failure is entirely silent. Nothing breaks that a visitor
- * would notice, the tag is right there in the page source, and Google Ads
- * simply reports zero conversions while the campaign keeps spending. That is
- * why every host below is named with the call it serves rather than copied
- * from a blog post.
+ * It was guessed wrong three times here, each caught only by opening the
+ * live site in a browser and reading the console:
+ *
+ *   1. the whole list missing, so gtag.js itself was refused
+ *   2. ad.doubleclick.net absent, and the beacon's script transport refused
+ *      because googleads.g was in img-src but not script-src
+ *   3. googleadservices.com/ccm/conversion refused as an image, because that
+ *      host was in script-src only — on /thank-you, which IS the conversion
+ *
+ * Each of those is silent. Nothing a visitor sees breaks, the tag is right
+ * there in the page source, and Google Ads reports fewer conversions than
+ * happened while the campaign keeps spending. The security this buys back by
+ * being precise is nil: these are four hosts belonging to one vendor, and
+ * that vendor is already trusted to run script on the page. So the list is
+ * flat, and the only question asked of a host is whether it belongs to the
+ * tag.
  *
  * `www.google.ca` sits beside `www.google.com` because the audience ping
  * follows the visitor's country ccTLD, and those two cover this business's
  * traffic. An unlisted ccTLD costs a remarketing audience, never a
  * conversion.
+ *
+ * If these ever change, the check is not to re-read this file. It is to load
+ * the live landing page, click through to another route, then open
+ * /thank-you, with the console filtered to "Refused to" — see the note in
+ * scripts/verify-live.mjs.
  */
 const metaScript = "https://connect.facebook.net";
 const metaBeacon = "https://www.facebook.com https://facebook.com";
-const googleScript = "https://www.googletagmanager.com https://www.googleadservices.com";
-const googleBeacon = [
-  // A wildcard rather than a list, because the list was wrong. It named
-  // googleads.g, td and stats, and a browser check against the live site
-  // found gtag also calling ad.doubleclick.net/ccm/s/collect — twice, once
-  // as a fetch and once as an image, both refused. Enumerating Google's ad
-  // subdomains is a game you lose quietly: every miss is a measurement hole
-  // nobody sees. The whole of doubleclick.net is one vendor, and it is the
-  // vendor this tag belongs to.
+const googleAds = [
+  "https://www.googletagmanager.com",
+  "https://www.googleadservices.com",
+  // A wildcard, because enumerating Google's ad subdomains is a game you lose
+  // quietly — googleads.g, td, stats and ad have all turned up, and the list
+  // was wrong twice. All of doubleclick.net is the same vendor as the rest of
+  // this list.
   "https://*.doubleclick.net",
   "https://www.google.com",
   "https://www.google.ca",
 ].join(" ");
-// Not just googletagmanager and googleadservices. gtag sends the conversion
-// beacon by whichever transport the browser allows, and one of them is a
-// script tag pointed at googleads.g.doubleclick.net/pagead/viewthroughconversion
-// (fmt=4). With that refused it falls back to the image, so the conversion
-// still lands — but it is a retry on every page view for no reason, and the
-// fallback is not guaranteed to exist forever.
-const googleAdServing = "https://*.doubleclick.net";
 
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' — see above. 'unsafe-eval' is NOT granted.
-  `script-src 'self' 'unsafe-inline' ${metaScript} ${googleScript} ${googleAdServing}`,
+  `script-src 'self' 'unsafe-inline' ${metaScript} ${googleAds}`,
   // Next injects style tags, and components set style attributes for the
   // registration offsets and panel counts.
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: ${metaBeacon} ${googleBeacon}`,
+  `img-src 'self' data: blob: ${metaBeacon} ${googleAds}`,
   // next/font self-hosts every face, so no font CDN is needed.
   "font-src 'self'",
-  `connect-src 'self' ${metaScript} ${metaBeacon} ${googleScript} ${googleBeacon}`,
+  `connect-src 'self' ${metaScript} ${metaBeacon} ${googleAds}`,
   "media-src 'self'",
   // Was 'none', and would be again but for the Google Ads conversion iframe
   // fallback described above. Nothing on this site frames anything by design.
-  `frame-src ${googleAdServing}`,
+  `frame-src ${googleAds}`,
   "object-src 'none'",
   "base-uri 'self'",
   // The quote form posts to a server action on this origin and nowhere else.

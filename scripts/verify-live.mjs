@@ -83,15 +83,18 @@ const policy = h.get("content-security-policy") ?? "";
 const directive = (name) =>
   policy.split(";").map((d) => d.trim()).find((d) => d.startsWith(`${name} `)) ?? "";
 
-// Host checks, not exact-string checks: the policy names *.doubleclick.net
-// rather than each subdomain, and asserting the literal it happens to use
-// today would fail the next time that is tightened or loosened correctly.
-ok("CSP script-src allows gtag.js", directive("script-src").includes("googletagmanager.com"));
-ok("CSP script-src allows conversion_async.js", directive("script-src").includes("googleadservices.com"));
-ok("CSP script-src allows the beacon's script transport", directive("script-src").includes("doubleclick.net"));
-ok("CSP img-src allows the conversion beacon", directive("img-src").includes("doubleclick.net"));
-ok("CSP connect-src allows the measurement collector", directive("connect-src").includes("doubleclick.net"));
-ok("CSP frame-src allows the beacon's iframe fallback", directive("frame-src").includes("doubleclick.net"));
+// Every Google host in every directive the tag can use, rather than a guess
+// at which host serves which transport. gtag picks both at runtime, so the
+// three times this was wrong it was wrong in a different directive each
+// time — see the note in next.config.ts. Matching on the host rather than
+// the literal, because the policy says *.doubleclick.net and asserting
+// today's exact spelling would fail the next correct change to it.
+const adHosts = ["googletagmanager.com", "googleadservices.com", "doubleclick.net", "www.google.com"];
+for (const name of ["script-src", "img-src", "connect-src", "frame-src"]) {
+  const d = directive(name);
+  const missing = adHosts.filter((h) => !d.includes(h));
+  ok(`CSP ${name} allows the whole tag`, missing.length === 0, missing.length ? `missing ${missing.join(", ")}` : "");
+}
 
 const thanks = await head(`${base}/thank-you`, "manual");
 ok("/thank-you serves 200", thanks.status === 200, `(${thanks.status})`);
