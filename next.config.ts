@@ -53,18 +53,29 @@ const metaScript = "https://connect.facebook.net";
 const metaBeacon = "https://www.facebook.com https://facebook.com";
 const googleScript = "https://www.googletagmanager.com https://www.googleadservices.com";
 const googleBeacon = [
-  "https://googleads.g.doubleclick.net",
-  "https://td.doubleclick.net",
-  "https://stats.g.doubleclick.net",
+  // A wildcard rather than a list, because the list was wrong. It named
+  // googleads.g, td and stats, and a browser check against the live site
+  // found gtag also calling ad.doubleclick.net/ccm/s/collect — twice, once
+  // as a fetch and once as an image, both refused. Enumerating Google's ad
+  // subdomains is a game you lose quietly: every miss is a measurement hole
+  // nobody sees. The whole of doubleclick.net is one vendor, and it is the
+  // vendor this tag belongs to.
+  "https://*.doubleclick.net",
   "https://www.google.com",
   "https://www.google.ca",
 ].join(" ");
-const googleFrame = "https://googleads.g.doubleclick.net https://td.doubleclick.net";
+// Not just googletagmanager and googleadservices. gtag sends the conversion
+// beacon by whichever transport the browser allows, and one of them is a
+// script tag pointed at googleads.g.doubleclick.net/pagead/viewthroughconversion
+// (fmt=4). With that refused it falls back to the image, so the conversion
+// still lands — but it is a retry on every page view for no reason, and the
+// fallback is not guaranteed to exist forever.
+const googleAdServing = "https://*.doubleclick.net";
 
 const csp = [
   "default-src 'self'",
   // 'unsafe-inline' — see above. 'unsafe-eval' is NOT granted.
-  `script-src 'self' 'unsafe-inline' ${metaScript} ${googleScript}`,
+  `script-src 'self' 'unsafe-inline' ${metaScript} ${googleScript} ${googleAdServing}`,
   // Next injects style tags, and components set style attributes for the
   // registration offsets and panel counts.
   "style-src 'self' 'unsafe-inline'",
@@ -75,7 +86,7 @@ const csp = [
   "media-src 'self'",
   // Was 'none', and would be again but for the Google Ads conversion iframe
   // fallback described above. Nothing on this site frames anything by design.
-  `frame-src ${googleFrame}`,
+  `frame-src ${googleAdServing}`,
   "object-src 'none'",
   "base-uri 'self'",
   // The quote form posts to a server action on this origin and nowhere else.
