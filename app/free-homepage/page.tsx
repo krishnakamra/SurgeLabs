@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Logo } from "@/components/brand";
 import { FreeHomepageForm } from "@/components/landing/free-homepage/free-homepage-form";
 import { StickyBar } from "@/components/landing/free-homepage/sticky-bar";
-import { WorkFrames } from "@/components/landing/free-homepage/work-frames";
+import { HeroPhones, WorkFrames } from "@/components/landing/free-homepage/work-frames";
+import { HalftoneField } from "@/components/ui/halftone-field";
 import { site } from "@/content";
 import { freeHomepage } from "@/content/free-homepage";
 
@@ -86,20 +87,25 @@ export default function FreeHomepagePage() {
 
       <main id="main" tabIndex={-1}>
         {/* ── 1. Hero. Headline, subhead, form, all on the first screen ── */}
-        <Band surface="ink" className="pt-12 sm:pt-16 lg:pt-20">
-          <div className="grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-12 lg:gap-y-0">
-            <div className="lg:col-span-6">
+        <Band surface="ink" className="relative isolate overflow-hidden pt-10 sm:pt-14 lg:pt-12">
+          <HalftoneField plate="m" pitch={9} dot={1.5} opacity={0.12} seed={11} fade="radial" />
+          <div className="relative grid grid-cols-1 items-start gap-x-16 gap-y-10 lg:grid-cols-12 lg:gap-y-0">
+            <div className="lg:col-span-6 lg:pt-4">
               <p className={`${LABEL} text-accent-text`}>Web design · Mississauga</p>
 
               {/* The ad's headline, verbatim. If this and the ad ever differ,
                   the ad is right and this is wrong. */}
-              <h1 className="mt-6 max-w-[15ch] font-display text-2xl leading-[0.98] font-extrabold tracking-[-0.02em] text-fg">
+              <h1 className="mt-6 max-w-[13ch] font-display text-[clamp(2.125rem,1.15rem+4vw,4.75rem)] leading-[0.96] font-extrabold tracking-[-0.025em] text-fg">
                 {freeHomepage.headline}
               </h1>
 
-              <p className="mt-7 max-w-[46ch] text-md leading-relaxed text-fg-muted">
+              <p className="mt-7 max-w-[44ch] text-md leading-relaxed text-fg-muted">
                 {freeHomepage.subhead}
               </p>
+
+              <div className="mt-12">
+                <HeroPhones />
+              </div>
             </div>
 
             {/* On a phone this lands directly under the subhead, which is the
@@ -116,8 +122,13 @@ export default function FreeHomepagePage() {
         {/* ── 2. The problem ──────────────────────────────────────────── */}
         <Band surface="stock">
           <p className={`${LABEL} text-accent-text`}>{freeHomepage.problem.eyebrow}</p>
-          <p className={`${H2} mt-8 max-w-[24ch] text-xl leading-[1.08]`}>
-            {freeHomepage.problem.body}
+          {/* One sentence, three weights: the setup quiet, the turn plain, the
+              consequence in the accent. The words are the brief's exactly;
+              the spans only change how they are set. */}
+          <p className={`${H2} mt-8 max-w-[22ch] text-[clamp(1.75rem,1.2rem+2.6vw,3.5rem)] leading-[1.06]`}>
+            <span className="text-fg-muted">{freeHomepage.problem.lead}</span>{" "}
+            {freeHomepage.problem.turn}{" "}
+            <span className="text-accent-text">{freeHomepage.problem.sting}</span>
           </p>
         </Band>
 
@@ -127,8 +138,10 @@ export default function FreeHomepagePage() {
           <ol className="mt-14 grid grid-cols-1 gap-x-gutter gap-y-12 sm:grid-cols-3">
             {freeHomepage.steps.map((step) => (
               <li key={step.n} className="border-t-2 border-accent pt-6">
-                <p className={`${LABEL} text-accent-text`}>{step.n}</p>
-                <h3 className={`${H2} mt-5 max-w-[18ch] text-lg leading-[1.12]`}>{step.title}</h3>
+                <p className="font-numeral text-3xl leading-none font-black tabular-nums text-accent-text">
+                  {step.n}
+                </p>
+                <h3 className={`${H2} mt-6 max-w-[18ch] text-lg leading-[1.12]`}>{step.title}</h3>
                 <p className="mt-4 max-w-[38ch] text-base text-fg-muted">{step.detail}</p>
               </li>
             ))}
@@ -155,6 +168,14 @@ export default function FreeHomepagePage() {
                 key={benefit.title}
                 className="border-t-[length:var(--hairline)] border-rule-strong pt-6"
               >
+                <span
+                  aria-hidden="true"
+                  className="mb-5 flex h-7 w-7 items-center justify-center border-[length:var(--hairline)] border-accent text-accent-text"
+                >
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="M2.5 8.5l3.5 3.5 7.5-8" />
+                  </svg>
+                </span>
                 <h3 className={`${H2} max-w-[20ch] text-md leading-[1.2]`}>{benefit.title}</h3>
                 <p className="mt-4 max-w-[38ch] text-base text-fg-muted">{benefit.detail}</p>
               </li>
@@ -200,12 +221,13 @@ export default function FreeHomepagePage() {
         </Band>
 
         {/* ── 7. Back to the form ─────────────────────────────────────── */}
-        <Band surface="ink" className="pb-28 lg:pb-36">
-          <h2 className={`${H2} max-w-[18ch] text-xl leading-[1.05]`}>
+        <Band surface="ink" className="relative isolate overflow-hidden pb-28 lg:pb-36">
+          <HalftoneField plate="m" pitch={9} dot={1.5} opacity={0.12} seed={23} fade="radial" />
+          <h2 className={`${H2} relative max-w-[16ch] text-[clamp(2rem,1.4rem+2.8vw,4rem)] leading-[1.02]`}>
             {freeHomepage.finalCta.heading}
           </h2>
-          <p className="mt-7 max-w-[46ch] text-md text-fg-muted">{freeHomepage.finalCta.body}</p>
-          <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <p className="relative mt-7 max-w-[46ch] text-md text-fg-muted">{freeHomepage.finalCta.body}</p>
+          <div className="relative mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
             <a
               href={`#${FORM_ID}`}
               className="inline-flex items-center justify-center border-[length:var(--hairline)] border-accent bg-accent px-10 py-5 font-display text-base font-extrabold text-accent-fg transition-colors duration-200 hover:border-accent-hover hover:bg-accent-hover hover:text-accent-hover-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
@@ -219,7 +241,7 @@ export default function FreeHomepagePage() {
               Call {site.phone}
             </a>
           </div>
-          <p className="mt-8 text-sm text-fg-faint">{freeHomepage.reassurance}</p>
+          <p className="relative mt-8 text-sm text-fg-faint">{freeHomepage.reassurance}</p>
         </Band>
       </main>
 

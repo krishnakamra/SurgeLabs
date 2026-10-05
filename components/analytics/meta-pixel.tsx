@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useAfterFirstInteraction } from "@/lib/hooks/use-after-first-interaction";
 
 declare global {
   interface Window {
@@ -34,6 +35,7 @@ export function MetaPixel({ pixelId }: { pixelId: string }) {
   // The init snippet fires the first PageView itself. Without this guard the
   // landing page would be counted twice.
   const initialised = useRef(false);
+  const loadLibrary = useAfterFirstInteraction();
 
   useEffect(() => {
     if (!initialised.current) {
@@ -45,18 +47,34 @@ export function MetaPixel({ pixelId }: { pixelId: string }) {
 
   return (
     <>
+      {/* Meta's snippet does two things in one breath: it defines `fbq` as a
+          queue, and it injects fbevents.js. They are split here, because
+          the second is 213KB of third-party JavaScript and a mobile
+          Lighthouse run measured it at 498ms of main-thread blocking — on a
+          paid landing page whose brief requires a score of 90. The library
+          now waits for the visitor's first touch, scroll or keypress (or 5s
+          idle); see useAfterFirstInteraction for why lazyOnload was not
+          enough.
+
+          The stub below is Meta's own, minus the script injection. It queues
+          `init` and `PageView` immediately, exactly as before, and
+          fbevents.js drains that queue whenever it arrives — which is how
+          the snippet always worked, since it loads the library async. Nothing
+          is dropped by loading it later; it is only sent later. */}
       <Script id="meta-pixel" strategy="afterInteractive">
-        {`!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        {`!function(f){if(f.fbq)return;var n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];}(window);
 fbq('init', '${pixelId}');
 fbq('track', 'PageView');`}
       </Script>
+      {loadLibrary ? (
+        <Script
+          id="meta-pixel-lib"
+          src="https://connect.facebook.net/en_US/fbevents.js"
+          strategy="afterInteractive"
+        />
+      ) : null}
       <noscript>
         {/* eslint-disable-next-line @next/next/no-img-element -- a tracking
             pixel is not content; next/image would rewrite it through the

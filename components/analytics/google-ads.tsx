@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useAfterFirstInteraction } from "@/lib/hooks/use-after-first-interaction";
 
 declare global {
   interface Window {
@@ -35,6 +36,7 @@ declare global {
 export function GoogleAds({ conversionId }: { conversionId: string }) {
   const pathname = usePathname();
   const ready = useRef(false);
+  const loadLibrary = useAfterFirstInteraction();
 
   useEffect(() => {
     // The tag has to exist before a page_view means anything. On the very
@@ -54,11 +56,19 @@ export function GoogleAds({ conversionId }: { conversionId: string }) {
 
   return (
     <>
-      <Script
-        id="google-ads-src"
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${conversionId}`}
-      />
+      {/* The library loads late; the queue below does not. gtag.js is a
+          164KB download that measured 338ms of main-thread blocking on a
+          mobile Lighthouse run. `gtag()` is only ever a push onto
+          `dataLayer`, so every config and page_view issued before the
+          library arrives waits in the queue and is sent when it does —
+          that is the mechanism Google's own snippet relies on. */}
+      {loadLibrary ? (
+        <Script
+          id="google-ads-src"
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${conversionId}`}
+        />
+      ) : null}
       <Script id="google-ads-init" strategy="afterInteractive">
         {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}

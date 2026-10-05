@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/content";
 import { freeHomepage } from "@/content/free-homepage";
+import { useBatchCountdown } from "@/lib/hooks/use-batch-countdown";
 import { cn } from "@/lib/cn";
 
 /**
@@ -24,6 +25,10 @@ import { cn } from "@/lib/cn";
  */
 export function StickyBar({ formId = "free-homepage-form" }: { formId?: string }) {
   const [visible, setVisible] = useState(false);
+  // The deadline follows the visitor down the page: the bar is the one thing
+  // on screen once the hero has gone, so it is where the urgency has to live.
+  const left = useBatchCountdown();
+  const pad = (n: number) => String(n).padStart(2, "0");
   const formOnScreen = useRef(true);
   const pastHero = useRef(false);
 
@@ -75,6 +80,12 @@ export function StickyBar({ formId = "free-homepage-form" }: { formId?: string }
         visible ? "translate-y-0" : "pointer-events-none translate-y-full",
       )}
     >
+      <p className="mb-2.5 flex items-baseline justify-between gap-3 font-utility text-2xs uppercase tracking-utility text-fg-muted">
+        <span>{left ? `${left.month} batch closes in` : "This month\u2019s batch closes in"}</span>
+        <span className="font-numeral text-xs font-black tabular-nums tracking-normal text-accent-text">
+          {left ? `${left.days}d ${pad(left.hours)}h ${pad(left.minutes)}m` : "--d --h --m"}
+        </span>
+      </p>
       <div className="flex items-stretch gap-3">
         <a
           href={`#${formId}`}

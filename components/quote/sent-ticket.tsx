@@ -25,6 +25,11 @@ export function SentTicket() {
   const params = useSearchParams();
   const reference = params.get("ref") ?? "";
   const valid = isReference(reference);
+  // Set by the /free-homepage form. Those leads never had a spec sheet — the
+  // sheet is the /quote wizard's — so without this they landed here, seconds
+  // after submitting, to be told "this browser no longer holds a copy of the
+  // sheet", which reads as though something had gone wrong.
+  const forHomepage = valid && params.get("for") === "homepage";
   const [submission, setSubmission] = useState<Stored | null>(null);
   const [checked, setChecked] = useState(false);
 
@@ -54,10 +59,26 @@ export function SentTicket() {
           <Eyebrow spec={valid ? reference : "REFERENCE MISSING"}>Received</Eyebrow>
 
           <h1 className="mt-8 max-w-[20ch] font-display text-3xl font-extrabold text-fg">
-            {valid ? "Your ticket is on the shop floor." : "We could not find that reference."}
+            {forHomepage
+              ? "Got it \u2014 your homepage is in the works."
+              : valid
+                ? "Your ticket is on the shop floor."
+                : "We could not find that reference."}
           </h1>
 
-          {valid ? (
+          {forHomepage ? (
+            <>
+              <p className="mt-8 max-w-[56ch] text-md text-fg-muted">
+                We&rsquo;ll be in touch within one business day. Your reference is{" "}
+                <span className="font-utility text-accent-text">{reference}</span> if you want to
+                call us first on{" "}
+                <a href={site.phoneHref} className="text-link underline decoration-1 underline-offset-4">
+                  {site.phone}
+                </a>
+                .
+              </p>
+            </>
+          ) : valid ? (
             <>
               <p className="mt-8 max-w-[56ch] text-md text-fg-muted">
                 Quote your reference{" "}
@@ -104,7 +125,7 @@ export function SentTicket() {
           )}
         </SectionFrame>
 
-        {valid && checked ? (
+        {valid && checked && !forHomepage ? (
           <SectionFrame surface="stock" padding="md" cropMarks={false}>
             {submission ? (
               <>
@@ -139,11 +160,18 @@ export function SentTicket() {
         <SectionFrame surface="ink" padding="md" cropMarks={false} className="print:hidden">
           <p className={`${SPEC} text-fg-faint`}>What happens next</p>
           <ol className="mt-6 grid gap-x-gutter gap-y-6 sm:grid-cols-3">
-            {[
-              ["01", "We read it", "A person, not an autoresponder. Usually within a few hours."],
-              ["02", "We quote it", "Written, with the specs restated so you can compare it."],
-              ["03", "You approve", "Nothing goes to production until you sign off a proof."],
-            ].map(([step, title, detail]) => (
+            {(forHomepage
+              ? [
+                  ["01", "We get in touch", "Within one business day, to hear what you do and who it is for."],
+                  ["02", "We design your homepage", "Usually ready in a couple of days, and free."],
+                  ["03", "You decide", "Love it and we build the rest. If not, it has cost you nothing."],
+                ]
+              : [
+                  ["01", "We read it", "A person, not an autoresponder. Usually within a few hours."],
+                  ["02", "We quote it", "Written, with the specs restated so you can compare it."],
+                  ["03", "You approve", "Nothing goes to production until you sign off a proof."],
+                ]
+            ).map(([step, title, detail]) => (
               <li key={step}>
                 <p className="font-numeral text-xl leading-none font-extrabold tabular-nums text-accent-text">{step}</p>
                 <p className="mt-4 font-display text-base font-bold text-fg">{title}</p>

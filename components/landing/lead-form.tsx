@@ -170,7 +170,12 @@ export function LeadForm({
           // Conversion, before anything can navigate away.
           window.fbq?.("track", "Lead", { content_name: conversionName });
           if (redirectTo) {
-            router.push(`${redirectTo}?ref=${result.reference}`);
+            // URL rather than string concatenation, so `redirectTo` can carry
+            // its own query (`/thank-you?for=homepage`) without producing a
+            // second `?` and a ref the thank-you page cannot parse.
+            const url = new URL(redirectTo, window.location.origin);
+            url.searchParams.set("ref", result.reference);
+            router.push(`${url.pathname}${url.search}`);
             return;
           }
           setDone(result.reference);

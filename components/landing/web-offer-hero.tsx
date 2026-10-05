@@ -102,9 +102,7 @@ export function WebOfferHero({ h1 }: { h1: string }) {
                   morning of work, not a template.
                 </p>
               ) : null}
-              {deadline ? (
-                <BatchClock deadline={deadline.toISOString()} className="mt-4 text-sm" />
-              ) : null}
+              {deadline ? <BatchClock className="mt-4 text-sm" /> : null}
             </div>
           ) : null}
         </div>
@@ -139,7 +137,7 @@ export function WebOfferHero({ h1 }: { h1: string }) {
                 submitLabel="Design my homepage free"
                 // Lands on /thank-you so Google Ads has a page load to count
                 // as a lead. See the note on the prop.
-                redirectTo="/thank-you"
+                redirectTo="/thank-you?for=homepage"
               />
             </div>
 

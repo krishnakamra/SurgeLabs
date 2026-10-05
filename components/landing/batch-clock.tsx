@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/motion/preferences";
+import { useBatchCountdown } from "@/lib/hooks/use-batch-countdown";
 
 /**
- * Time left in the current free-design batch.
+ * Time left in the current free-design batch, as one line of text.
  *
  * WHY THIS ONE IS ALLOWED TO EXIST. It counts down to the end of the calendar
  * month in Toronto — a date anyone can check against a calendar, identical
@@ -19,48 +18,26 @@ import { prefersReducedMotion } from "@/lib/motion/preferences";
  * converts worse than a specific true thing once anyone reloads the page and
  * watches it start over.
  *
- * The deadline is computed on the server (content/offer.ts) and passed in as
- * an ISO string, so the viewer's clock cannot move it.
+ * The deadline used to arrive as a prop computed during server render. On a
+ * statically generated page that means computed at BUILD time, so a page
+ * built in October showed a clock stuck at zero all of November. It now comes
+ * from useBatchCountdown, which works it out in the browser from the current
+ * date. See that hook.
  *
- * Renders a reserved blank line until mounted: a countdown rendered on the
- * server is a hydration mismatch waiting to happen, and reserving the line
- * stops the layout jumping when it fills in.
+ * Renders a reserved blank line until mounted, so the layout does not jump
+ * when it fills in.
  */
-export function BatchClock({ deadline, className }: { deadline: string; className?: string }) {
-  const [left, setLeft] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
-  const [still, setStill] = useState(false);
-
-  useEffect(() => {
-    setStill(prefersReducedMotion());
-    const end = new Date(deadline).getTime();
-    if (Number.isNaN(end)) return;
-
-    const tick = () => {
-      const ms = Math.max(0, end - Date.now());
-      setLeft({
-        d: Math.floor(ms / 86_400_000),
-        h: Math.floor((ms % 86_400_000) / 3_600_000),
-        m: Math.floor((ms % 3_600_000) / 60_000),
-        s: Math.floor((ms % 60_000) / 1000),
-      });
-    };
-
-    tick();
-    // Seconds only matter on the last day. Above that a minute is plenty, and
-    // it keeps a per-second repaint off a page that is mostly read.
-    const id = window.setInterval(tick, still ? 60_000 : 1000);
-    return () => window.clearInterval(id);
-  }, [deadline, still]);
-
+export function BatchClock({ className }: { className?: string }) {
+  const left = useBatchCountdown();
   if (!left) return <p className={className} aria-hidden="true">&nbsp;</p>;
 
   const pad = (n: number) => String(n).padStart(2, "0");
   const value =
-    left.d > 0
-      ? `${left.d}d ${pad(left.h)}h ${pad(left.m)}m`
-      : still
-        ? `${left.h}h ${pad(left.m)}m`
-        : `${pad(left.h)}:${pad(left.m)}:${pad(left.s)}`;
+    left.days > 0
+      ? `${left.days}d ${pad(left.hours)}h ${pad(left.minutes)}m`
+      : left.still
+        ? `${left.hours}h ${pad(left.minutes)}m`
+        : `${pad(left.hours)}:${pad(left.minutes)}:${pad(left.seconds)}`;
 
   return (
     <p className={className}>

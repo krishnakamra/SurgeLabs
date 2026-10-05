@@ -48,9 +48,17 @@ export const freeHomepage = {
   /** Sits directly under the button. Three things, all of them removals. */
   reassurance: "No card. No commitment. Usually ready in a couple of days.",
 
+  /**
+   * The problem line, word for word from the brief, split only so it can be
+   * set in three weights: the setup quiet, the turn plain, the consequence in
+   * the accent. Joined with spaces it is the original sentence exactly — the
+   * page renders `[lead, turn, sting].join(" ")` as its accessible text.
+   */
   problem: {
     eyebrow: "Why this matters",
-    body: "Before anyone calls you, they look you up. If your site looks outdated or breaks on their phone, they call the next guy.",
+    lead: "Before anyone calls you, they look you up.",
+    turn: "If your site looks outdated or breaks on their phone,",
+    sting: "they call the next guy.",
   },
 
   steps: [
