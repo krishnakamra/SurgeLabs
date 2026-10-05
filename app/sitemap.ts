@@ -23,6 +23,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: site.url, lastModified: now, changeFrequency: "monthly", priority: 1 },
     { url: `${site.url}/packages`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/quote`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    // The paid landing page. Indexable now (see app/free-homepage/page.tsx);
+    // nothing in the site nav links to it, so this is how a crawler finds it.
+    { url: `${site.url}/free-homepage`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/service-areas`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },

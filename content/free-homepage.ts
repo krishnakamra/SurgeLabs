@@ -24,7 +24,7 @@
  */
 
 export type Step = { n: string; title: string; detail: string };
-export type Benefit = { title: string; detail: string };
+export type Benefit = { title: string };
 export type WorkItem = {
   slug: string;
   domain: string;
@@ -65,20 +65,17 @@ export const freeHomepage = {
     {
       n: "01",
       title: "Send your business name",
-      detail:
-        "That is the whole first step. No brief to fill in, no deposit, no call booked before anything happens.",
+      detail: "That's all we need to start. No card. No commitment.",
     },
     {
       n: "02",
       title: "We design your new homepage, free",
-      detail:
-        "A real design for your business, not a template with your name dropped into it. You see it before you pay anything.",
+      detail: "A custom design, not a template — and you see it before you pay.",
     },
     {
       n: "03",
       title: "Love it? We build the rest",
-      detail:
-        "If it is not right, you walk away and it has cost you nothing. If it is, we build the rest of the site around it.",
+      detail: "One payment, no monthly fees.",
     },
   ] satisfies Step[],
 
@@ -126,67 +123,57 @@ export const freeHomepage = {
     },
   ] satisfies WorkItem[],
 
+  /**
+   * The six items exactly as the owner listed them. Titles only: the
+   * supporting sentence that used to sit under each was written here, not
+   * given, and several of them were claims ("almost everyone", "the same
+   * building", "one business day" where the brief says 24 hours).
+   */
   benefits: [
-    {
-      title: "A custom design, not a template",
-      detail:
-        "Drawn for your business and what it sells. Nobody else gets the same page with a different logo on it.",
-    },
-    {
-      title: "Mobile-first and fast",
-      detail:
-        "Built for the phone first, because that is where almost everyone will see it, and built to load quickly on a bad connection.",
-    },
-    {
-      title: "One payment, no monthly fees",
-      detail: "You pay once for the site. There is no subscription and no plan to cancel.",
-    },
-    {
-      title: "Business cards included",
-      detail:
-        "Printed in the same building as the site is built, so the card and the screen carry the same brand.",
-    },
-    {
-      title: "A local team that answers the phone",
-      detail:
-        "We are in Mississauga. When you call, someone here picks up — not a ticket queue in another time zone.",
-    },
-    {
-      title: "A quote within 24 hours",
-      detail: "One business day, in writing, with what is included spelled out.",
-    },
+    { title: "A custom design, not a template" },
+    { title: "Mobile-first and fast" },
+    { title: "One payment, no monthly fees" },
+    { title: "Business cards included" },
+    { title: "A local Mississauga team that answers the phone" },
+    { title: "A quote within 24 hours" },
   ] satisfies Benefit[],
 
+  /**
+   * Answers built only from the brief and the ad. "Do I own my site?" is the
+   * one the brief asked but did not answer — it says only what the offer
+   * already promises and sends the rest to a call. OWNER: replace it with
+   * the real answer.
+   */
   faqs: [
     {
       question: "Is it really free?",
       answer:
-        "Yes. We design your homepage and show it to you before you pay anything. No card, no deposit, no obligation — if you do not like it you walk away and it has cost you nothing. We do it because most people who like their homepage ask us to build the rest, and enough of them do that it pays for the ones who do not.",
+        "Yes. Send us your business name and we design your new homepage free — you see it before you pay anything. No card. No commitment.",
     },
     {
       question: "How much is a full website?",
       answer:
-        "It is quoted per job, after you have seen your homepage. A five-page site for a trade and a shop with four hundred products are not the same piece of work, and quoting them the same would mean one of you was being overcharged. You get the number in writing before anything is built, and it is one payment with no monthly fees.",
+        "It's quoted per job, after you've seen your homepage. One payment, no monthly fees.",
     },
     {
       question: "How long does it take?",
       answer:
-        "The free homepage design is usually ready in a couple of days. The rest of the site depends on how big it is and how quickly we get your content, and we tell you the timeline with the quote rather than after you have agreed to it.",
+        "Your free homepage design is usually ready in a couple of days, and you get a quote within 24 hours.",
     },
     {
       question: "Do I own my site?",
       answer:
-        "Yes. You pay once and the site is yours — there is no subscription, nothing to cancel, and we are not holding it hostage to a monthly fee. If you want the specifics on the domain and the hosting for your setup, ask on the call and we will tell you straight.",
+        "It's one payment with no monthly fees. Call us on 905-598-3960 and we'll go through exactly what you get.",
     },
     {
       question: "Do you do printing too?",
       answer:
-        "Yes, in the same building. Business cards, flyers, signs, vehicle graphics and custom apparel are all produced in-house in Mississauga, which is why the cards can match the site exactly instead of approximately.",
+        "Yes — business cards, flyers, signs and custom apparel. Business cards are included with your new website.",
     },
   ] satisfies Faq[],
 
   finalCta: {
     heading: "Send us your business name.",
-    body: "We will design your new homepage and show it to you. If you do not like it, that is the end of it and it has cost you nothing.",
+    body: "We'll design your new homepage — free. Love it? We build the rest. One payment, no monthly fees.",
   },
 } as const;

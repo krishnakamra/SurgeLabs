@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { submitQuote } from "@/app/quote/actions";
@@ -101,12 +100,9 @@ export function FreeHomepageForm({
               setError(result.error);
               return;
             }
-            // The conversion, before anything can navigate away. A client-side
-            // route change does not unload the document, so the beacon is not
-            // cut off — but the ordering still matters if the pixel is slow.
-            window.fbq?.("track", "Lead", {
-              content_name: "Free homepage design",
-            });
+            // The Meta Lead event is sent by /thank-you, once per reference
+            // (see SentTicket). Sending it here too would count every lead
+            // twice.
             // `for=homepage` tells /thank-you which confirmation to show. Google
             // Ads matches on the path, so the extra parameter costs the
             // conversion nothing.
@@ -173,7 +169,7 @@ export function FreeHomepageForm({
               // time and fail native validation on the other half.
               inputMode="text"
               autoComplete="tel"
-              placeholder="905 555 0123, or you@yourbusiness.ca"
+              placeholder="Whichever you prefer"
               className={FIELD}
             />
           </div>
@@ -188,7 +184,7 @@ export function FreeHomepageForm({
               name="current_site"
               inputMode="url"
               autoComplete="url"
-              placeholder="Leave blank if you have not got one"
+              placeholder="If you have one"
               className={FIELD}
             />
           </div>
@@ -202,7 +198,7 @@ export function FreeHomepageForm({
               name="notes"
               rows={2}
               required
-              placeholder="Basement waterproofing across Mississauga and Brampton"
+              placeholder="A sentence is plenty"
               className={cn(FIELD, "resize-y")}
             />
           </div>
@@ -245,12 +241,17 @@ export function FreeHomepageForm({
         <p className="mt-5 text-2xs leading-relaxed text-fg-faint">
           We use your details to design your homepage and talk to you about it,
           and nothing else. No list, no newsletter, no passing it on.{" "}
-          <Link
+          {/* New tab: the policy has to be reachable from the form, and the
+              rule for this page is that nothing navigates away from it except
+              the phone number. The page stays put in the original tab. */}
+          <a
             href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
             className="underline decoration-[length:var(--hairline)] underline-offset-2"
           >
             Privacy
-          </Link>
+          </a>
           . Or call{" "}
           <a
             href={site.phoneHref}

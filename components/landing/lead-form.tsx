@@ -167,9 +167,8 @@ export function LeadForm({
             setError(result.error);
             return;
           }
-          // Conversion, before anything can navigate away.
-          window.fbq?.("track", "Lead", { content_name: conversionName });
           if (redirectTo) {
+            // /thank-you sends the Lead event itself, once per reference.
             // URL rather than string concatenation, so `redirectTo` can carry
             // its own query (`/thank-you?for=homepage`) without producing a
             // second `?` and a ref the thank-you page cannot parse.
@@ -178,6 +177,8 @@ export function LeadForm({
             router.push(`${url.pathname}${url.search}`);
             return;
           }
+          // No redirect, so this page is the confirmation: the Lead is ours to send.
+          window.fbq?.("track", "Lead", { content_name: conversionName });
           setDone(result.reference);
         });
       }}

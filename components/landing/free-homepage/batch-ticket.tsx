@@ -1,6 +1,5 @@
 "use client";
 
-import { webOffer } from "@/content/offer";
 import { useBatchCountdown } from "@/lib/hooks/use-batch-countdown";
 
 const LABEL = "font-utility text-2xs uppercase tracking-utility";
@@ -11,9 +10,8 @@ const LABEL = "font-utility text-2xs uppercase tracking-utility";
  *
  * EVERY PART OF IT IS TRUE, which is the only reason it is here.
  *
- *   · The cap is `webOffer.slotsPerMonth` in content/offer.ts. It is a
- *     commitment the owner keeps, not a number chosen to sound scarce — if it
- *     stops being honoured, it comes off the page.
+ *   · There is no cap on it. "Only 10 a month" was here, and the owner never
+ *     gave that number; it goes back the day they give a real one.
  *   · The deadline is the end of the calendar month in Toronto, the same for
  *     every visitor. Reloading does not restart it, and when it reaches zero
  *     the month really has turned over.
@@ -30,7 +28,6 @@ const LABEL = "font-utility text-2xs uppercase tracking-utility";
  */
 export function BatchTicket() {
   const left = useBatchCountdown();
-  const slots = webOffer.slotsPerMonth;
 
   const pad = (n: number) => String(n).padStart(2, "0");
   const cells: [string, string][] = [
@@ -43,31 +40,27 @@ export function BatchTicket() {
   ];
 
   return (
-    <div data-surface="ink" className="bg-surface px-5 pt-4 pb-5 text-fg sm:px-7">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <p className={`${LABEL} text-accent-text`}>
-          {left ? `${left.month} batch` : "This month’s batch"}
-        </p>
-        {slots ? (
-          <p className={`${LABEL} text-fg-muted`}>Only {slots} free homepages a month</p>
-        ) : null}
-      </div>
+    <div data-surface="ink" className="bg-surface px-4 pt-3 pb-3.5 text-fg sm:px-7 sm:pt-4 sm:pb-5">
+      {/* No "only N a month" here. A cap is a number the owner has to give
+          and keep; until they do, the deadline is the only claim on this
+          ticket, and it is one anyone can check against a calendar. */}
+      <p className={`${LABEL} text-accent-text`}>Free designs this month close in</p>
 
       {/* role="timer" announces as a live region in some screen readers on
           every change, which at one-second intervals is unusable. The label
           says what it is; the cells are hidden and a once-a-minute summary is
           what assistive tech gets instead. */}
       <div role="timer" aria-label="Time left in this month's free homepage batch">
-        <ol aria-hidden="true" className="mt-3.5 grid grid-cols-4 gap-2">
+        <ol aria-hidden="true" className="mt-2.5 grid grid-cols-4 gap-1.5 sm:mt-3.5 sm:gap-2">
           {cells.map(([value, unit]) => (
             <li
               key={unit}
-              className="border-[length:var(--hairline)] border-rule-strong bg-surface-raised px-2 pt-2 pb-1.5 text-center"
+              className="border-[length:var(--hairline)] border-rule-strong bg-surface-raised px-1 pt-1.5 pb-1 text-center sm:px-2 sm:pt-2 sm:pb-1.5"
             >
-              <span className="block font-numeral text-xl leading-none font-black tabular-nums text-accent-text">
+              <span className="block font-numeral text-lg leading-none font-black tabular-nums text-accent-text sm:text-xl">
                 {value}
               </span>
-              <span className={`${LABEL} mt-1.5 block text-fg-faint`}>{unit}</span>
+              <span className={`${LABEL} mt-1 block text-fg-faint sm:mt-1.5`}>{unit}</span>
             </li>
           ))}
         </ol>
@@ -78,16 +71,14 @@ export function BatchTicket() {
         </p>
       </div>
 
-      <p className="mt-3.5 text-sm text-fg-muted">
+      <p className="mt-2.5 text-xs text-fg-muted sm:mt-3.5 sm:text-sm">
         {left ? (
           <>
-            Closes <span className="text-fg">{left.closes}</span> at 11:59&nbsp;pm. The next batch
-            opens the day after.
+            Closes <span className="text-fg">{left.closes}</span> at 11:59&nbsp;pm.
           </>
         ) : (
-          // Same length as the real line, so the card does not change height
-          // when it fills in.
-          <>Closes at the end of the month at 11:59&nbsp;pm. The next batch opens the day after.</>
+          // Reserves the line so the card does not change height on mount.
+          <>Closes at the end of the month at 11:59&nbsp;pm.</>
         )}
       </p>
     </div>

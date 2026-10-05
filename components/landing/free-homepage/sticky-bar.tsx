@@ -70,7 +70,11 @@ export function StickyBar({ formId = "free-homepage-form" }: { formId?: string }
   return (
     <div
       data-surface="ink"
-      aria-hidden={!visible}
+      // `inert`, not aria-hidden. aria-hidden only hides the bar from
+      // assistive tech: its two links stayed in the tab order, so a keyboard
+      // user could tab onto buttons that were off the bottom of the screen
+      // — Lighthouse flagged exactly that. inert removes them from both.
+      inert={!visible}
       className={cn(
         "fixed inset-x-0 bottom-0 z-50 border-t-[length:var(--hairline)] border-rule bg-surface",
         // Clears the home indicator on an iPhone, where a bar flush to the
@@ -81,7 +85,7 @@ export function StickyBar({ formId = "free-homepage-form" }: { formId?: string }
       )}
     >
       <p className="mb-2.5 flex items-baseline justify-between gap-3 font-utility text-2xs uppercase tracking-utility text-fg-muted">
-        <span>{left ? `${left.month} batch closes in` : "This month\u2019s batch closes in"}</span>
+        <span>Free designs close in</span>
         <span className="font-numeral text-xs font-black tabular-nums tracking-normal text-accent-text">
           {left ? `${left.days}d ${pad(left.hours)}h ${pad(left.minutes)}m` : "--d --h --m"}
         </span>

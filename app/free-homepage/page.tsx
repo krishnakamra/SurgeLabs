@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Logo } from "@/components/brand";
 import { FreeHomepageForm } from "@/components/landing/free-homepage/free-homepage-form";
 import { StickyBar } from "@/components/landing/free-homepage/sticky-bar";
@@ -21,10 +20,11 @@ import { freeHomepage } from "@/content/free-homepage";
  * the click you paid for is spent. See BARE_ROUTES in lib/navigation.ts,
  * which is what suppresses the real masthead and the ticket rail here.
  *
- * `noindex, follow`: the page covers ground /web-design-seo is trying to rank
- * for, and two pages competing for one term helps neither. The links out
- * still pass equity. robots.txt deliberately does NOT block it — a crawler
- * that cannot fetch the page never sees the noindex either.
+ * Indexable, with its own canonical. It was `noindex` at first, to keep it
+ * from competing with /web-design-seo; the owner asked for a Lighthouse SEO
+ * score of 90+, and the noindex was the entire gap between 69 and that. The
+ * two pages target different searches — this one the free-homepage offer,
+ * that one "web design Mississauga" — so they are not fighting over a term.
  *
  * The house surfaces and the house faces, unchanged. A landing page that
  * looks like a different company from the site it links to is a landing page
@@ -36,7 +36,6 @@ export const metadata: Metadata = {
   title: `Your New Homepage, Designed Free | ${site.name}`,
   description:
     "Send us your business name and we will design your new homepage, free. Love it and we build the rest — one payment, no monthly fees. Mississauga.",
-  robots: { index: false, follow: true },
   alternates: { canonical: "/free-homepage" },
 };
 
@@ -72,10 +71,11 @@ export default function FreeHomepagePage() {
     <>
       {/* A masthead, not a menu. The logo goes home, the number dials. */}
       <div data-surface="ink" className="bg-surface px-gutter">
-        <div className="mx-auto flex w-full max-w-page items-center justify-between gap-6 py-5">
-          <Link href="/" className="inline-flex" aria-label={`${site.name} home`}>
-            <Logo variant="horizontal" className="[--logo-size:20px] sm:[--logo-size:26px]" />
-          </Link>
+        <div className="mx-auto flex w-full max-w-page items-center justify-between gap-6 py-3.5 sm:py-5">
+          {/* Not a link. Everywhere else the logo goes home; on a paid landing
+              page "home" is the one place the visitor must not be sent, and
+              the brief's rule is that nothing leaves except the phone. */}
+          <Logo variant="horizontal" className="[--logo-size:20px] sm:[--logo-size:26px]" />
           <a
             href={site.phoneHref}
             className="font-display text-base font-extrabold tabular-nums text-accent-text sm:text-lg"
@@ -87,19 +87,19 @@ export default function FreeHomepagePage() {
 
       <main id="main" tabIndex={-1}>
         {/* ── 1. Hero. Headline, subhead, form, all on the first screen ── */}
-        <Band surface="ink" className="relative isolate overflow-hidden pt-10 sm:pt-14 lg:pt-12">
+        <Band surface="ink" className="relative isolate overflow-hidden pt-6 sm:pt-14 lg:pt-12">
           <HalftoneField plate="m" pitch={9} dot={1.5} opacity={0.12} seed={11} fade="radial" />
-          <div className="relative grid grid-cols-1 items-start gap-x-16 gap-y-10 lg:grid-cols-12 lg:gap-y-0">
+          <div className="relative grid grid-cols-1 items-start gap-x-16 gap-y-6 sm:gap-y-10 lg:grid-cols-12 lg:gap-y-0">
             <div className="lg:col-span-6 lg:pt-4">
               <p className={`${LABEL} text-accent-text`}>Web design · Mississauga</p>
 
               {/* The ad's headline, verbatim. If this and the ad ever differ,
                   the ad is right and this is wrong. */}
-              <h1 className="mt-6 max-w-[13ch] font-display text-[clamp(2.125rem,1.15rem+4vw,4.75rem)] leading-[0.96] font-extrabold tracking-[-0.025em] text-fg">
+              <h1 className="mt-4 max-w-[13ch] font-display text-[clamp(2rem,1.15rem+4vw,4.75rem)] leading-[0.96] sm:mt-6 font-extrabold tracking-[-0.025em] text-fg">
                 {freeHomepage.headline}
               </h1>
 
-              <p className="mt-7 max-w-[44ch] text-md leading-relaxed text-fg-muted">
+              <p className="mt-4 max-w-[44ch] text-md leading-snug text-fg-muted sm:mt-7 sm:leading-relaxed">
                 {freeHomepage.subhead}
               </p>
 
@@ -152,7 +152,7 @@ export default function FreeHomepagePage() {
         <Band surface="stock" className="border-t-[length:var(--hairline)] border-rule">
           <h2 className={`${H2} text-xl`}>Real work</h2>
           <p className="mt-5 max-w-[46ch] text-base text-fg-muted">
-            Live sites we designed and built. Every one of these started the same way yours would.
+            Live sites we designed and built.
           </p>
           <div className="mt-16">
             <WorkFrames />
@@ -176,8 +176,7 @@ export default function FreeHomepagePage() {
                     <path d="M2.5 8.5l3.5 3.5 7.5-8" />
                   </svg>
                 </span>
-                <h3 className={`${H2} max-w-[20ch] text-md leading-[1.2]`}>{benefit.title}</h3>
-                <p className="mt-4 max-w-[38ch] text-base text-fg-muted">{benefit.detail}</p>
+                <h3 className={`${H2} max-w-[20ch] text-lg leading-[1.15]`}>{benefit.title}</h3>
               </li>
             ))}
           </ul>

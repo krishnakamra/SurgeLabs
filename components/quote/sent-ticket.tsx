@@ -33,6 +33,26 @@ export function SentTicket() {
   const [submission, setSubmission] = useState<Stored | null>(null);
   const [checked, setChecked] = useState(false);
 
+  // The Meta Lead event lives here, not in the forms. The owner wanted it to
+  // fire on /thank-you, and here it can be sent exactly once per reference: a
+  // reload, a back-and-forward, or a second tab on the same confirmation would
+  // otherwise each count as a new lead. The pixel's queue holds the event if
+  // the library has not loaded yet.
+  useEffect(() => {
+    if (!valid) return;
+    const key = `surge:lead:${reference}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {
+      // Storage blocked: send it anyway. One possible duplicate beats a
+      // missing conversion.
+    }
+    window.fbq?.("track", "Lead", {
+      content_name: forHomepage ? "Free homepage design" : "Quote request",
+    });
+  }, [valid, reference, forHomepage]);
+
   useEffect(() => {
     if (!valid) {
       setChecked(true);
