@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { submitQuote } from "@/app/quote/actions";
 import { BatchTicket } from "@/components/landing/free-homepage/batch-ticket";
+import { captureWithNetlify } from "@/lib/quote/netlify-forms";
+import { generateReference } from "@/lib/quote/reference";
+import type { QuoteResult } from "@/lib/quote/types";
 import { freeHomepage } from "@/content/free-homepage";
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
@@ -69,14 +72,33 @@ export function FreeHomepageForm({
           event.preventDefault();
           setError(null);
           const form = new FormData(event.currentTarget);
+          const raw = (key: string) => String(form.get(key) ?? "").trim();
 
-          const contact = String(form.get("contact") ?? "").trim();
+          const contact = raw("contact");
           if (!contact) {
             setError(
               "Leave a phone number or an email so we can send the homepage back.",
             );
             return;
           }
+          if (!raw("name")) {
+            setError("We need a name to put on the ticket.");
+            return;
+          }
+
+          // One reference for this lead wherever it ends up recorded.
+          const reference = generateReference();
+          const copy = {
+            reference,
+            business: raw("business"),
+            name: raw("name"),
+            contact,
+            current_site: raw("current_site"),
+            notes: raw("notes"),
+            source: "/free-homepage",
+          };
+          const isBot = Boolean(raw("company_website"));
+          form.set("reference", reference);
           // One field in, the right field out.
           form.set(looksLikeEmail(contact) ? "email" : "phone", contact);
           form.delete("contact");
@@ -95,8 +117,18 @@ export function FreeHomepageForm({
           );
 
           startTransition(async () => {
-            const result = await submitQuote(form);
-            if (!result.ok) {
+            // Both routes at once; the lead is safe if EITHER has it. See
+            // lib/quote/netlify-forms.ts for why there are two.
+            const [netlify, result] = await Promise.all([
+              isBot ? Promise.resolve(false) : captureWithNetlify("free-homepage", copy),
+              submitQuote(form).catch(
+                (): QuoteResult => ({
+                  ok: false,
+                  error: `Something went wrong sending that. Please call ${site.phone}.`,
+                }),
+              ),
+            ]);
+            if (!netlify && !result.ok) {
               setError(result.error);
               return;
             }
@@ -106,7 +138,7 @@ export function FreeHomepageForm({
             // `for=homepage` tells /thank-you which confirmation to show. Google
             // Ads matches on the path, so the extra parameter costs the
             // conversion nothing.
-            router.push(`/thank-you?ref=${result.reference}&for=homepage`);
+            router.push(`/thank-you?ref=${reference}&for=homepage`);
           });
         }}
         className="p-5 sm:p-7"

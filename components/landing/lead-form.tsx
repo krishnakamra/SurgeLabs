@@ -7,6 +7,9 @@ import { submitQuote } from "@/app/quote/actions";
 import { Button } from "@/components/ui";
 import { site } from "@/content";
 import { cn } from "@/lib/cn";
+import { captureWithNetlify } from "@/lib/quote/netlify-forms";
+import { generateReference } from "@/lib/quote/reference";
+import type { QuoteResult } from "@/lib/quote/types";
 
 const FIELD =
   "w-full border-[length:var(--hairline)] border-rule-strong bg-surface px-4 py-3.5 text-md text-fg " +
@@ -152,6 +155,7 @@ export function LeadForm({
         event.preventDefault();
         setError(null);
         const form = new FormData(event.currentTarget);
+        const raw = (key: string) => String(form.get(key) ?? "").trim();
         const picked = String(form.get("needs") ?? "print:cards");
         const [branch, slug] = picked.split(":");
         form.set("needs", branch ?? "print");
@@ -161,9 +165,28 @@ export function LeadForm({
         form.set("answers", JSON.stringify({ wants: NEEDS.find((n) => n.value === picked)?.label ?? slug }));
         form.set("source", source);
 
+        // One reference wherever the lead is recorded, and a second route for
+        // it: see lib/quote/netlify-forms.ts.
+        const reference = generateReference();
+        form.set("reference", reference);
+        const isBot = Boolean(raw("company_website"));
+        const copy = {
+          reference,
+          business: raw("business"),
+          name: raw("name"),
+          phone: raw("phone"),
+          wants: NEEDS.find((n) => n.value === picked)?.label ?? slug ?? "",
+          source,
+        };
+
         startTransition(async () => {
-          const result = await submitQuote(form);
-          if (!result.ok) {
+          const [netlify, result] = await Promise.all([
+            isBot || !copy.name || !copy.phone ? Promise.resolve(false) : captureWithNetlify("lead", copy),
+            submitQuote(form).catch(
+              (): QuoteResult => ({ ok: false, error: `Something went wrong sending that. Please call ${site.phone}.` }),
+            ),
+          ]);
+          if (!netlify && !result.ok) {
             setError(result.error);
             return;
           }
@@ -173,13 +196,13 @@ export function LeadForm({
             // its own query (`/thank-you?for=homepage`) without producing a
             // second `?` and a ref the thank-you page cannot parse.
             const url = new URL(redirectTo, window.location.origin);
-            url.searchParams.set("ref", result.reference);
+            url.searchParams.set("ref", reference);
             router.push(`${url.pathname}${url.search}`);
             return;
           }
           // No redirect, so this page is the confirmation: the Lead is ours to send.
           window.fbq?.("track", "Lead", { content_name: conversionName });
-          setDone(result.reference);
+          setDone(reference);
         });
       }}
       className={cn(

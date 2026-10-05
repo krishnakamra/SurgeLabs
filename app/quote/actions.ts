@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { sendQuoteEmails } from "@/lib/quote/email";
 import { MIN_FILL_MS, rateLimit } from "@/lib/quote/rate-limit";
-import { generateReference } from "@/lib/quote/reference";
+import { generateReference, isReference } from "@/lib/quote/reference";
 import { storeQuote } from "@/lib/quote/storage";
 import type { QuoteAnswers, QuoteResult, QuoteSubmission } from "@/lib/quote/types";
 import { site } from "@/content";
@@ -105,7 +105,11 @@ export async function submitQuote(form: FormData): Promise<QuoteResult> {
   }
 
   const submission: QuoteSubmission = {
-    reference: generateReference(),
+    // The browser may send the reference it generated, so a lead captured by
+    // Netlify Forms as well (see lib/quote/netlify-forms.ts) carries the same
+    // reference in both places. Format-checked; it is a correlation id, not
+    // a credential, so a reused one is harmless.
+    reference: isReference(text(form, "reference")) ? text(form, "reference") : generateReference(),
     needs,
     packageSlug: text(form, "package", 80) || null,
     answers,

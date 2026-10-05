@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Form definitions</title>
+</head>
+<body>
+<!--
+  Netlify Forms detection file. Not a page: nothing links here, it is
+  noindexed, and nobody is meant to see it.
+
+  Netlify only captures a form it found as static HTML at deploy time, and a
+  Next.js App Router page is not static HTML it can scan, so the forms are
+  declared here and the real forms POST to this file's path with fetch.
+  See lib/quote/netlify-forms.ts for why this exists at all.
+
+  Every field the client sends must be listed, or Netlify silently drops it.
+-->
+<form name="free-homepage" data-netlify="true" netlify-honeypot="company_website" hidden>
+  <input name="company_website">
+  <input name="reference">
+  <input name="business">
+  <input name="name">
+  <input name="contact">
+  <input name="current_site">
+  <textarea name="notes"></textarea>
+  <input name="source">
+</form>
+<form name="lead" data-netlify="true" netlify-honeypot="company_website" hidden>
+  <input name="company_website">
+  <input name="reference">
+  <input name="business">
+  <input name="name">
+  <input name="phone">
+  <input name="wants">
+  <input name="source">
+</form>
+</body>
+</html>
