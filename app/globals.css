@@ -43,6 +43,7 @@
   --font-body: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
   --font-utility: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
+
   /* ─── Palette · literal. These NEVER flip. ──────────────────────────────
      A foil house, not a process-colour floor. Gold carries the brand. The
      four-colour set is still here because the presses are still here, but it
@@ -393,6 +394,19 @@
        here means every full-bleed section starts after it, so crop marks
        align to the sheet and not to the rail. Collapses to 0 below 1200px. */
     padding-left: var(--rail-w);
+  }
+
+  /* No rail, no gutter for it.
+     A bare route suppresses the rail component (see BARE_ROUTES), but this
+     padding knew nothing about that and went on reserving 56px above 1200px
+     — which left a strip of the root ink background down the left edge of
+     /free-homepage, whose sections are navy. It was invisible on /start only
+     because that page is ink too, so the strip matched the page.
+     Keyed off a marker the route renders, the same way the scroll-snap block
+     below keys off [data-snap]: a layout cannot see its own pathname, and a
+     client effect would paint the strip first and remove it after. */
+  body:has([data-bare-route]) {
+    padding-left: 0;
   }
 
   /* Optical sizing is the reason Bodoni Moda is here rather than a static

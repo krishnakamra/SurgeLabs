@@ -6,7 +6,19 @@
  * a missing key means a feature quietly does nothing rather than throwing.
  * This is cheap to check and it catches the drift the moment it happens.
  *
- * NODE_ENV is excluded: the framework sets it, not the operator.
+ * Two exclusions, on the same principle: a variable the ENVIRONMENT sets is
+ * not configuration this project is responsible for documenting.
+ *
+ *   NODE_ENV     the framework sets it, not the operator
+ *   HTTPS_PROXY  a standard, machine-level variable. scripts/capture-work.mjs
+ *                passes it through to Playwright so the screenshot run works
+ *                behind a corporate or sandbox proxy. Documenting it in
+ *                .env.example would imply this app needs a proxy configured,
+ *                which it does not.
+ *   PLAYWRIGHT_BROWSERS_PATH
+ *                Playwright's own variable, read by the same script to find a
+ *                Chromium the machine already has. Same argument: the app
+ *                never reads it, and only the screenshot run cares.
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, dirname, extname } from "node:path";
@@ -14,7 +26,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SCAN = ["app", "components", "lib", "scripts", "db", "content"];
-const EXCLUDE = new Set(["NODE_ENV"]);
+const EXCLUDE = new Set(["NODE_ENV", "HTTPS_PROXY", "PLAYWRIGHT_BROWSERS_PATH"]);
 const CODE = new Set([".ts", ".tsx", ".mjs", ".js", ".sql"]);
 
 function* files(dir) {

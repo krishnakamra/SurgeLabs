@@ -103,7 +103,7 @@ export const primaryNav: readonly NavItem[] = [
  *
  * The logo is still on the page and still links home; it is just not a menu.
  */
-export const BARE_ROUTES = new Set(["/start"]);
+export const BARE_ROUTES = new Set(["/start", "/free-homepage"]);
 
 export function isBareRoute(pathname: string): boolean {
   return BARE_ROUTES.has(pathname);

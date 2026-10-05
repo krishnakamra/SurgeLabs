@@ -36,7 +36,7 @@ const { primaryNav, navCta } = await import(join(root, "lib", "navigation.ts"));
 // submitting a form, never by a link — it is the conversion URL Google Ads
 // counts, and linking it from the site would let a crawler fire conversions
 // nobody paid for.
-const IGNORED = new Set(["styleguide", "brand", "start", "thank-you"]);
+const IGNORED = new Set(["styleguide", "brand", "start", "free-homepage", "thank-you"]);
 const dynamic = /^\[.+\]$/;
 
 function staticRoutes(dir = join(root, "app"), prefix = "") {
