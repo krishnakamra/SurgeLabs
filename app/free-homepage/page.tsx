@@ -88,13 +88,7 @@ export default function FreeHomepagePage() {
       <main id="main" tabIndex={-1}>
         {/* ── 1. Hero. Headline, subhead, form, all on the first screen ── */}
         <Band surface="ink" className="relative isolate overflow-hidden pt-6 sm:pt-14 lg:pt-12">
-          {/* No halftone here, though the final band keeps one. It is an SVG
-              turbulence filter about 3,500px across, and on the live site it
-              was the slowest thing on the first screen: mobile Lighthouse
-              recorded the first paint a full second AFTER the load event with
-              almost no main-thread work — the signature of an expensive
-              rasterise, not a slow script. Below the fold it costs nothing at
-              load; above it, it was the LCP. */}
+          <HalftoneField plate="m" pitch={9} dot={1.5} opacity={0.12} seed={11} fade="radial" />
           <div className="relative grid grid-cols-1 items-start gap-x-16 gap-y-6 sm:gap-y-10 lg:grid-cols-12 lg:gap-y-0">
             <div className="lg:col-span-6 lg:pt-4">
               <p className={`${LABEL} text-accent-text`}>Web design · Mississauga</p>

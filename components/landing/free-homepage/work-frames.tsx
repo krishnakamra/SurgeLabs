@@ -21,7 +21,7 @@ import { freeHomepage } from "@/content/free-homepage";
 export function WorkFrames() {
   return (
     <ul className="grid grid-cols-1 gap-x-gutter gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-      {freeHomepage.work.map((item, index) => (
+      {freeHomepage.work.map((item) => (
         <li key={item.slug}>
           <div className="relative">
             {/* Laptop. 16:10, which is the viewport the shot was taken at. */}
@@ -38,9 +38,12 @@ export function WorkFrames() {
                   fill
                   sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw"
                   className="object-cover object-top"
-                  // The first two are the ones a visitor can reach quickly on
-                  // a wide screen; the rest stay lazy.
-                  loading={index < 2 ? "eager" : "lazy"}
+                  // All lazy. The first two used to be eager, and Next turns an
+                  // eager image into a <link rel="preload"> in the head — so on
+                  // a phone, two desktop screenshots from the bottom of the page
+                  // were fetched before anything in the first screen. Nothing on
+                  // the first screen needs them.
+                  loading="lazy"
                 />
               </div>
             </div>
