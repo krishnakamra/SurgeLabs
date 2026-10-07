@@ -43,8 +43,18 @@ export function BatchTicket() {
     <div data-surface="ink" className="bg-surface px-4 pt-3 pb-3.5 text-fg sm:px-7 sm:pt-4 sm:pb-5">
       {/* No "only N a month" here. A cap is a number the owner has to give
           and keep; until they do, the deadline is the only claim on this
-          ticket, and it is one anyone can check against a calendar. */}
-      <p className={`${LABEL} text-accent-text`}>Free designs this month close in</p>
+          ticket, and it is one anyone can check against a calendar.
+
+          The month by name once the clock is running: "October's" is a date
+          the visitor can hold us to, "this month's" is a phrase. The square
+          is the live light — opacity only, and still under reduced motion. */}
+      <p className={`${LABEL} flex items-center gap-2 text-accent-text`}>
+        <span
+          aria-hidden="true"
+          className="inline-block h-1.5 w-1.5 shrink-0 bg-accent animate-plate-pulse motion-reduce:animate-none"
+        />
+        {left ? `${left.month}’s` : "This month’s"} free designs close in
+      </p>
 
       {/* role="timer" announces as a live region in some screen readers on
           every change, which at one-second intervals is unusable. The label
@@ -66,7 +76,7 @@ export function BatchTicket() {
         </ol>
         <p className="sr-only">
           {left
-            ? `${left.days} days, ${left.hours} hours and ${left.minutes} minutes left.`
+            ? `${left.month}’s free designs close in ${left.days} days, ${left.hours} hours and ${left.minutes} minutes.`
             : "Time left this month."}
         </p>
       </div>

@@ -103,7 +103,10 @@ export default function FreeHomepagePage() {
                 {freeHomepage.subhead}
               </p>
 
-              <div className="mt-12">
+              {/* Hidden below lg along with the phones. An empty wrapper
+                  still kept its margin, and that was 48px of nothing between
+                  the subhead and the form on every phone. */}
+              <div className="mt-12 hidden lg:block">
                 <HeroPhones />
               </div>
             </div>
